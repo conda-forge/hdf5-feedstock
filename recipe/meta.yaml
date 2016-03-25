@@ -36,6 +36,9 @@ requirements:
     - zlib
 
 test:
+  requires:
+    - python    # [win]
+
   commands:
     # Verify CLI tools.
     {% set hdf5_cmds = [
