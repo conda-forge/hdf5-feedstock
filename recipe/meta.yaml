@@ -44,6 +44,7 @@ test:
     {% set hdf5_unix_cmds = [
         "h5c++",
         "h5cc",
+        "h5perf_serial",
         "h5redeploy"
     ] %}
     {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
@@ -62,7 +63,6 @@ test:
         "h5jam",
         "h5ls",
         "h5mkgrp",
-        "h5perf_serial",
         "h5repack",
         "h5repart",
         "h5stat",
