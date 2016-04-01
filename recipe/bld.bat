@@ -12,6 +12,10 @@ REM Build C libraries and tools
 nmake
 if errorlevel 1 exit 1
 
+REM Run tests
+ctest
+if errorlevel 1 exit 1
+
 REM Install step
 nmake install
 if errorlevel 1 exit 1
