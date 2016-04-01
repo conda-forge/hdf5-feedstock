@@ -20,7 +20,7 @@ source:
     - test_Makefile.in.patch
 
 build:
-  number: 1
+  number: 2
   features:
     - vc9     # [win and py27]
     - vc10    # [win and py34]
@@ -36,13 +36,25 @@ requirements:
     - zlib
 
 test:
+  requires:
+    - python    # [win]
+
   commands:
+    # Verify UNIX CLI tools.
+    {% set hdf5_unix_cmds = [
+        "h5c++",
+        "h5cc",
+        "h5perf_serial",
+        "h5redeploy"
+    ] %}
+    {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
+    - command -v {{ each_hdf5_unix_cmd }}   # [unix]
+    {% endfor %}
+
     # Verify CLI tools.
     {% set hdf5_cmds = [
         "gif2h5",
         "h52gif",
-        "h5c++",
-        "h5cc",
         "h5copy",
         "h5debug",
         "h5diff",
@@ -51,8 +63,6 @@ test:
         "h5jam",
         "h5ls",
         "h5mkgrp",
-        "h5perf_serial",
-        "h5redeploy",
         "h5repack",
         "h5repart",
         "h5stat",
