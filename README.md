@@ -5,7 +5,7 @@ Home: http://www.hdfgroup.org/HDF5/
 
 Package license: HDF5
 
-Feedstock license: BSD
+Feedstock license: BSD 3-Clause
 
 Summary: HDF5 is a data model, library, and file format for storing and managing data
 
