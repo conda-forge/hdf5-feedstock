@@ -34,14 +34,14 @@ requirements:
     - libtool        # [unix]
     - cmake >=3.1
     - zlib 1.2*
+    - gcc  # [not win]
   run:
     - zlib 1.2*
+    - libgcc  # [not win]
 
 test:
   requires:
-    - python 2.7.*  # [win and py27]
-    - python 3.4.*  # [win and py34]
-    - python 3.5.*  # [win and py35]
+    - python {{ environ['PY_VER'] + '*' }}  # [win]
 
   commands:
     # Verify UNIX CLI tools.
