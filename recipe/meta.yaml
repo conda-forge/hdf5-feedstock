@@ -1,4 +1,4 @@
-{% set version = "1.8.16" %}
+{% set version = "1.8.17" %}
 
 package:
   name: hdf5
@@ -7,7 +7,7 @@ package:
 source:
   fn: hdf5-{{version}}.tar.gz
   url: https://www.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  md5: b8ed9a36ae142317f88b0c7ef4b9c618
+  md5: 7d572f8f3b798a628b8245af0391a0ca
   patches:
     # Patches the test suite to skip the `cache` test.
     # This test has been found to rather resource intensive.
@@ -20,7 +20,7 @@ source:
     - test_Makefile.in.patch
 
 build:
-  number: 3
+  number: 0
   features:
     - vc9     # [win and py27]
     - vc10    # [win and py34]
