@@ -35,9 +35,11 @@ requirements:
     - cmake >=3.1
     - zlib 1.2*
     - gcc  # [not win]
+    - libgfortran  # [not win]
   run:
     - zlib 1.2*
     - libgcc  # [not win]
+    - libgfortran  # [not win]
 
 test:
   requires:
@@ -49,7 +51,8 @@ test:
         "h5c++",
         "h5cc",
         "h5perf_serial",
-        "h5redeploy"
+        "h5redeploy",
+        "h5fc"
     ] %}
     {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
     - command -v {{ each_hdf5_unix_cmd }}   # [unix]
