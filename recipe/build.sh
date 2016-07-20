@@ -12,8 +12,9 @@ if [ "$(uname)" == "Darwin" ]
 then
     export CXX="${CXX} -stdlib=libc++"
     export DYLD_FALLBACK_LIBRARY_PATH=$PREFIX/lib
-    export LIBRARY_PATH="${PREFIX}/lib"
 fi
+
+export LIBRARY_PATH="${PREFIX}/lib"
 
 ./configure --prefix="${PREFIX}" \
             --enable-linux-lfs \
