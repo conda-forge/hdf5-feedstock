@@ -99,9 +99,6 @@ test:
     - otool -L $PREFIX/lib/lib{{ each_hdf5_lib }}.dylib                      # [osx]
     {% endfor %}
 
-    # Try compiling example files.
-    - $RECIPE_DIR/test_compilers.sh  # [not win]
-
 about:
   home: http://www.hdfgroup.org/HDF5/
   license: HDF5
