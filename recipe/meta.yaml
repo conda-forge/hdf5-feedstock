@@ -100,7 +100,7 @@ test:
     {% endfor %}
 
     # Try compiling example files.
-    - ./test_compilers.sh  # [not win]
+    - $RECIPE_DIR/test_compilers.sh  # [not win]
 
 about:
   home: http://www.hdfgroup.org/HDF5/
