@@ -34,8 +34,8 @@ requirements:
     - libtool        # [unix]
     - cmake >=3.1
     - zlib 1.2.*
-    - gcc  # [not win]
-    - libgfortran  # [not win]
+    - gcc  # [osx]
+    - libgfortran  # [linux]
   run:
     - zlib 1.2.*
     - libgfortran  # [not win]
