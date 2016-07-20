@@ -38,7 +38,6 @@ requirements:
     - libgfortran  # [not win]
   run:
     - zlib 1.2.*
-    - libgcc  # [not win]
     - libgfortran  # [not win]
 
 test:
