@@ -43,6 +43,14 @@ conda update --yes --all
 conda install --yes conda-build
 conda info
 
+
+# Install the yum requirements defined canonically in the
+# "recipe/yum_requirements.txt" file. After updating that file,
+# run "conda smithy rerender" and this line be updated
+# automatically.
+yum install -y devtoolset-2-gcc-gfortran
+
+
 # Embarking on 1 case(s).
     conda build /recipe_root --quiet || exit 1
     /feedstock_root/ci_support/upload_or_check_non_existence.py /recipe_root conda-forge --channel=main || exit 1
