@@ -43,6 +43,7 @@ requirements:
 test:
   requires:
     - python {{ environ['PY_VER'] + '*' }}  # [win]
+    - gcc  # [osx]
 
   commands:
     # Verify UNIX CLI tools.
