@@ -45,6 +45,11 @@ test:
     - python {{ environ['PY_VER'] + '*' }}  # [win]
     - gcc  # [osx]
 
+  files:
+    - h5_cmprss.c
+    - h5tutr_cmprss.cpp
+    - h5_cmprss.f90
+
   commands:
     # Verify UNIX CLI tools.
     {% set hdf5_unix_cmds = [
