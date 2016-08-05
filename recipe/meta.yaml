@@ -33,11 +33,11 @@ requirements:
     - python         # [win]
     - libtool        # [unix]
     - cmake >=3.1
-    - zlib 1.2*
+    - zlib 1.2.*
     - gcc  # [osx]
     - libgfortran  # [linux]
   run:
-    - zlib 1.2*
+    - zlib 1.2.*
     - libgfortran  # [not win]
 
 test:
