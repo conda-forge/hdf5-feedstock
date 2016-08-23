@@ -20,7 +20,7 @@ source:
     - test_Makefile.in.patch
 
 build:
-  number: 2
+  number: 3
   features:
     - vc9     # [win and py27]
     - vc10    # [win and py34]
@@ -33,9 +33,9 @@ requirements:
     - python         # [win]
     - libtool        # [unix]
     - cmake >=3.1
-    - zlib 1.2*
+    - zlib 1.2.*
   run:
-    - zlib 1.2*
+    - zlib 1.2.*
 
 test:
   requires:
