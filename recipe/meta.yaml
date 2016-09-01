@@ -20,7 +20,7 @@ source:
     - test_Makefile.in.patch
 
 build:
-  number: 2
+  number: 3
   features:
     - vc9     # [win and py27]
     - vc10    # [win and py34]
@@ -33,15 +33,22 @@ requirements:
     - python         # [win]
     - libtool        # [unix]
     - cmake >=3.1
-    - zlib 1.2*
+    - zlib 1.2.*
+    - gcc  # [osx]
+    - libgfortran  # [linux]
   run:
-    - zlib 1.2*
+    - zlib 1.2.*
+    - libgfortran  # [not win]
 
 test:
   requires:
-    - python 2.7.*  # [win and py27]
-    - python 3.4.*  # [win and py34]
-    - python 3.5.*  # [win and py35]
+    - python {{ environ['PY_VER'] + '*' }}  # [win]
+    - gcc  # [osx]
+
+  files:
+    - h5_cmprss.c
+    - h5tutr_cmprss.cpp
+    - h5_cmprss.f90
 
   commands:
     # Verify UNIX CLI tools.
@@ -49,7 +56,8 @@ test:
         "h5c++",
         "h5cc",
         "h5perf_serial",
-        "h5redeploy"
+        "h5redeploy",
+        "h5fc"
     ] %}
     {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
     - command -v {{ each_hdf5_unix_cmd }}   # [unix]
@@ -110,3 +118,4 @@ extra:
     - gillins
     - groutr
     - ocefpaf
+    - astrofrog
