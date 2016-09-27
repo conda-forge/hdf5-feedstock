@@ -11,7 +11,7 @@ source activate "${CONDA_DEFAULT_ENV}"
 if [ "$(uname)" == "Darwin" ]
 then
     export CXX="${CXX} -stdlib=libc++"
-    export DYLD_FALLBACK_LIBRARY_PATH=$PREFIX/lib
+    export LDFLAGS="-Wl,-rpath,$PREFIX/lib"
 fi
 
 export LIBRARY_PATH="${PREFIX}/lib"
