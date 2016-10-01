@@ -25,7 +25,7 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --enable-fortran2003 \
             --with-default-plugindir="${PREFIX}/lib/hdf5/plugin"
 
-make
+make -j "${CPU_COUNT}"
 make check
 make install
 
