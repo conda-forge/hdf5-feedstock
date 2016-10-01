@@ -49,6 +49,7 @@ test:
     - h5_cmprss.c
     - h5tutr_cmprss.cpp
     - h5_cmprss.f90
+    - compound_fortran2003.f90
 
   commands:
     # Verify UNIX CLI tools.
