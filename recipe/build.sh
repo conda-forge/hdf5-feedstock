@@ -23,7 +23,9 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --enable-cxx \
             --enable-fortran \
             --enable-fortran2003 \
-            --with-default-plugindir="${PREFIX}/lib/hdf5/plugin"
+            --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
+            --enable-threadsafe \
+            --enable-production
 
 make -j "${CPU_COUNT}"
 make check
