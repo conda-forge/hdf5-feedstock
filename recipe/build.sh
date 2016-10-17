@@ -26,7 +26,8 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
             --enable-threadsafe \
             --disable-hl \
-            --enable-production
+            --enable-production \
+            --enable-unsupported
 
 make -j "${CPU_COUNT}"
 make check
