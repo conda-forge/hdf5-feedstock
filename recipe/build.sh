@@ -27,7 +27,9 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --enable-threadsafe \
             --disable-hl \
             --enable-production \
-            --enable-unsupported
+            --enable-unsupported \
+            --disable-static \
+            --with-ssl
 
 make -j "${CPU_COUNT}"
 make check
