@@ -25,7 +25,6 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --enable-fortran2003 \
             --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
             --enable-threadsafe \
-            --disable-hl \
             --enable-production \
             --enable-unsupported \
             --disable-static \
