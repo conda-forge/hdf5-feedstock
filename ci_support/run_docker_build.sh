@@ -43,5 +43,5 @@ source run_conda_forge_build_setup
 
 # Embarking on 1 case(s).
     conda build /recipe_root --quiet || exit 1
-    /feedstock_root/ci_support/upload_or_check_non_existence.py /recipe_root conda-forge --channel=test || exit 1
+    upload_or_check_non_existence /recipe_root conda-forge --channel=test || exit 1
 EOF
