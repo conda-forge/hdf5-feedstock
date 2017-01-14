@@ -20,11 +20,12 @@ source:
     - test_Makefile.in.patch
 
 build:
-  number: 8
+  number: 9
+  skip: True  # [py==36]
   features:
     - vc9     # [win and py27]
     - vc10    # [win and py34]
-    - vc14    # [win and py35]
+    - vc14    # [win and py>=35]
   detect_binary_files_with_prefix: True
 
 requirements:
@@ -36,13 +37,18 @@ requirements:
     - zlib 1.2.*
     - gcc  # [osx]
     - libgfortran  # [linux]
+    - vc 9  # [win and py27]
+    - vc 10  # [win and py34]
+    - vc 14  # [win and py>=35]
   run:
     - zlib 1.2.*
     - libgfortran  # [not win]
+    - vc 9  # [win and py27]
+    - vc 10  # [win and py34]
+    - vc 14  # [win and py>=35]
 
 test:
   requires:
-    - python {{ environ['PY_VER'] + '*' }}  # [win]
     - gcc  # [osx]
 
   files:
