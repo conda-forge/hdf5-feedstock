@@ -20,7 +20,7 @@ source:
     - test_Makefile.in.patch
 
 build:
-  number: 9
+  number: 10
   skip: True  # [py==36]
   features:
     - vc9     # [win and py27]
