@@ -21,11 +21,11 @@ source:
 
 build:
   number: 10
-  skip: True  # [py==36]
+  skip: True  # [py==35]
   features:
     - vc9     # [win and py27]
     - vc10    # [win and py34]
-    - vc14    # [win and py>=35]
+    - vc14    # [win and (py35 or py36)]
   detect_binary_files_with_prefix: True
 
 requirements:
