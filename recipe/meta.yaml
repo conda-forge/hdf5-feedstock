@@ -18,10 +18,12 @@ source:
     # https://github.com/conda-forge/staged-recipes/pull/199
     #
     - test_Makefile.in.patch
+    # Disable shared Fortran API building on OSX
+    - osx_configure.patch  # [osx]
 
 build:
-  number: 10
-  skip: True  # [py==36]
+  number: 11
+  skip: True  # [win and py36]
   features:
     - vc9     # [win and py27]
     - vc10    # [win and py34]
