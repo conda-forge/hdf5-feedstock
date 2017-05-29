@@ -5,7 +5,7 @@ package:
   version: {{ version }}
 
 source:
-  fn: hdf5-{{version}}.tar.gz
+  fn: hdf5-{{ version }}.tar.gz
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
   md5: 7d572f8f3b798a628b8245af0391a0ca
   patches:
