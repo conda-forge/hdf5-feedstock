@@ -1,4 +1,4 @@
-{% set version = "1.8.17" %}
+{% set version = "1.8.18" %}
 
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 
@@ -10,7 +10,7 @@ package:
 source:
   fn: hdf5-{{ version }}.tar.gz
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  md5: 7d572f8f3b798a628b8245af0391a0ca
+  md5: dd2148b740713ca0295442ec683d7b1c
   patches:
     # Patches the test suite to skip the `cache` test.
     # This test has been found to rather resource intensive.
@@ -25,7 +25,7 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 11
+  number: 0
   skip: True  # [win and py36]
   features:
     - vc9     # [win and py27]
