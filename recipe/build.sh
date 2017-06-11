@@ -1,5 +1,13 @@
 #!/bin/bash
 
+export EXTRA_CONFIG_FLAGS=""
+
+if [ "$(uname)" == "Linux" ]; then
+    export CC="${PREFIX}/bin/mpicc"
+    export CXX="${PREFIX}/bin/mpic++"
+    export EXTRA_CONFIG_FLAGS="--enable-parallel=yes"
+fi
+
 if [ "$(uname)" == "Darwin" ]; then
     export CXX="${CXX} -stdlib=libc++"
     export LDFLAGS="${LDFLAGS} -Wl,-rpath,$PREFIX/lib"
@@ -18,7 +26,7 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --enable-threadsafe \
             --enable-production \
             --enable-unsupported \
-            --with-ssl
+            --with-ssl "${EXTRA_CONFIG_FLAGS}"
 
 #             --disable-static \
 make -j "${CPU_COUNT}"

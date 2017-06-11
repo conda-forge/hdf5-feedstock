@@ -2,6 +2,7 @@
 
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 
+{% set mpi = os.environ.get('MPI') or 'mpich' %}
 
 package:
   name: hdf5
@@ -41,12 +42,14 @@ requirements:
     - cmake >=3.1
     - zlib 1.2.*
     - gcc  # [osx]
+    - {{ mpi }}  # [linux]
     - libgfortran  # [linux]
     - vc 9  # [win and py27]
     - vc 10  # [win and py34]
     - vc 14  # [win and py>=35]
   run:
     - zlib 1.2.*
+    - {{ mpi }}  # [linux]
     - libgfortran  # [not win]
     - vc 9  # [win and py27]
     - vc 10  # [win and py34]
