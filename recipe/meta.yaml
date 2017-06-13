@@ -1,4 +1,4 @@
-{% set version = "1.8.18" %}
+{% set version = "1.10.1" %}
 
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 
@@ -10,16 +10,12 @@ package:
 source:
   fn: hdf5-{{ version }}.tar.gz
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  md5: dd2148b740713ca0295442ec683d7b1c
+  sha256: 048a9d149fb99aaa1680a712963f5a78e9c43b588d0e79d55e06760ec377c172
   patches:
-    # Patches the test suite to skip the `cache` test.
+    # Patches the test suite to skip the cache, cache_image, and fheap tests
     # This test has been found to rather resource intensive.
     # In particular, it caused Travis CI's Mac builds to hang.
     # Given that we simply skip the test on all platforms.
-    # For more details, see the PR where this was proposed.
-    #
-    # https://github.com/conda-forge/staged-recipes/pull/199
-    #
     - test_Makefile.in.patch
     # Disable shared Fortran API building on OSX
     - osx_configure.patch  # [osx]
