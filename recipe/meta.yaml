@@ -1,5 +1,4 @@
-{% set version = "1.8.18" %}
-
+{% set version = "1.8.19" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 
 
@@ -8,18 +7,10 @@ package:
   version: {{ version }}
 
 source:
-  fn: hdf5-{{ version }}.tar.gz
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  md5: dd2148b740713ca0295442ec683d7b1c
+  sha256: a4335849f19fae88c264fd0df046bc321a78c536b2548fc508627a790564dc38
   patches:
-    # Patches the test suite to skip the `cache` test.
-    # This test has been found to rather resource intensive.
-    # In particular, it caused Travis CI's Mac builds to hang.
-    # Given that we simply skip the test on all platforms.
-    # For more details, see the PR where this was proposed.
-    #
-    # https://github.com/conda-forge/staged-recipes/pull/199
-    #
+    # Skip the longer than CI time `cache` test.
     - test_Makefile.in.patch
     # Disable shared Fortran API building on OSX
     - osx_configure.patch  # [osx]
@@ -27,30 +18,30 @@ source:
 build:
   number: 0
   skip: True  # [win and py36]
-  features:
-    - vc9     # [win and py27]
-    - vc10    # [win and py34]
-    - vc14    # [win and py>=35]
   detect_binary_files_with_prefix: True
+  features:
+    - vc9  # [win and py27]
+    - vc10  # [win and py34]
+    - vc14  # [win and (py35 or py36)]
 
 requirements:
   build:
     - toolchain
-    - python         # [win]
-    - libtool        # [unix]
+    - python  # [win]
+    - libtool  # [not win]
     - cmake >=3.1
-    - zlib 1.2.*
+    - zlib 1.2.8
     - gcc  # [osx]
     - libgfortran  # [linux]
     - vc 9  # [win and py27]
     - vc 10  # [win and py34]
-    - vc 14  # [win and py>=35]
+    - vc 14  # [win and (py35 or py36)]
   run:
-    - zlib 1.2.*
+    - zlib 1.2.8
     - libgfortran  # [not win]
     - vc 9  # [win and py27]
     - vc 10  # [win and py34]
-    - vc 14  # [win and py>=35]
+    - vc 14  # [win and (py35 or py36)]
 
 test:
   requires:
@@ -112,17 +103,15 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1    # [win]
     {% endfor %}
 
-    # Inspect linkages of HDF5.
-    {% for each_hdf5_lib in hdf5_libs %}
-    - otool -L $PREFIX/lib/lib{{ each_hdf5_lib }}.dylib                      # [osx]
-    {% endfor %}
+    - conda inspect linkages -p $PREFIX hdf5  # [not win]
+    - conda inspect objects -p $PREFIX hdf5  # [osx]
 
 about:
   home: http://www.hdfgroup.org/HDF5/
   license: HDF5
   license_family: BSD
   license_file: COPYING
-  summary: HDF5 is a data model, library, and file format for storing and managing data
+  summary: 'HDF5 is a data model, library, and file format for storing and managing data.'
 
 extra:
   recipe-maintainers:

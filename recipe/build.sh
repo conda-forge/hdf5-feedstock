@@ -20,9 +20,8 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --enable-unsupported \
             --with-ssl
 
-#             --disable-static \
-make -j "${CPU_COUNT}"
+make -j$CPU_COUNT
 make check
-make install
+make install -j$CPU_COUNT
 
 rm -rf $PREFIX/share/hdf5_examples
