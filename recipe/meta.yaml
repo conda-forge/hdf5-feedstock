@@ -1,4 +1,4 @@
-{% set version = "1.8.19" %}
+{% set version = "1.8.18" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 
 
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  sha256: a4335849f19fae88c264fd0df046bc321a78c536b2548fc508627a790564dc38
+  sha256: cdb195ad8d9e6782acf24b2488061289f615628c2ccda8457b0a0c3fb7a8a063
   patches:
     # Skip the longer than CI time `cache` test.
     - test_Makefile.in.patch
@@ -16,12 +16,11 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 0
+  number: 2
   skip: True  # [win and py36]
   detect_binary_files_with_prefix: True
   features:
     - vc9  # [win and py27]
-    - vc10  # [win and py34]
     - vc14  # [win and (py35 or py36)]
 
 requirements:
@@ -30,17 +29,15 @@ requirements:
     - toolchain
     - libtool  # [not win]
     - cmake >=3.1
-    - zlib 1.2.8
+    - zlib 1.2.11
     - gcc  # [osx]
     - libgfortran  # [linux]
     - vc 9  # [win and py27]
-    - vc 10  # [win and py34]
     - vc 14  # [win and (py35 or py36)]
   run:
-    - zlib 1.2.8
+    - zlib 1.2.11
     - libgfortran  # [not win]
     - vc 9  # [win and py27]
-    - vc 10  # [win and py34]
     - vc 14  # [win and (py35 or py36)]
 
 test:
@@ -102,9 +99,8 @@ test:
     - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1    # [win]
     - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1    # [win]
     {% endfor %}
-
-    - conda inspect linkages -p $PREFIX hdf5  # [not win]
-    - conda inspect objects -p $PREFIX hdf5  # [osx]
+    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
+    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: http://www.hdfgroup.org/HDF5/
@@ -121,3 +117,4 @@ extra:
     - ocefpaf
     - astrofrog
     - marqh
+
