@@ -1,5 +1,4 @@
 {% set version = "1.10.1" %}
-
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 
 
@@ -21,12 +20,11 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 0
+  number: 1
   skip: True  # [win and py36]
   features:
     - vc9     # [win and py27]
-    - vc10    # [win and py34]
-    - vc14    # [win and py>=35]
+    - vc14    # [win and (py35 or py36)]
   detect_binary_files_with_prefix: True
 
 requirements:
@@ -35,18 +33,16 @@ requirements:
     - python         # [win]
     - libtool        # [unix]
     - cmake >=3.1
-    - zlib 1.2.*
+    - zlib 1.2.11
     - gcc  # [osx]
     - libgfortran  # [linux]
     - vc 9  # [win and py27]
-    - vc 10  # [win and py34]
     - vc 14  # [win and py>=35]
   run:
-    - zlib 1.2.*
+    - zlib 1.2.11
     - libgfortran  # [not win]
     - vc 9  # [win and py27]
-    - vc 10  # [win and py34]
-    - vc 14  # [win and py>=35]
+    - vc 14  # [win and (py35 or py36)]
 
 test:
   requires:
@@ -112,6 +108,8 @@ test:
     {% for each_hdf5_lib in hdf5_libs %}
     - otool -L $PREFIX/lib/lib{{ each_hdf5_lib }}.dylib                      # [osx]
     {% endfor %}
+    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
+    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: http://www.hdfgroup.org/HDF5/
