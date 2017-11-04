@@ -16,12 +16,11 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 0
+  number: 1
   skip: True  # [win and py36]
   detect_binary_files_with_prefix: True
   features:
     - vc9  # [win and py27]
-    - vc10  # [win and py34]
     - vc14  # [win and (py35 or py36)]
 
 requirements:
@@ -30,17 +29,15 @@ requirements:
     - toolchain
     - libtool  # [not win]
     - cmake >=3.1
-    - zlib 1.2.8
+    - zlib 1.2.11
     - gcc  # [osx]
     - libgfortran  # [linux]
     - vc 9  # [win and py27]
-    - vc 10  # [win and py34]
     - vc 14  # [win and (py35 or py36)]
   run:
-    - zlib 1.2.8
+    - zlib 1.2.11
     - libgfortran  # [not win]
     - vc 9  # [win and py27]
-    - vc 10  # [win and py34]
     - vc 14  # [win and (py35 or py36)]
 
 test:
@@ -102,9 +99,8 @@ test:
     - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1    # [win]
     - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1    # [win]
     {% endfor %}
-
-    - conda inspect linkages -p $PREFIX hdf5  # [not win]
-    - conda inspect objects -p $PREFIX hdf5  # [osx]
+    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
+    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: http://www.hdfgroup.org/HDF5/
