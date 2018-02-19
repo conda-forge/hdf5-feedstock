@@ -1,4 +1,4 @@
-{% set version = "1.8.19" %}
+{% set version = "1.8.20" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 
 
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  sha256: a4335849f19fae88c264fd0df046bc321a78c536b2548fc508627a790564dc38
+  sha256: 6ed660ccd2bc45aa808ea72e08f33cc64009e9dd4e3a372b53438b210312e8d9
   patches:
     # Skip the longer than CI time `cache` test.
     - test_Makefile.in.patch
