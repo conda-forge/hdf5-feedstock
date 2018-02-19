@@ -30,14 +30,14 @@ requirements:
     - toolchain
     - libtool  # [not win]
     - cmake >=3.1
-    - zlib 1.2.8
+    - zlib 1.2.11
     - gcc  # [osx]
     - libgfortran  # [linux]
     - vc 9  # [win and py27]
     - vc 10  # [win and py34]
     - vc 14  # [win and (py35 or py36)]
   run:
-    - zlib 1.2.8
+    - zlib 1.2.11
     - libgfortran  # [not win]
     - vc 9  # [win and py27]
     - vc 10  # [win and py34]
