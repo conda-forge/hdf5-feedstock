@@ -16,6 +16,7 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --enable-fortran2003 \
             --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
             --enable-threadsafe \
+            --enable-shared \
             --enable-build-mode=production \
             --enable-unsupported \
             --with-ssl
