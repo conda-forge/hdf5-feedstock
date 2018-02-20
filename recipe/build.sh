@@ -8,6 +8,7 @@ fi
 export LIBRARY_PATH="${PREFIX}/lib"
 
 ./configure --prefix="${PREFIX}" \
+            --with-pic \
             --enable-linux-lfs \
             --with-zlib="${PREFIX}" \
             --with-pthread=yes  \
