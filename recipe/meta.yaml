@@ -16,7 +16,7 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 2
+  number: 3
   skip: True  # [win and py36]
   detect_binary_files_with_prefix: True
   features:
@@ -115,6 +115,5 @@ extra:
     - gillins
     - groutr
     - ocefpaf
-    - astrofrog
+    - astrofrog-conda-forge
     - marqh
-
