@@ -24,6 +24,10 @@ if errorlevel 1 exit 1
 nmake
 if errorlevel 1 exit 1
 
+:: Run tests.
+ctest
+if errorlevel 1 exit 1
+
 :: Install step.
 nmake install
 if errorlevel 1 exit 1
