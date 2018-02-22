@@ -8,6 +8,7 @@ fi
 export LIBRARY_PATH="${PREFIX}/lib"
 
 ./configure --prefix="${PREFIX}" \
+            --with-pic \
             --enable-linux-lfs \
             --with-zlib="${PREFIX}" \
             --with-pthread=yes  \
@@ -16,6 +17,7 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --enable-fortran2003 \
             --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
             --enable-threadsafe \
+            --enable-shared \
             --enable-production \
             --enable-unsupported \
             --with-ssl
