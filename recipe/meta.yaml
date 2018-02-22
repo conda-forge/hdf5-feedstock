@@ -20,7 +20,7 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 1
+  number: 2
   skip: True  # [win and py36]
   features:
     - vc9     # [win and py27]
