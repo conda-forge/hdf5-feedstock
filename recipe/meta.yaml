@@ -1,4 +1,4 @@
-{% set version = "1.10.1" %}
+{% set version = "1.10.2" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 
 
@@ -9,7 +9,7 @@ package:
 source:
   fn: hdf5-{{ version }}.tar.gz
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  sha256: 048a9d149fb99aaa1680a712963f5a78e9c43b588d0e79d55e06760ec377c172
+  sha256: bfec1be8c366965a99812cf02ddc97e4b708c1754fccba5414d4adccdc073866
   patches:
     # Patches the test suite to skip the cache, cache_image, and fheap tests
     # This test has been found to rather resource intensive.
@@ -20,7 +20,7 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 2
+  number: 0
   skip: True  # [win and py36]
   features:
     - vc9     # [win and py27]
