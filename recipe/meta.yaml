@@ -1,6 +1,8 @@
 {% set version = "1.10.2" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-
+{% if mpi == "nompi" %}
+{% set mpi = None %}
+{% endif %}
 
 package:
   name: hdf5
@@ -20,8 +22,18 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 0
-  skip: True  # [win and py36]
+  number: 1
+  {% if mpi %}
+  skip: true  # [win]
+  {% else %}
+  skip: true  # [win and py36]
+  {% endif %}
+  # Use track_features to express a preference for
+  # non-mpi variant
+  {% if mpi %}
+  track_features:
+    - hdf5_{{ mpi }}
+  {% endif %}
   features:
     - vc9     # [win and py27]
     - vc14    # [win and (py35 or py36)]
@@ -38,7 +50,13 @@ requirements:
     - libgfortran  # [linux]
     - vc 9  # [win and py27]
     - vc 14  # [win and py>=35]
+    {% if mpi %}
+    - {{ mpi }}
+    {% endif %}
   run:
+    {% if mpi %}
+    - {{ mpi }}
+    {% endif %}
     - zlib 1.2.11
     - libgfortran  # [not win]
     - vc 9  # [win and py27]

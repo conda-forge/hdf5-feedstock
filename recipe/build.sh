@@ -7,7 +7,15 @@ fi
 
 export LIBRARY_PATH="${PREFIX}/lib"
 
+if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
+  export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
+  export CC=mpicc
+  export CXX=mpic++
+  export FC=mpifort
+fi
+
 ./configure --prefix="${PREFIX}" \
+            ${CONFIGURE_ARGS} \
             --with-pic \
             --enable-linux-lfs \
             --with-zlib="${PREFIX}" \
@@ -21,6 +29,9 @@ export LIBRARY_PATH="${PREFIX}/lib"
             --enable-build-mode=production \
             --enable-unsupported \
             --with-ssl
+
+# allow oversubscribing with openmpi in make check
+export OMPI_MCA_rmaps_base_oversubscribe=yes
 
 make -j "${CPU_COUNT}"
 make check
