@@ -1,0 +1,11 @@
+c_compiler:
+- toolchain_c
+cxx_compiler:
+- toolchain_cxx
+fortran_compiler:
+- toolchain_fort
+pin_run_as_build:
+  zlib:
+    max_pin: x.x
+zlib:
+- '1.2'
