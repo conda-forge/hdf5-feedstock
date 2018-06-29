@@ -13,6 +13,10 @@ h5c++ -show
 h5c++ h5tutr_cmprss.cpp -o h5tutr_cmprss
 ./h5tutr_cmprss
 
+if [[ "$mpi" == "nompi" ]]; then
+  # stop here for mpi builds, which lack fortran support
+  exit 0
+fi
 # Test Fortran 90 compiler
 echo "Testing h5fc"
 h5fc -show
