@@ -20,34 +20,27 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 0
+  number: 1
   skip: True  # [win and py36]
-  features:
-    - vc9     # [win and py27]
-    - vc14    # [win and (py35 or py36)]
-  detect_binary_files_with_prefix: True
 
 requirements:
   build:
-    - toolchain
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - cmake >=3.1
+  host:
     - python         # [win]
     - libtool        # [unix]
-    - cmake >=3.1
     - zlib 1.2.11
-    - gcc  # [osx]
-    - libgfortran  # [linux]
-    - vc 9  # [win and py27]
-    - vc 14  # [win and py>=35]
   run:
     - zlib 1.2.11
-    - libgfortran  # [not win]
-    - vc 9  # [win and py27]
-    - vc 14  # [win and (py35 or py36)]
 
 test:
   requires:
-    - gcc  # [osx]
-
+    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
+    - {{ compiler('fortran') }}
   files:
     - h5_cmprss.c
     - h5tutr_cmprss.cpp
@@ -98,18 +91,15 @@ test:
     ] %}
     {% for each_hdf5_lib in hdf5_libs %}
     - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}.a                           # [unix]
-    - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}.dylib                       # [osx]
-    - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}.so                          # [linux]
+    - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}${SHLIB_EXT}                 # [unix]
     - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1    # [win]
     - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1    # [win]
-    {% endfor %}
-
     # Inspect linkages of HDF5.
-    {% for each_hdf5_lib in hdf5_libs %}
     - otool -L $PREFIX/lib/lib{{ each_hdf5_lib }}.dylib                      # [osx]
     {% endfor %}
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
+
+    - conda inspect linkages -p $PREFIX $PKG_NAME  # [unix]
+    - conda inspect objects -p $PREFIX $PKG_NAME   # [osx]
 
 about:
   home: http://www.hdfgroup.org/HDF5/
@@ -126,3 +116,4 @@ extra:
     - ocefpaf
     - astrofrog-conda-forge
     - marqh
+    - marcelotrevisani
