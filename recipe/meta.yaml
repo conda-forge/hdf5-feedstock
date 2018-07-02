@@ -18,6 +18,8 @@ source:
     # In particular, it caused Travis CI's Mac builds to hang.
     # Given that we simply skip the test on all platforms.
     - test_Makefile.in.patch
+    # same thing, but for parallel tests:
+    - testpar_Makefile.in.patch
     # Disable shared Fortran API building on OSX
     - osx_configure.patch  # [osx]
 
