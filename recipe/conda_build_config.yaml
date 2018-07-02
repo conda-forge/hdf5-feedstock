@@ -1,3 +1,6 @@
+python:
+  # avoid spurious python build matrix on unix
+  - 3.6  # [unix]
 mpi:
   - nompi
   - mpich
