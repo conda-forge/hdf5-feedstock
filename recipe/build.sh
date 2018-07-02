@@ -37,7 +37,7 @@ fi
 export OMPI_MCA_rmaps_base_oversubscribe=yes
 
 make -j "${CPU_COUNT}"
-make check
+make check RUNPARALLEL="${RECIPE_DIR}/mpiexec.sh -n 2"
 make install
 
 rm -rf $PREFIX/share/hdf5_examples
