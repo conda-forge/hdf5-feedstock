@@ -1,10 +1,15 @@
 # Stop on first error
-set -e
+set -ex
 
 # Test C compiler
+if [[ "$mpi" != "nompi" ]]; then
+    h5cc=h5pcc
+else
+    h5cc=h5cc
+fi
 echo "Testing h5cc"
-h5cc -show
-h5cc h5_cmprss.c -o h5_cmprss
+$h5cc -show
+$h5cc h5_cmprss.c -o h5_cmprss
 ./h5_cmprss
 
 # Test C++ compiler
