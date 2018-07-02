@@ -32,9 +32,9 @@ requirements:
   host:
     - python         # [win]
     - libtool        # [unix]
-    - zlib 1.2.11
+    - zlib
   run:
-    - zlib 1.2.11
+    - zlib
 
 test:
   requires:

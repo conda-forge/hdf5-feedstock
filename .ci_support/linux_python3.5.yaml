@@ -1,0 +1,16 @@
+c_compiler:
+- toolchain_c
+cxx_compiler:
+- toolchain_cxx
+fortran_compiler:
+- toolchain_fort
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+  zlib:
+    max_pin: x.x
+python:
+- '3.5'
+zlib:
+- '1.2'
