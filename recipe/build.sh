@@ -12,11 +12,6 @@ if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export CC=mpicc
   export CXX=mpic++
   export FC=mpifort
-else
-  export CONFIGURE_ARGS="\
-    --enable-fortran \
-    --enable-fortran2003 \
-    ${CONFIGURE_ARGS}"
 fi
 
 ./configure --prefix="${PREFIX}" \
@@ -26,6 +21,8 @@ fi
             --with-zlib="${PREFIX}" \
             --with-pthread=yes  \
             --enable-cxx \
+            --enable-fortran \
+            --enable-fortran2003 \
             --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
             --enable-threadsafe \
             --enable-shared \
