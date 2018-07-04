@@ -21,26 +21,25 @@ source:
 
 build:
   number: 1
-  skip: True  # [win and py36]
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
+    - {{ compiler('fortran') }}  # [unix]
     - cmake >=3.1
-  host:
-    - python         # [win]
     - libtool        # [unix]
+  host:
     - zlib
   run:
     - zlib
 
 test:
   requires:
-    - {{ compiler('cxx') }}
     - {{ compiler('c') }}
-    - {{ compiler('fortran') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}  # [unix]
+
   files:
     - h5_cmprss.c
     - h5tutr_cmprss.cpp
