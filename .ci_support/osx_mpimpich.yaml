@@ -1,5 +1,11 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
+c_compiler:
+- toolchain_c
+cxx_compiler:
+- toolchain_cxx
+fortran_compiler:
+- toolchain_fort
 macos_machine:
 - x86_64-apple-darwin13.4.0
 macos_min_version:
@@ -7,8 +13,7 @@ macos_min_version:
 mpi:
 - mpich
 pin_run_as_build:
-  python:
-    min_pin: x.x
+  zlib:
     max_pin: x.x
-python:
-- '3.6'
+zlib:
+- '1.2'

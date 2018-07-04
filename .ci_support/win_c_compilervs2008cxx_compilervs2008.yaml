@@ -1,13 +1,16 @@
 c_compiler:
-- toolchain_c
+- vs2008
 cxx_compiler:
-- toolchain_cxx
+- vs2008
 fortran_compiler:
-- toolchain_fort
+- flang
 mpi:
-- mpich
+- nompi
 pin_run_as_build:
   zlib:
     max_pin: x.x
+zip_keys:
+- - c_compiler
+  - cxx_compiler
 zlib:
 - '1.2'
