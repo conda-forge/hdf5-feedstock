@@ -97,9 +97,6 @@ test:
     - otool -L $PREFIX/lib/lib{{ each_hdf5_lib }}.dylib                      # [osx]
     {% endfor %}
 
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [unix]
-    - conda inspect objects -p $PREFIX $PKG_NAME   # [osx]
-
 about:
   home: http://www.hdfgroup.org/HDF5/
   license: HDF5
