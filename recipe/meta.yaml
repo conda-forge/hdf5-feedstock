@@ -27,8 +27,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [unix]
-    - cmake >=3.1
-    - libtool        # [unix]
+    - cmake >=3.1                # [win]
+    - libtool                    # [unix]
+    - ninja                      # [win]
   host:
     - zlib
   run:
