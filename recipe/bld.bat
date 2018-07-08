@@ -4,6 +4,8 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
+set "CXXFLAGS=%CXXFLAGS% -LTCG"
+
 :: Configure step.
 cmake -G "Ninja" ^
       -D CMAKE_BUILD_TYPE:STRING=RELEASE ^
