@@ -37,7 +37,8 @@ requirements:
 
 test:
   requires:
-    - gcc  # [osx]
+    - {{ compiler('c')  # [osx]
+    - {{ compiler('fortran') }}
 
   files:
     - h5_cmprss.c
