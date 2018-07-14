@@ -4,8 +4,10 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
+set "CXXFLAGS=%CXXFLAGS% -LTCG"
+
 :: Configure step.
-cmake -G "NMake Makefiles" ^
+cmake -G "Ninja" ^
       -D CMAKE_BUILD_TYPE:STRING=RELEASE ^
       -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
@@ -21,9 +23,9 @@ cmake -G "NMake Makefiles" ^
 if errorlevel 1 exit 1
 
 :: Build C libraries and tools.
-nmake
+ninja
 if errorlevel 1 exit 1
 
 :: Install step.
-nmake install
+ninja install
 if errorlevel 1 exit 1
