@@ -14,14 +14,16 @@ Summary: HDF5 is a data model, library, and file format for storing and managing
 Current build status
 ====================
 
-Linux: [![Circle CI](https://circleci.com/gh/conda-forge/hdf5-feedstock.svg?style=shield)](https://circleci.com/gh/conda-forge/hdf5-feedstock)
-OSX: [![TravisCI](https://travis-ci.org/conda-forge/hdf5-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/hdf5-feedstock)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/conda-forge/hdf5-feedstock?svg=True)](https://ci.appveyor.com/project/conda-forge/hdf5-feedstock/branch/master)
+[![Linux](https://img.shields.io/circleci/project/github/conda-forge/hdf5-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/hdf5-feedstock)
+[![OSX](https://img.shields.io/travis/conda-forge/hdf5-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/hdf5-feedstock)
+[![Windows](https://img.shields.io/appveyor/ci/conda-forge/hdf5-feedstock/master.svg?label=Windows)](https://ci.appveyor.com/project/conda-forge/hdf5-feedstock/branch/master)
 
 Current release info
 ====================
-Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/hdf5/badges/version.svg)](https://anaconda.org/conda-forge/hdf5)
-Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/hdf5/badges/downloads.svg)](https://anaconda.org/conda-forge/hdf5)
+
+| Name | Downloads | Version | Platforms |
+| --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-hdf5-green.svg)](https://anaconda.org/conda-forge/hdf5) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/hdf5.svg)](https://anaconda.org/conda-forge/hdf5) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/hdf5.svg)](https://anaconda.org/conda-forge/hdf5) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/hdf5.svg)](https://anaconda.org/conda-forge/hdf5) |
 
 Installing hdf5
 ===============
