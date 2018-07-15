@@ -1,8 +1,3 @@
-python:
-  - 2.7  # [win]
-  - 3.5  # [win]
-  # avoid spurious python build matrix on unix
-  - 3.6  # [unix]
 mpi:
   - nompi
   - mpich  # [unix]
