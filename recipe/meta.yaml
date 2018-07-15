@@ -39,8 +39,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [unix]
-    - cmake >=3.1
-    - libtool        # [unix]
+    - cmake >=3.1                # [win]
+    - libtool                    # [unix]
+    - ninja                      # [win]
   host:
     - {{ mpi }}  # [mpi != 'nompi']
     - zlib
@@ -110,9 +111,6 @@ test:
     # Inspect linkages of HDF5.
     - otool -L $PREFIX/lib/lib{{ each_hdf5_lib }}.dylib                      # [osx]
     {% endfor %}
-
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [unix]
-    - conda inspect objects -p $PREFIX $PKG_NAME   # [osx]
 
 about:
   home: http://www.hdfgroup.org/HDF5/
