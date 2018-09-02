@@ -27,3 +27,6 @@ make check
 make install
 
 rm -rf $PREFIX/share/hdf5_examples
+
+# We can remove this when we start using the new conda-build.
+find $PREFIX -name '*.la' -delete
