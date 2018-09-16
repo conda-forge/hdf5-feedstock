@@ -27,7 +27,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [unix]
-    - cmake >=3.1                
+    - cmake >=3.2.2                
     - libtool                    # [unix]
     - ninja                      # [win]
   host:
