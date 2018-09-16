@@ -7,6 +7,9 @@ fi
 
 export LIBRARY_PATH="${PREFIX}/lib"
 
+mkdir -p build
+cd build
+
 cmake -G"$CMAKE_GENERATOR" \
       -DCMAKE_BUILD_TYPE:STRING=RELEASE \
       -DCMAKE_PREFIX_PATH:PATH=$LIBRARY_PREFIX \
