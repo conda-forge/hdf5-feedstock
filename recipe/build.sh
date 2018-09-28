@@ -10,7 +10,7 @@ export LIBRARY_PATH="${PREFIX}/lib"
 mkdir -p build
 cd build
 
-cmake -G"$CMAKE_GENERATOR" \
+cmake -C Release -G"$CMAKE_GENERATOR" \
       -DCMAKE_BUILD_TYPE:STRING=RELEASE \
       -DCMAKE_PREFIX_PATH:PATH=$PREFIX \
       -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX \
@@ -26,7 +26,6 @@ cmake -G"$CMAKE_GENERATOR" \
       -DHDF_ENABLE_PARALLEL:BOOL=ON \
       -DZLIB_LIBRARY:FILEPATH=$PREFIX/lib/libz${SHLIB_EXT} \
       -DZLIB_INCLUDE_DIR:PATH=$PREFIX/include \
-      -DHDF5_LIBRARIES="${PREFIX}/lib"  \
       $SRC_DIR
 
 make -j "${CPU_COUNT}"
