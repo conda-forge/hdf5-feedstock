@@ -58,7 +58,7 @@ test:
         "h5fc"
     ] %}
     {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
-    - command -v {{ each_hdf5_unix_cmd }}   # [unix]
+    - command -v {{ each_hdf5_unix_cmd }} -prefix=$PREFIX  # [unix]
     {% endfor %}
 
     # Verify CLI tools.
