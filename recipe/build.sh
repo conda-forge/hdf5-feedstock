@@ -2,9 +2,9 @@
 
 if [ "$(uname)" == "Darwin" ]; then
     export CXX="${CXX} -stdlib=libc++"
-    export LDFLAGS="${LDFLAGS} -Wl,-rpath,$PREFIX/lib"
 fi
 
+export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,$PREFIX/lib"
 export LIBRARY_PATH="${PREFIX}/lib"
 
 mkdir -p build
