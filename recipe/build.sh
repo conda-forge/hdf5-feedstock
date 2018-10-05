@@ -1,39 +1,31 @@
-#!/bin/bash
 
-if [ "$(uname)" == "Darwin" ]; then
-    export CXX="${CXX} -stdlib=libc++"
-    export LDFLAGS="${LDFLAGS} -Wl,-rpath,$PREFIX/lib"
-else
-    export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,$PREFIX/lib"
-fi
+#!/bin/bash
 
 export LIBRARY_PATH="${PREFIX}/lib"
 
-mkdir -p build
-cd build
+./configure --prefix="${PREFIX}" \
+            --host="${HOST}" \
+            --build="${BUILD}" \
+            --enable-linux-lfs \
+            --with-zlib="${PREFIX}" \
+            --with-pthread=yes  \
+            --enable-cxx \
+            --enable-fortran \
+            --enable-fortran2003 \
+            --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
+            --enable-threadsafe \
+            --enable-build-mode=production \
+            --enable-unsupported \
+            --enable-using-memchecker \
+            --enable-clear-file-buffers \
+            --with-ssl
 
-cmake -G"$CMAKE_GENERATOR" \
-      -DCMAKE_BUILD_TYPE:STRING=RELEASE \
-      -DCMAKE_PREFIX_PATH:PATH=$PREFIX \
-      -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX \
-      -DHDF5_BUILD_CPP_LIB:BOOL=ON \
-      -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
-      -DBUILD_SHARED_LIBS:BOOL=ON \
-      -DHDF5_BUILD_HL_LIB:BOOL=ON \
-      -DHDF5_BUILD_TOOLS:BOOL=ON \
-      -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON \
-      -DHDF5_ENABLE_THREADSAFE:BOOL=ON \
-      -DALLOW_UNSUPPORTED:BOOL=ON \
-      -DHDF_BUILD_FORTRAN:BOOL=ON \
-      -DHDF_ENABLE_PARALLEL:BOOL=ON \
-      -DZLIB_LIBRARY:FILEPATH=$PREFIX/lib/libz$SHLIB_EXT \
-      -DZLIB_INCLUDE_DIR:PATH=$PREFIX/include \
-      $SRC_DIR
-
-make -j "${CPU_COUNT}"
+make -j "${CPU_COUNT}" ${VERBOSE_AT}
+if [[ ! ${HOST} =~ .*powerpc64le.* ]]; then
+  # https://github.com/h5py/h5py/issues/817
+  # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
+  make check
+fi
 make install
 
 rm -rf $PREFIX/share/hdf5_examples
-
-# We can remove this when we start using the new conda-build.
-find $PREFIX -name '*.la' -delete
