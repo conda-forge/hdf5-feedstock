@@ -27,7 +27,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [unix]
-    - cmake >=3.2.2
+    - cmake >=3.2.2              # [win]
     - libtool                    # [unix]
     - ninja                      # [win]
   host:
@@ -95,8 +95,6 @@ test:
     - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}${SHLIB_EXT}                 # [unix]
     - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1    # [win]
     - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1    # [win]
-    # Inspect linkages of HDF5.
-    - otool -L $PREFIX/lib/lib{{ each_hdf5_lib }}.dylib                      # [osx]
     {% endfor %}
 
 about:
