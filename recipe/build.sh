@@ -3,6 +3,11 @@
 
 export LIBRARY_PATH="${PREFIX}/lib"
 
+export CC=$(basename ${CC})
+export CXX=$(basename ${CXX})
+export F95=$(basename ${F95})
+export FC=$(basename ${FC})
+
 ./configure --prefix="${PREFIX}" \
             --host="${HOST}" \
             --build="${BUILD}" \
