@@ -1,4 +1,4 @@
-{% set version = "1.10.2" %}
+{% set version = "1.10.4" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 
 package:
@@ -8,7 +8,7 @@ package:
 source:
   fn: hdf5-{{ version }}.tar.gz
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  sha256: bfec1be8c366965a99812cf02ddc97e4b708c1754fccba5414d4adccdc073866
+  sha256: 8f60dc4dd6ab5fcd23c750d1dc5bca3d0453bdce5c8cdaf0a4a61a9d1122adb2
   patches:
     # Patches the test suite to skip the cache, cache_image, and fheap tests
     # This test has been found to rather resource intensive.
@@ -26,7 +26,7 @@ source:
     - osx_configure.patch  # [osx]
 
 build:
-  number: 2
+  number: 1001
   # Use track_features to express a preference for
   # non-mpi variant
   {% if mpi != 'nompi' %}
@@ -39,7 +39,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [unix]
-    - cmake >=3.1                # [win]
+    - cmake >=3.2.2              # [win]
     - libtool                    # [unix]
     - ninja                      # [win]
   host:
@@ -54,6 +54,7 @@ test:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [unix]
+    - pkg-config  # [unix]
 
   files:
     - h5_cmprss.c
@@ -108,8 +109,6 @@ test:
     - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}${SHLIB_EXT}                 # [unix]
     - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1    # [win]
     - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1    # [win]
-    # Inspect linkages of HDF5.
-    - otool -L $PREFIX/lib/lib{{ each_hdf5_lib }}.dylib                      # [osx]
     {% endfor %}
 
 about:
@@ -128,3 +127,4 @@ extra:
     - astrofrog-conda-forge
     - marqh
     - marcelotrevisani
+    - scopatz
