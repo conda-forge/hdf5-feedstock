@@ -1,11 +1,11 @@
 version: 2
 
 jobs:
-  build_linux_mpimpich:
+  build_linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpimpich:
     working_directory: ~/test
     machine: true
     environment:
-      - CONFIG: "linux_mpimpich"
+      - CONFIG: "linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpimpich"
     steps:
       - checkout
       - run:
@@ -18,11 +18,11 @@ jobs:
       - run:
           # Run, test and (if we have a BINSTAR_TOKEN) upload the distributions.
           command: ./.circleci/run_docker_build.sh
-  build_linux_mpinompi:
+  build_linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpinompi:
     working_directory: ~/test
     machine: true
     environment:
-      - CONFIG: "linux_mpinompi"
+      - CONFIG: "linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpinompi"
     steps:
       - checkout
       - run:
@@ -35,12 +35,62 @@ jobs:
       - run:
           # Run, test and (if we have a BINSTAR_TOKEN) upload the distributions.
           command: ./.circleci/run_docker_build.sh
-  build_linux_mpiopenmpi:
+  build_linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpiopenmpi:
     working_directory: ~/test
     machine: true
     environment:
-      - CONFIG: "linux_mpiopenmpi"
-
+      - CONFIG: "linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpiopenmpi"
+    steps:
+      - checkout
+      - run:
+          name: Fast finish outdated PRs and merge PRs
+          command: |
+            ./.circleci/fast_finish_ci_pr_build.sh
+            ./.circleci/checkout_merge_commit.sh
+      - run:
+          command: docker pull condaforge/linux-anvil
+      - run:
+          # Run, test and (if we have a BINSTAR_TOKEN) upload the distributions.
+          command: ./.circleci/run_docker_build.sh
+  build_linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpimpich:
+    working_directory: ~/test
+    machine: true
+    environment:
+      - CONFIG: "linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpimpich"
+    steps:
+      - checkout
+      - run:
+          name: Fast finish outdated PRs and merge PRs
+          command: |
+            ./.circleci/fast_finish_ci_pr_build.sh
+            ./.circleci/checkout_merge_commit.sh
+      - run:
+          command: docker pull condaforge/linux-anvil
+      - run:
+          # Run, test and (if we have a BINSTAR_TOKEN) upload the distributions.
+          command: ./.circleci/run_docker_build.sh
+  build_linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpinompi:
+    working_directory: ~/test
+    machine: true
+    environment:
+      - CONFIG: "linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpinompi"
+    steps:
+      - checkout
+      - run:
+          name: Fast finish outdated PRs and merge PRs
+          command: |
+            ./.circleci/fast_finish_ci_pr_build.sh
+            ./.circleci/checkout_merge_commit.sh
+      - run:
+          command: docker pull condaforge/linux-anvil
+      - run:
+          # Run, test and (if we have a BINSTAR_TOKEN) upload the distributions.
+          command: ./.circleci/run_docker_build.sh
+  build_linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpiopenmpi:
+    working_directory: ~/test
+    machine: true
+    environment:
+      - CONFIG: "linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpiopenmpi"
     steps:
       - checkout
       - run:
@@ -58,6 +108,9 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build_linux_mpimpich
-      - build_linux_mpinompi
-      - build_linux_mpiopenmpi
+      - build_linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpimpich
+      - build_linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpinompi
+      - build_linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpiopenmpi
+      - build_linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpimpich
+      - build_linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpinompi
+      - build_linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpiopenmpi
