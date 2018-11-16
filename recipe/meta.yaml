@@ -64,12 +64,23 @@ test:
 
   commands:
     # Verify UNIX CLI tools.
-    {% set hdf5_unix_cmds = [
+    {% if mpi == 'nompi' %}
+    {% set h5_compilers = [
         "h5c++",
         "h5cc",
+        "h5fc",
+    ] %}
+    {% else %}
+    # no p on parallel h5c++!
+    {% set h5_compilers = [
+        "h5c++",
+        "h5pcc",
+        "h5pfc",
+    ] %}
+    {% endif %}
+    {% set hdf5_unix_cmds = h5_compilers + [
         "h5perf_serial",
         "h5redeploy",
-        "h5fc"
     ] %}
     {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
     - command -v {{ each_hdf5_unix_cmd }}   # [unix]
