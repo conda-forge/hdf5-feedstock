@@ -3,9 +3,7 @@
 {% set build = 1001 %}
 
 {# recipe-lint fails if mpi is undefined #}
-{% if not mpi %}
-{% set mpi = 'nompi' %}
-{% endif %}
+{% set mpi = mpi or 'nompi' %}
 
 package:
   name: hdf5
