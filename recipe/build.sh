@@ -12,7 +12,8 @@ if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
     # --as-needed appears to cause problems with fortran compiler detection
     # due to missing libquadmath
     # unclear why required libs are stripped but still linked
-    export FFLAGS="${FFLAGS:-} -Wl,--no-as-needed"
+    export FFLAGS="${FFLAGS:-} -Wl,--no-as-needed -Wl,--disable-new-dtags"
+    export LDFLAGS="${LDFLAGS} -Wl,--no-as-needed -Wl,--disable-new-dtags"
   fi
 else
   export CC=$(basename ${CC})
