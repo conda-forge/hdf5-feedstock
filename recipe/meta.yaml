@@ -2,6 +2,11 @@
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 {% set build = 1001 %}
 
+{# recipe-lint fails if mpi is undefined #}
+{% if not mpi %}
+{% set mpi = 'nompi' %}
+{% endif %}
+
 package:
   name: hdf5
   version: {{ version }}
