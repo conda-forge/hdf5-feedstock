@@ -8,6 +8,12 @@ if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export CC=mpicc
   export CXX=mpic++
   export FC=mpifort
+  if [[ $(uname) == "Linux" ]]; then
+    # --as-needed appears to cause problems with fortran compiler detection
+    # due to missing libquadmath
+    # unclear why required libs are stripped but still linked
+    export FFLAGS="${FFLAGS:-} -Wl,--no-as-needed"
+  fi
 else
   export CC=$(basename ${CC})
   export CXX=$(basename ${CXX})
