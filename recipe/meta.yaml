@@ -1,6 +1,6 @@
 {% set version = "1.10.4" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1001 %}
+{% set build = 1002 %}
 
 {# recipe-lint fails if mpi is undefined #}
 {% set mpi = mpi or 'nompi' %}
@@ -53,7 +53,7 @@ build:
   # at least not always
   {% if mpi != 'nompi' %}
   run_exports:
-    - hdf5 {{ maj_min_ver }}.* {{ mpi_prefix }}_*
+    - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ mpi_prefix }}_*
   {% endif %}
 
 requirements:
