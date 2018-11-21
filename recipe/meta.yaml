@@ -1,6 +1,6 @@
 {% set version = "1.10.4" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1002 %}
+{% set build = 1003 %}
 
 {# recipe-lint fails if mpi is undefined #}
 {% set mpi = mpi or 'nompi' %}
@@ -51,10 +51,15 @@ build:
   # mpi builds require the right mpi
   # non-mpi builds *do not* appear to require non-mpi builds
   # at least not always
+
   {% if mpi != 'nompi' %}
-  run_exports:
-    - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ mpi_prefix }}_*
+  {% set build_pin = mpi_prefix + '_*' %}
+  {% else %}
+  {% set build_pin = '' %}
   {% endif %}
+
+  run_exports:
+    - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
 
 requirements:
   build:
