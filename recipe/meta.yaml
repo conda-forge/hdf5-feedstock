@@ -1,9 +1,13 @@
 {% set version = "1.10.4" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1003 %}
+{% set build = 1004 %}
 
-{# recipe-lint fails if mpi is undefined #}
+# recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
+{% if mpi == "nompi" %}
+# prioritize nompi via build number
+{% set build = build + 100 %}
+{% endif %}
 
 package:
   name: hdf5
@@ -31,11 +35,7 @@ source:
 
 build:
   number: {{ build }}
-  # Use track_features to express a preference for
-  # non-mpi variant
-  {% if mpi != 'nompi' %}
-  track_features:
-    - hdf5_{{ mpi }}
+  {% if mpi != "nompi" %}
   {% set mpi_prefix = "mpi_" + mpi %}
   {% else %}
   {% set mpi_prefix = "nompi" %}
