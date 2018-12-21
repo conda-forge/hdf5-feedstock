@@ -1,0 +1,28 @@
+jobs:
+- job: linux_64
+  pool:
+    vmImage: ubuntu-16.04
+  timeoutInMinutes: 240
+  strategy:
+    maxParallel: 8
+    matrix:
+      linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpimpich:
+        CONFIG: linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpimpich
+      linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpinompi:
+        CONFIG: linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpinompi
+      linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpiopenmpi:
+        CONFIG: linux_c_compilergcccxx_compilergxxfortran_compilergfortranmpiopenmpi
+      linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpimpich:
+        CONFIG: linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpimpich
+      linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpinompi:
+        CONFIG: linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpinompi
+      linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpiopenmpi:
+        CONFIG: linux_c_compilertoolchain_ccxx_compilertoolchain_cxxfortran_compilertoolchain_fortmpiopenmpi
+  steps:
+  - script: |
+      sudo pip install --upgrade pip
+      sudo pip install setuptools shyaml
+    displayName: Install dependencies
+
+  - script: .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
