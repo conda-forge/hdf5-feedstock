@@ -69,6 +69,7 @@ requirements:
     - cmake >=3.2.2              # [win]
     - libtool                    # [unix]
     - ninja                      # [win]
+    - make                       # [unix]
   host:
     - {{ mpi }}  # [mpi != 'nompi']
     - zlib
