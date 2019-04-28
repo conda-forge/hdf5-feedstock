@@ -16,7 +16,7 @@ package:
 source:
   fn: hdf5-{{ version }}.tar.gz
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  sha256: 8f60dc4dd6ab5fcd23c750d1dc5bca3d0453bdce5c8cdaf0a4a61a9d1122adb2
+  sha256: 6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8
   patches:
     # Patches the test suite to skip the cache, cache_image, and fheap tests
     # This test has been found to rather resource intensive.
@@ -25,9 +25,6 @@ source:
     - test_Makefile.in.patch
     # same thing, but for parallel tests:
     - testpar_Makefile.in.patch
-    # test_pflush doesn't work on openmpi
-    # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
-    - testpar_Makefile.in.ompi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
     - testh5diff.sh.in.patch  # [mpi != 'nompi']
     # Disable shared Fortran API building on OSX
