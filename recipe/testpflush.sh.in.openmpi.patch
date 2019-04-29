@@ -16,4 +16,4 @@
 -eval ${RUNPARALLELSCRIPT} ./t_pflush2
 -
 +#eval ${RUNPARALLELSCRIPT} ./t_pflush2
-+return 0
++exit 0
