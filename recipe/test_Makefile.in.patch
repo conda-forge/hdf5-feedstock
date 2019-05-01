@@ -1,6 +1,6 @@
---- hdf5-1.10.1.orig/test/Makefile.in	2017-04-27 15:56:04.000000000 -0300
-+++ hdf5-1.10.1/test/Makefile.in	2017-06-14 15:33:31.096078745 -0300
-@@ -1381,8 +1381,8 @@
+--- hdf5-1.10.5.orig/test/Makefile.in	2019-04-28 10:37:40.222674147 +0200
++++ hdf5-1.10.5/test/Makefile.in	2019-04-28 10:38:23.012748393 +0200
+@@ -1436,8 +1436,8 @@
  # As an exception, long-running tests should occur earlier in the list.
  # This gives them more time to run when tests are executing in parallel.
  TEST_PROG = testhdf5 \
@@ -9,5 +9,5 @@
 +           cache_api cache_tagging lheap ohdr stab gheap \
 +           evict_on_close farray earray btree2 \
             pool accum hyperslab istore bittests dt_arith page_buffer \
-            dtypes dsets cmpd_dset filter_fail extend external efc objcopy links unlink \
-            twriteorder big mtime fillval mount flush1 flush2 app_ref enum \
+            dtypes dsets chunk_info cmpd_dset filter_fail extend direct_chunk \
+            external efc objcopy links unlink twriteorder big mtime fillval mount \
