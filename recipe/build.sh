@@ -47,6 +47,8 @@ export OMPI_MCA_rmaps_base_oversubscribe=yes
 
 make -j "${CPU_COUNT}" ${VERBOSE_AT}
 
+make install
+
 if [[ ${mpi} == "openmpi" && "$(uname)" == "Darwin" ]]; then
   # ph5diff hangs on darwin with openmpi, skip the test
   echo <<EOF > tools/test/h5diff/testph5diff.sh
@@ -59,6 +61,5 @@ if [[ ! ${HOST} =~ .*powerpc64le.* ]]; then
   # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
   make check RUNPARALLEL="${RECIPE_DIR}/mpiexec.sh -n 2"
 fi
-make install
 
 rm -rf $PREFIX/share/hdf5_examples
