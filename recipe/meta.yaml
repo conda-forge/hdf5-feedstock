@@ -22,15 +22,15 @@ source:
     # This test has been found to rather resource intensive.
     # In particular, it caused Travis CI's Mac builds to hang.
     # Given that we simply skip the test on all platforms.
-    - test_Makefile.in.patch
+    - patches/test_Makefile.in.patch
     # same thing, but for parallel tests:
-    - testpar_Makefile.in.patch
+    - patches/testpar_Makefile.in.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
-    - testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
+    - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
-    - testh5diff.sh.in.patch  # [mpi != 'nompi']
+    - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
     # Disable shared Fortran API building on OSX
-    - osx_configure.patch  # [osx]
+    - patches/osx_configure.patch  # [osx]
 
 build:
   number: {{ build }}
