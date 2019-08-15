@@ -13,7 +13,7 @@ if [[ ! ${HOST} =~ .*powerpc64le.* ]]; then
   make check RUNPARALLEL="${RECIPE_DIR}/mpiexec.sh -n 2"
 fi
 
-rm -rf $PREFIX/share/hdf5_examples
+rm -rf ${PREFIX}/share/hdf5_examples
 
 # remove the static libraries
-rm -f libs/{libhdf5hl_fortran,libhdf5_hl_fortran,libhdf5_hl_cpp,libhdf5_hl,libhdf5_fortran,libhdf5_cpp,libhdf5}.a
+rm -f ${PREFIX}/libs/{libhdf5_cpp,libhdf5_fortran,libhdf5_hl_cpp,libhdf5hl_fortran,libhdf5_hl,libhdf5}.a
