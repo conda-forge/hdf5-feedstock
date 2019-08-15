@@ -9,3 +9,5 @@ cp hl/c++/src/.libs/libhdf5_hl_cpp.a ${PREFIX}/lib
 cp hl/fortran/src/.libs/libhdf5hl_fortran.a ${PREFIX}/lib
 cp hl/src/.libs/libhdf5_hl.a ${PREFIX}/lib
 cp src/.libs/libhdf5.a ${PREFIX}/lib
+
+ln -s ${PREFIX}/lib/libhdf5hl_fortran.a ${PREFIX}/lib/libhdf5_hl_fortran.a

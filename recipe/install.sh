@@ -16,4 +16,10 @@ fi
 rm -rf ${PREFIX}/share/hdf5_examples
 
 # remove the static libraries
-rm -f ${PREFIX}/libs/{libhdf5_cpp,libhdf5_fortran,libhdf5_hl_cpp,libhdf5hl_fortran,libhdf5_hl,libhdf5}.a
+rm -f ${PREFIX}/lib/libhdf5_hl_fortran.a
+rm -f ${PREFIX}/lib/libhdf5_hl_cpp.a
+rm -f ${PREFIX}/lib/libhdf5hl_fortran.a
+rm -f ${PREFIX}/lib/libhdf5_hl.a
+rm -f ${PREFIX}/lib/libhdf5_fortran.a
+rm -f ${PREFIX}/lib/libhdf5_cpp.a
+rm -f ${PREFIX}/lib/libhdf5.a
