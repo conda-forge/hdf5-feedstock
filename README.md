@@ -1,5 +1,5 @@
-About hdf5
-==========
+About hdf5_split
+================
 
 Home: http://www.hdfgroup.org/HDF5/
 
@@ -99,10 +99,10 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_c_compilervs2015cxx_compilervs2015</td>
+              <td>win_c_compilervs2015cxx_compilervs2015vc14</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=win&configuration=win_c_compilervs2015cxx_compilervs2015" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=win&configuration=win_c_compilervs2015cxx_compilervs2015vc14" alt="variant">
                 </a>
               </td>
             </tr>
@@ -120,20 +120,21 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-hdf5-green.svg)](https://anaconda.org/conda-forge/hdf5) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/hdf5.svg)](https://anaconda.org/conda-forge/hdf5) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/hdf5.svg)](https://anaconda.org/conda-forge/hdf5) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/hdf5.svg)](https://anaconda.org/conda-forge/hdf5) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-hdf5--static-green.svg)](https://anaconda.org/conda-forge/hdf5-static) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/hdf5-static.svg)](https://anaconda.org/conda-forge/hdf5-static) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/hdf5-static.svg)](https://anaconda.org/conda-forge/hdf5-static) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/hdf5-static.svg)](https://anaconda.org/conda-forge/hdf5-static) |
 
-Installing hdf5
-===============
+Installing hdf5_split
+=====================
 
-Installing `hdf5` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+Installing `hdf5_split` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
 
 ```
 conda config --add channels conda-forge
 ```
 
-Once the `conda-forge` channel has been enabled, `hdf5` can be installed with:
+Once the `conda-forge` channel has been enabled, `hdf5, hdf5-static` can be installed with:
 
 ```
-conda install hdf5
+conda install hdf5 hdf5-static
 ```
 
 It is possible to list all of the versions of `hdf5` available on your platform with:
@@ -181,17 +182,17 @@ Terminology
                   produce the finished article (built conda distributions)
 
 
-Updating hdf5-feedstock
-=======================
+Updating hdf5_split-feedstock
+=============================
 
-If you would like to improve the hdf5 recipe or build a new
+If you would like to improve the hdf5_split recipe or build a new
 package version, please fork this repository and submit a PR. Upon submission,
 your changes will be run on the appropriate platforms to give the reviewer an
 opportunity to confirm that the changes result in a successful build. Once
 merged, the recipe will be re-built and uploaded automatically to the
 `conda-forge` channel, whereupon the built conda packages will be available for
 everybody to install and use from the `conda-forge` channel.
-Note that all branches in the conda-forge/hdf5-feedstock are
+Note that all branches in the conda-forge/hdf5_split-feedstock are
 immediately built and any created packages are uploaded, so PRs should be based
 on branches in forks and branches in the main repository should only be used to
 build distinct package versions.
