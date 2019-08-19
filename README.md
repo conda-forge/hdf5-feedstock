@@ -208,6 +208,7 @@ Feedstock Maintainers
 =====================
 
 * [@astrofrog-conda-forge](https://github.com/astrofrog-conda-forge/)
+* [@beckermr](https://github.com/beckermr/)
 * [@gillins](https://github.com/gillins/)
 * [@groutr](https://github.com/groutr/)
 * [@jakirkham](https://github.com/jakirkham/)
