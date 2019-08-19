@@ -1,6 +1,6 @@
 {% set version = "1.10.5" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1001 %}
+{% set build = 1002 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -79,6 +79,7 @@ outputs:
       skip: True  # [win and vc<14]
       run_exports:
         - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
+      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
     script: install.sh  # [not win]
     script: install.bat  # [win]
 
@@ -166,6 +167,8 @@ outputs:
         {% endfor %}
 
   - name: hdf5-static                                   # [not win]
+    build:                                              # [not win]
+      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"  # [not win]
     requirements:                                       # [not win]
       build:                                            # [not win]
         - {{ compiler('c') }}                           # [not win]
@@ -176,12 +179,7 @@ outputs:
     script: install-static.sh                           # [not win]
     test:                                               # [not win]
       commands:                                         # [not win]
-        {% set hdf5_libs = [                            # [not win]
-            "hdf5",                                     # [not win]
-            "hdf5_cpp",                                 # [not win]
-            "hdf5_hl",                                  # [not win]
-            "hdf5_hl_cpp"                               # [not win]
-        ] %}                                            # [not win]
+        {% set hdf5_libs = ["hdf5", "hdf5_cpp", "hdf5_hl", "hdf5_hl_cpp"] %}  # [not win]
         {% for each_hdf5_lib in hdf5_libs %}            # [not win]
         - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}.a  # [not win]
         {% endfor %}                                    # [not win]
@@ -203,3 +201,4 @@ extra:
     - marqh
     - marcelotrevisani
     - scopatz
+    - beckermr
