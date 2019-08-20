@@ -45,4 +45,11 @@ fi
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
 
-make -j "${CPU_COUNT}" ${VERBOSE_AT}
+# using || to quiet logs unless there is an issue
+{
+    make -j "${CPU_COUNT}" ${VERBOSE_AT} >& make_logs.txt
+} || {
+    tail -n 5000 make_logs.txt
+    exit 1
+}
+
