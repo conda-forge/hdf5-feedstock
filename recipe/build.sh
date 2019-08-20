@@ -47,7 +47,7 @@ export OMPI_MCA_rmaps_base_oversubscribe=yes
 
 # using || to quiet logs unless there is an issue
 {
-    make -j "${CPU_COUNT}" ${VERBOSE_AT} >& make_logs.txt
+    travis_wait 60 make -j "${CPU_COUNT}" ${VERBOSE_AT} >& make_logs.txt
 } || {
     tail -n 5000 make_logs.txt
     exit 1
