@@ -47,8 +47,14 @@ export OMPI_MCA_rmaps_base_oversubscribe=yes
 
 # using || to quiet logs unless there is an issue
 {
+    # see this https://github.com/travis-ci/travis-ci/issues/4190#issuecomment-353342526
+    while sleep 1m; do echo "still running.."; done &
     make -j "${CPU_COUNT}" ${VERBOSE_AT} >& make_logs.txt
+    # make sure to kill the loop
+    kill %1
 } || {
+    # make sure to kill the loop
+    kill %1
     tail -n 5000 make_logs.txt
     exit 1
 }
