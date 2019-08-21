@@ -7,7 +7,7 @@ if [[ ${mpi} == "openmpi" && "$(uname)" == "Darwin" ]]; then
 exit 0
 EOF
 fi
-if [[ ! ${HOST} =~ .*powerpc64le.* ]]; then
+if [[ ("$target_platform" != "linux-ppc64le") && ("$target_platform" != "linux-aarch64") ]]; then
   # https://github.com/h5py/h5py/issues/817
   # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
   make check RUNPARALLEL="${RECIPE_DIR}/mpiexec.sh -n 2"
