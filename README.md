@@ -16,6 +16,13 @@ Current build status
 
 
 <table><tr>
+    <td>Travis</td>
+    <td>
+      <a href="https://travis-ci.org/conda-forge/hdf5-feedstock">
+        <img alt="macOS" src="https://img.shields.io/travis/conda-forge/hdf5-feedstock/master.svg?label=macOS">
+      </a>
+    </td>
+  </tr><tr>
     <td>Appveyor</td>
     <td>
       <a href="https://ci.appveyor.com/project/conda-forge/hdf5-feedstock/branch/master">
@@ -36,6 +43,27 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
+              <td>linux_aarch64_mpimpich</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_mpimpich" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_aarch64_mpinompi</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_mpinompi" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_aarch64_mpiopenmpi</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_mpiopenmpi" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
               <td>linux_mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
@@ -54,6 +82,27 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_mpiopenmpi" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_ppc64le_mpimpich</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_mpimpich" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_ppc64le_mpinompi</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_mpinompi" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_ppc64le_mpiopenmpi</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
@@ -111,7 +160,6 @@ Current build status
       </details>
     </td>
   </tr>
-![ppc64le disabled](https://img.shields.io/badge/ppc64le-disabled-lightgrey.svg)
 </table>
 
 Current release info

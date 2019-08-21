@@ -1,6 +1,6 @@
 {% set version = "1.10.5" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1002 %}
+{% set build = 1003 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -65,6 +65,7 @@ requirements:
     - {{ compiler('fortran') }}  # [not win]
     - cmake >=3.2.2              # [win]
     - libtool                    # [not win]
+    - make                       # [not win]
     - ninja                      # [win]
   host:
     - {{ mpi }}  # [mpi != 'nompi']
@@ -90,6 +91,7 @@ outputs:
         - {{ compiler('fortran') }}  # [not win]
         - cmake >=3.2.2  # [win]
         - libtool  # [not win]
+        - make                       # [not win]
         - ninja  # [win]
       host:
         - {{ mpi }}  # [mpi != 'nompi']
