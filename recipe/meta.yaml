@@ -1,6 +1,6 @@
 {% set version = "1.10.5" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1003 %}
+{% set build = 1004 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -204,3 +204,5 @@ extra:
     - marcelotrevisani
     - scopatz
     - beckermr
+    - davidbrochart
+    - SylvainCorlay
