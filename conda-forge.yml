@@ -9,3 +9,4 @@ travis:
 idle_timeout_minutes: 60
 azure:
   timeout_minutes: 600  # 10 hours for azure due to emulated aarch64 build
+conda_forge_output_validation: true
