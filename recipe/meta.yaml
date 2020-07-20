@@ -188,7 +188,7 @@ outputs:
 
 about:
   home: http://www.hdfgroup.org/HDF5/
-  license: HDF5
+  license: LicenseRef-HDF5
   license_family: BSD
   license_file: COPYING
   summary: HDF5 is a data model, library, and file format for storing and managing data
