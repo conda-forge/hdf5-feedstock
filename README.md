@@ -3,7 +3,7 @@ About hdf5_split
 
 Home: http://www.hdfgroup.org/HDF5/
 
-Package license: HDF5
+Package license: LicenseRef-HDF5
 
 Feedstock license: BSD-3-Clause
 
