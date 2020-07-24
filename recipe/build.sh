@@ -27,7 +27,6 @@ fi
             --with-pic \
             --host="${HOST}" \
             --build="${BUILD}" \
-            --enable-largefile \
             --with-zlib="${PREFIX}" \
             --with-pthread=yes  \
             --enable-cxx \
