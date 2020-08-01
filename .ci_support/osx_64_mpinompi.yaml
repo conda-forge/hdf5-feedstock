@@ -21,9 +21,11 @@ macos_machine:
 macos_min_version:
 - '10.9'
 mpi:
-- mpich
+- nompi
 pin_run_as_build:
   zlib:
     max_pin: x.x
+target_platform:
+- osx-64
 zlib:
 - '1.2'

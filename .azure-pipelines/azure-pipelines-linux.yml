@@ -8,16 +8,16 @@ jobs:
     vmImage: ubuntu-16.04
   strategy:
     matrix:
-      linux_mpimpich:
-        CONFIG: linux_mpimpich
+      linux_64_mpimpich:
+        CONFIG: linux_64_mpimpich
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_mpinompi:
-        CONFIG: linux_mpinompi
+      linux_64_mpinompi:
+        CONFIG: linux_64_mpinompi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_mpiopenmpi:
-        CONFIG: linux_mpiopenmpi
+      linux_64_mpiopenmpi:
+        CONFIG: linux_64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
     maxParallel: 8

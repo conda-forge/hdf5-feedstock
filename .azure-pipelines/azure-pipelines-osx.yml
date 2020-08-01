@@ -8,14 +8,14 @@ jobs:
     vmImage: macOS-10.14
   strategy:
     matrix:
-      osx_mpimpich:
-        CONFIG: osx_mpimpich
+      osx_64_mpimpich:
+        CONFIG: osx_64_mpimpich
         UPLOAD_PACKAGES: 'True'
-      osx_mpinompi:
-        CONFIG: osx_mpinompi
+      osx_64_mpinompi:
+        CONFIG: osx_64_mpinompi
         UPLOAD_PACKAGES: 'True'
-      osx_mpiopenmpi:
-        CONFIG: osx_mpiopenmpi
+      osx_64_mpiopenmpi:
+        CONFIG: osx_64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
     maxParallel: 8
   timeoutInMinutes: 600
