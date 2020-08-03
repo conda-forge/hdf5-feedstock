@@ -20,6 +20,18 @@ jobs:
         CONFIG: linux_64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
+      linux_ppc64le_mpimpich:
+        CONFIG: linux_ppc64le_mpimpich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      linux_ppc64le_mpinompi:
+        CONFIG: linux_ppc64le_mpinompi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      linux_ppc64le_mpiopenmpi:
+        CONFIG: linux_ppc64le_mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
     maxParallel: 8
   timeoutInMinutes: 600
 
