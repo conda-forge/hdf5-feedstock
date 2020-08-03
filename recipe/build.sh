@@ -27,19 +27,15 @@ fi
             --with-pic \
             --host="${HOST}" \
             --build="${BUILD}" \
-            --enable-linux-lfs \
             --with-zlib="${PREFIX}" \
             --with-pthread=yes  \
             --enable-cxx \
             --enable-fortran \
-            --enable-fortran2003 \
             --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
             --enable-threadsafe \
             --enable-build-mode=production \
             --enable-unsupported \
             --enable-using-memchecker \
-            --enable-clear-file-buffers \
-            --with-ssl \
             --enable-static=yes \
 
 # allow oversubscribing with openmpi in make check

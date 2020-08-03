@@ -3,7 +3,7 @@ About hdf5_split
 
 Home: http://www.hdfgroup.org/HDF5/
 
-Package license: HDF5
+Package license: LicenseRef-HDF5
 
 Feedstock license: BSD-3-Clause
 
@@ -16,13 +16,6 @@ Current build status
 
 
 <table><tr>
-    <td>Travis</td>
-    <td>
-      <a href="https://travis-ci.com/conda-forge/hdf5-feedstock">
-        <img alt="macOS" src="https://img.shields.io/travis/com/conda-forge/hdf5-feedstock/master.svg?label=macOS">
-      </a>
-    </td>
-  </tr><tr>
     <td>Drone</td>
     <td>
       <a href="https://cloud.drone.io/conda-forge/hdf5-feedstock">

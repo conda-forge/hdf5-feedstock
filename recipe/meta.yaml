@@ -1,6 +1,6 @@
-{% set version = "1.10.6" %}
+{% set version = "1.12.0" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1 %}
+{% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -37,7 +37,7 @@ package:
 
 source:
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  sha256: 5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aa
+  sha256: a62dcb276658cb78e6795dd29bf926ed7a9bc4edf6e77025cd2c689a8f97c17a
   patches:
     # Patches the test suite to skip the cache, cache_image, and fheap tests
     # This test has been found to rather resource intensive.
@@ -188,7 +188,7 @@ outputs:
 
 about:
   home: http://www.hdfgroup.org/HDF5/
-  license: HDF5
+  license: LicenseRef-HDF5
   license_family: BSD
   license_file: COPYING
   summary: HDF5 is a data model, library, and file format for storing and managing data
