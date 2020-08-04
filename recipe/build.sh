@@ -37,7 +37,7 @@ fi
             --enable-unsupported \
             --enable-using-memchecker \
             --enable-static=yes \
-            --enable-ros3-vfd \
+            --enable-ros3-vfd
 
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
