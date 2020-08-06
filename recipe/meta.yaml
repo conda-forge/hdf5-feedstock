@@ -70,9 +70,13 @@ requirements:
   host:
     - {{ mpi }}  # [mpi != 'nompi']
     - zlib
+    - libcurl
+    - openssl
   run:
     - {{ mpi }}  # [mpi != 'nompi']
     - zlib
+    - libcurl
+    - openssl
 
 outputs:
   - name: hdf5
