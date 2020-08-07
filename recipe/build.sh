@@ -42,6 +42,9 @@ fi
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
 
+if [[ "$CI" != "travis" ]]; then
+  make -j "${CPU_COUNT}" ${VERBOSE_AT}
+else
 # using || to quiet logs unless there is an issue
 {
     # see this https://github.com/travis-ci/travis-ci/issues/4190#issuecomment-353342526
@@ -55,4 +58,4 @@ export OMPI_MCA_rmaps_base_oversubscribe=yes
     tail -n 5000 make_logs.txt
     exit 1
 }
-
+fi
