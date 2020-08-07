@@ -1,4 +1,4 @@
-make install
+make install V=1
 
 if [[ ${mpi} == "openmpi" && "$(uname)" == "Darwin" ]]; then
   # ph5diff hangs on darwin with openmpi, skip the test
