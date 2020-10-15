@@ -1,6 +1,6 @@
 ---
 kind: pipeline
-name: linux_aarch64_mpimpich
+name: linux_aarch64_c_compiler_version7cx_hf197be7ed0
 
 platform:
   os: linux
@@ -10,7 +10,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_mpimpich
+    CONFIG: linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aampimpich
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -31,7 +31,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_mpinompi
+name: linux_aarch64_c_compiler_version7cx_h4d03949a90
 
 platform:
   os: linux
@@ -41,7 +41,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_mpinompi
+    CONFIG: linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aampinompi
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -62,7 +62,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_mpiopenmpi
+name: linux_aarch64_c_compiler_version7cx_h7eebe24dd4
 
 platform:
   os: linux
@@ -72,7 +72,286 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_mpiopenmpi
+    CONFIG: linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aampiopenmpi
+    UPLOAD_PACKAGES: True
+    PLATFORM: linux-aarch64
+    BINSTAR_TOKEN:
+      from_secret: BINSTAR_TOKEN
+    FEEDSTOCK_TOKEN:
+      from_secret: FEEDSTOCK_TOKEN
+    STAGING_BINSTAR_TOKEN:
+      from_secret: STAGING_BINSTAR_TOKEN
+  commands:
+    - export FEEDSTOCK_ROOT="$DRONE_WORKSPACE"
+    - export RECIPE_ROOT="$FEEDSTOCK_ROOT/recipe"
+    - export CI=drone
+    - export GIT_BRANCH="$DRONE_BRANCH"
+    - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
+    - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
+    - echo "Done building"
+
+---
+kind: pipeline
+name: linux_aarch64_c_compiler_version7cx_h35414ca130
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Install and build
+  image: condaforge/linux-anvil-aarch64
+  environment:
+    CONFIG: linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8mpimpich
+    UPLOAD_PACKAGES: True
+    PLATFORM: linux-aarch64
+    BINSTAR_TOKEN:
+      from_secret: BINSTAR_TOKEN
+    FEEDSTOCK_TOKEN:
+      from_secret: FEEDSTOCK_TOKEN
+    STAGING_BINSTAR_TOKEN:
+      from_secret: STAGING_BINSTAR_TOKEN
+  commands:
+    - export FEEDSTOCK_ROOT="$DRONE_WORKSPACE"
+    - export RECIPE_ROOT="$FEEDSTOCK_ROOT/recipe"
+    - export CI=drone
+    - export GIT_BRANCH="$DRONE_BRANCH"
+    - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
+    - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
+    - echo "Done building"
+
+---
+kind: pipeline
+name: linux_aarch64_c_compiler_version7cx_he250251dcc
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Install and build
+  image: condaforge/linux-anvil-aarch64
+  environment:
+    CONFIG: linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8mpinompi
+    UPLOAD_PACKAGES: True
+    PLATFORM: linux-aarch64
+    BINSTAR_TOKEN:
+      from_secret: BINSTAR_TOKEN
+    FEEDSTOCK_TOKEN:
+      from_secret: FEEDSTOCK_TOKEN
+    STAGING_BINSTAR_TOKEN:
+      from_secret: STAGING_BINSTAR_TOKEN
+  commands:
+    - export FEEDSTOCK_ROOT="$DRONE_WORKSPACE"
+    - export RECIPE_ROOT="$FEEDSTOCK_ROOT/recipe"
+    - export CI=drone
+    - export GIT_BRANCH="$DRONE_BRANCH"
+    - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
+    - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
+    - echo "Done building"
+
+---
+kind: pipeline
+name: linux_aarch64_c_compiler_version7cx_h5d435cd695
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Install and build
+  image: condaforge/linux-anvil-aarch64
+  environment:
+    CONFIG: linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8mpiopenmpi
+    UPLOAD_PACKAGES: True
+    PLATFORM: linux-aarch64
+    BINSTAR_TOKEN:
+      from_secret: BINSTAR_TOKEN
+    FEEDSTOCK_TOKEN:
+      from_secret: FEEDSTOCK_TOKEN
+    STAGING_BINSTAR_TOKEN:
+      from_secret: STAGING_BINSTAR_TOKEN
+  commands:
+    - export FEEDSTOCK_ROOT="$DRONE_WORKSPACE"
+    - export RECIPE_ROOT="$FEEDSTOCK_ROOT/recipe"
+    - export CI=drone
+    - export GIT_BRANCH="$DRONE_BRANCH"
+    - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
+    - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
+    - echo "Done building"
+
+---
+kind: pipeline
+name: linux_aarch64_c_compiler_version9cx_h153d6c3f81
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Install and build
+  image: condaforge/linux-anvil-aarch64
+  environment:
+    CONFIG: linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aampimpich
+    UPLOAD_PACKAGES: True
+    PLATFORM: linux-aarch64
+    BINSTAR_TOKEN:
+      from_secret: BINSTAR_TOKEN
+    FEEDSTOCK_TOKEN:
+      from_secret: FEEDSTOCK_TOKEN
+    STAGING_BINSTAR_TOKEN:
+      from_secret: STAGING_BINSTAR_TOKEN
+  commands:
+    - export FEEDSTOCK_ROOT="$DRONE_WORKSPACE"
+    - export RECIPE_ROOT="$FEEDSTOCK_ROOT/recipe"
+    - export CI=drone
+    - export GIT_BRANCH="$DRONE_BRANCH"
+    - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
+    - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
+    - echo "Done building"
+
+---
+kind: pipeline
+name: linux_aarch64_c_compiler_version9cx_h36e9f30b54
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Install and build
+  image: condaforge/linux-anvil-aarch64
+  environment:
+    CONFIG: linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aampinompi
+    UPLOAD_PACKAGES: True
+    PLATFORM: linux-aarch64
+    BINSTAR_TOKEN:
+      from_secret: BINSTAR_TOKEN
+    FEEDSTOCK_TOKEN:
+      from_secret: FEEDSTOCK_TOKEN
+    STAGING_BINSTAR_TOKEN:
+      from_secret: STAGING_BINSTAR_TOKEN
+  commands:
+    - export FEEDSTOCK_ROOT="$DRONE_WORKSPACE"
+    - export RECIPE_ROOT="$FEEDSTOCK_ROOT/recipe"
+    - export CI=drone
+    - export GIT_BRANCH="$DRONE_BRANCH"
+    - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
+    - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
+    - echo "Done building"
+
+---
+kind: pipeline
+name: linux_aarch64_c_compiler_version9cx_h6ac655274c
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Install and build
+  image: condaforge/linux-anvil-aarch64
+  environment:
+    CONFIG: linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aampiopenmpi
+    UPLOAD_PACKAGES: True
+    PLATFORM: linux-aarch64
+    BINSTAR_TOKEN:
+      from_secret: BINSTAR_TOKEN
+    FEEDSTOCK_TOKEN:
+      from_secret: FEEDSTOCK_TOKEN
+    STAGING_BINSTAR_TOKEN:
+      from_secret: STAGING_BINSTAR_TOKEN
+  commands:
+    - export FEEDSTOCK_ROOT="$DRONE_WORKSPACE"
+    - export RECIPE_ROOT="$FEEDSTOCK_ROOT/recipe"
+    - export CI=drone
+    - export GIT_BRANCH="$DRONE_BRANCH"
+    - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
+    - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
+    - echo "Done building"
+
+---
+kind: pipeline
+name: linux_aarch64_c_compiler_version9cx_h31ec770093
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Install and build
+  image: condaforge/linux-anvil-aarch64
+  environment:
+    CONFIG: linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8mpimpich
+    UPLOAD_PACKAGES: True
+    PLATFORM: linux-aarch64
+    BINSTAR_TOKEN:
+      from_secret: BINSTAR_TOKEN
+    FEEDSTOCK_TOKEN:
+      from_secret: FEEDSTOCK_TOKEN
+    STAGING_BINSTAR_TOKEN:
+      from_secret: STAGING_BINSTAR_TOKEN
+  commands:
+    - export FEEDSTOCK_ROOT="$DRONE_WORKSPACE"
+    - export RECIPE_ROOT="$FEEDSTOCK_ROOT/recipe"
+    - export CI=drone
+    - export GIT_BRANCH="$DRONE_BRANCH"
+    - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
+    - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
+    - echo "Done building"
+
+---
+kind: pipeline
+name: linux_aarch64_c_compiler_version9cx_h223e8ccd0f
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Install and build
+  image: condaforge/linux-anvil-aarch64
+  environment:
+    CONFIG: linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8mpinompi
+    UPLOAD_PACKAGES: True
+    PLATFORM: linux-aarch64
+    BINSTAR_TOKEN:
+      from_secret: BINSTAR_TOKEN
+    FEEDSTOCK_TOKEN:
+      from_secret: FEEDSTOCK_TOKEN
+    STAGING_BINSTAR_TOKEN:
+      from_secret: STAGING_BINSTAR_TOKEN
+  commands:
+    - export FEEDSTOCK_ROOT="$DRONE_WORKSPACE"
+    - export RECIPE_ROOT="$FEEDSTOCK_ROOT/recipe"
+    - export CI=drone
+    - export GIT_BRANCH="$DRONE_BRANCH"
+    - export FEEDSTOCK_NAME=$(basename ${DRONE_REPO_NAME})
+    - sed -i '$ichown -R conda:conda "$FEEDSTOCK_ROOT"' /opt/docker/bin/entrypoint
+    - /opt/docker/bin/entrypoint $FEEDSTOCK_ROOT/.scripts/build_steps.sh
+    - echo "Done building"
+
+---
+kind: pipeline
+name: linux_aarch64_c_compiler_version9cx_hc53252d805
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Install and build
+  image: condaforge/linux-anvil-aarch64
+  environment:
+    CONFIG: linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8mpiopenmpi
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
