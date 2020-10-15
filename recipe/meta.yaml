@@ -1,3 +1,5 @@
+{% set version = hdf5_version|default("1.10.5") %}
+
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 {% set build = 1010 %}  # this is high enough to not stomp on any old versions
 
