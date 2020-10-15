@@ -44,7 +44,8 @@ source:
     # This test has been found to rather resource intensive.
     # In particular, it caused Travis CI's Mac builds to hang.
     # Given that we simply skip the test on all platforms.
-    - patches/test_Makefile.in.patch
+    - patches/test_Makefile.in.patch       # [hdf5_version == "1.10.5"]
+    - patches/test_Makefile.in_1106.patch  # [hdf5_version == "1.10.6"]
     # same thing, but for parallel tests:
     - patches/testpar_Makefile.in.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
