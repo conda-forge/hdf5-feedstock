@@ -15,15 +15,19 @@ cxx_compiler_version:
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '7'
+- '9'
+hdf5:
+- 1.10.5
+hdf5_sha:
+- 6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8
+hdf5_version:
+- 1.10.5
 libcurl:
 - '7'
 macos_machine:
 - x86_64-apple-darwin13.4.0
-macos_min_version:
-- '10.9'
 mpi:
-- nompi
+- openmpi
 openssl:
 - 1.1.1
 pin_run_as_build:
@@ -35,5 +39,11 @@ pin_run_as_build:
     max_pin: x.x
 target_platform:
 - osx-64
+zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
+  - fortran_compiler_version
+- - hdf5_version
+  - hdf5_sha
 zlib:
 - '1.2'

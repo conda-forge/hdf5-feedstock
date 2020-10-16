@@ -22,10 +22,16 @@ fortran_compiler:
 - gfortran
 fortran_compiler_version:
 - '7'
+hdf5:
+- 1.10.5
+hdf5_sha:
+- 5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aa
+hdf5_version:
+- 1.10.6
 libcurl:
 - '7'
 mpi:
-- mpich
+- nompi
 openssl:
 - 1.1.1
 pin_run_as_build:
@@ -37,5 +43,11 @@ pin_run_as_build:
     max_pin: x.x
 target_platform:
 - linux-aarch64
+zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
+  - fortran_compiler_version
+- - hdf5_version
+  - hdf5_sha
 zlib:
 - '1.2'
