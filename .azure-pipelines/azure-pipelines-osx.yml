@@ -5,19 +5,27 @@
 jobs:
 - job: osx
   pool:
-    vmImage: macOS-10.14
+    vmImage: macOS-10.15
   strategy:
     matrix:
-      osx_64_mpimpich:
-        CONFIG: osx_64_mpimpich
+      osx_64_fortran_compiler_version7mpimpich:
+        CONFIG: osx_64_fortran_compiler_version7mpimpich
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpinompi:
-        CONFIG: osx_64_mpinompi
+      osx_64_fortran_compiler_version7mpinompi:
+        CONFIG: osx_64_fortran_compiler_version7mpinompi
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpiopenmpi:
-        CONFIG: osx_64_mpiopenmpi
+      osx_64_fortran_compiler_version7mpiopenmpi:
+        CONFIG: osx_64_fortran_compiler_version7mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-    maxParallel: 8
+      osx_64_fortran_compiler_version9mpimpich:
+        CONFIG: osx_64_fortran_compiler_version9mpimpich
+        UPLOAD_PACKAGES: 'True'
+      osx_64_fortran_compiler_version9mpinompi:
+        CONFIG: osx_64_fortran_compiler_version9mpinompi
+        UPLOAD_PACKAGES: 'True'
+      osx_64_fortran_compiler_version9mpiopenmpi:
+        CONFIG: osx_64_fortran_compiler_version9mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 600
 
   steps:
