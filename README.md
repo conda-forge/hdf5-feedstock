@@ -14,6 +14,13 @@ Current build status
 
 
 <table><tr>
+    <td>Travis</td>
+    <td>
+      <a href="https://travis-ci.com/conda-forge/hdf5-feedstock">
+        <img alt="macOS" src="https://img.shields.io/travis/com/conda-forge/hdf5-feedstock/master.svg?label=macOS">
+      </a>
+    </td>
+  </tr><tr>
     <td>Drone</td>
     <td>
       <a href="https://cloud.drone.io/conda-forge/hdf5-feedstock">
@@ -160,45 +167,45 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpimpich</td>
+              <td>osx_64_fortran_compiler_version7mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version7mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpinompi</td>
+              <td>osx_64_fortran_compiler_version7mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version7mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpiopenmpi</td>
+              <td>osx_64_fortran_compiler_version7mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version7mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpimpich</td>
+              <td>osx_64_fortran_compiler_version9mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version9mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpinompi</td>
+              <td>osx_64_fortran_compiler_version9mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version9mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpiopenmpi</td>
+              <td>osx_64_fortran_compiler_version9mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version9mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>

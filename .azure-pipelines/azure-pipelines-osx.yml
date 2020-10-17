@@ -8,23 +8,23 @@ jobs:
     vmImage: macOS-10.15
   strategy:
     matrix:
-      osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpimpich:
-        CONFIG: osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpimpich
+      osx_64_fortran_compiler_version7mpimpich:
+        CONFIG: osx_64_fortran_compiler_version7mpimpich
         UPLOAD_PACKAGES: 'True'
-      osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpinompi:
-        CONFIG: osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpinompi
+      osx_64_fortran_compiler_version7mpinompi:
+        CONFIG: osx_64_fortran_compiler_version7mpinompi
         UPLOAD_PACKAGES: 'True'
-      osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpiopenmpi:
-        CONFIG: osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version7mpiopenmpi
+      osx_64_fortran_compiler_version7mpiopenmpi:
+        CONFIG: osx_64_fortran_compiler_version7mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-      osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpimpich:
-        CONFIG: osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpimpich
+      osx_64_fortran_compiler_version9mpimpich:
+        CONFIG: osx_64_fortran_compiler_version9mpimpich
         UPLOAD_PACKAGES: 'True'
-      osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpinompi:
-        CONFIG: osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpinompi
+      osx_64_fortran_compiler_version9mpinompi:
+        CONFIG: osx_64_fortran_compiler_version9mpinompi
         UPLOAD_PACKAGES: 'True'
-      osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpiopenmpi:
-        CONFIG: osx_64_c_compiler_version10cxx_compiler_version10fortran_compiler_version9mpiopenmpi
+      osx_64_fortran_compiler_version9mpiopenmpi:
+        CONFIG: osx_64_fortran_compiler_version9mpiopenmpi
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 600
 
