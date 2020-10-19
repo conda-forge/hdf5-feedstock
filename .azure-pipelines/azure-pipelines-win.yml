@@ -14,7 +14,7 @@ jobs:
       win_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5:
         CONFIG: win_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5
         UPLOAD_PACKAGES: 'True'
-  timeoutInMinutes: 600
+  timeoutInMinutes: 360
   variables:
     CONDA_BLD_PATH: D:\\bld\\
 
