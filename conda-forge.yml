@@ -1,8 +1,2 @@
-compiler_stack: comp7
-max_py_ver: '37'
-max_r_ver: '35'
 provider: {linux_aarch64: default, linux_ppc64le: default, win: azure}
-idle_timeout_minutes: 60
-azure:
-  timeout_minutes: 600  # 10 hours for azure due to emulated aarch64 build
 conda_forge_output_validation: true
