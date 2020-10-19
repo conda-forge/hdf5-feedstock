@@ -44,7 +44,7 @@ jobs:
       ? osx_64_fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi
       : CONFIG: osx_64_fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-  timeoutInMinutes: 600
+  timeoutInMinutes: 360
 
   steps:
   # TODO: Fast finish on azure pipelines?
