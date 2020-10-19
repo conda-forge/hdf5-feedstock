@@ -56,6 +56,54 @@ jobs:
       : CONFIG: linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
+      ? linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich
+      : CONFIG: linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi
+      : CONFIG: linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi
+      : CONFIG: linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich
+      : CONFIG: linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi
+      : CONFIG: linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi
+      : CONFIG: linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich
+      : CONFIG: linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi
+      : CONFIG: linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi
+      : CONFIG: linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich
+      : CONFIG: linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi
+      : CONFIG: linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+      ? linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi
+      : CONFIG: linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
   timeoutInMinutes: 360
 
   steps:
