@@ -1,0 +1,13 @@
+--- hdf5-1.12.0.orig/src/H5FDs3comms.c	2020-07-18 17:38:20.152820841 -0500
++++ hdf5-1.12.0/src/H5FDs3comms.c	2020-11-17 14:50:10.752751431 -0600
+@@ -1082,9 +1082,7 @@
+      **********************/
+ 
+     if ( CURLE_OK !=
+-        curl_easy_setopt(curlh,
+-                         CURLOPT_NOBODY,
+-                         NULL) )
++        curl_easy_setopt(curlh, CURLOPT_HTTPGET, 1L) )
+     {
+         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL,
+                     "error while setting CURL option (CURLOPT_NOBODY). "

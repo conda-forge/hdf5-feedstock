@@ -1,6 +1,6 @@
 {% set version = "1.12.0" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 2 %}
+{% set build = 3 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -52,6 +52,9 @@ source:
     - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
     # Disable shared Fortran API building on OSX
     - patches/osx_configure.patch  # [osx]
+    # Fix for curl>7.69
+    # See https://github.com/conda-forge/hdf5-feedstock/issues/125
+    - patches/fix_curl_nobody.patch
 
 build:
   number: {{ build }}
