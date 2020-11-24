@@ -8,12 +8,14 @@ __migrator:
   override_cbc_keys:
     - fortran_compiler_stub
   paused: false
+  longterm: True
+  check_solvable: false
 
 c_compiler_version:            # [unix]
   - 11                         # [osx and arm64]
 
-  - 10                         # [osx and x86_64]
-  - 10                         # [osx and x86_64]
+  - 11                         # [osx and x86_64]
+  - 11                         # [osx and x86_64]
 
   - 9                          # [linux64]
   - 9                          # [aarch64]
@@ -28,8 +30,8 @@ c_compiler_version:            # [unix]
 cxx_compiler_version:          # [unix]
   - 11                         # [osx and arm64]
 
-  - 10                         # [osx and x86_64]
-  - 10                         # [osx and x86_64]
+  - 11                         # [osx and x86_64]
+  - 11                         # [osx and x86_64]
 
   - 9                          # [linux64]
   - 9                          # [aarch64]
