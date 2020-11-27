@@ -1,4 +1,4 @@
-{% set version = "1.10.6" %}
+{% set version = hdf5_version|default("1.10.5") %}
 
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
 {% set build = 1012 %}
@@ -56,7 +56,7 @@ source:
     - patches/osx_configure.patch  # [osx]
     # Fix for curl>7.69
     # See https://github.com/conda-forge/hdf5-feedstock/issues/125
-    - patches/fix_curl_nobody.patch
+    - patches/fix_curl_nobody.patch # [hdf5_version == "1.10.6"]
 
 build:
   number: {{ build }}
@@ -105,13 +105,13 @@ outputs:
       host:
         - {{ mpi }}  # [mpi != 'nompi']
         - zlib
-        - libcurl
-        - openssl
+        - libcurl    # [hdf5_version == "1.10.6"]
+        - openssl    # [hdf5_version == "1.10.6"]
       run:
         - {{ mpi }}  # [mpi != 'nompi']
         - zlib
-        - libcurl
-        - openssl
+        - libcurl    # [hdf5_version == "1.10.6"]
+        - openssl    # [hdf5_version == "1.10.6"]
 
     test:
       requires:
@@ -182,7 +182,7 @@ outputs:
         - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1  # [win]
         {% endfor %}
         # Check ros3 driver
-        - h5dump --filedriver=ros3 "http://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'
+        - h5dump --filedriver=ros3 "http://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'  # [hdf5_version == "1.10.6"]
 
   - name: hdf5-static                                   # [not win]
     build:                                              # [not win]
