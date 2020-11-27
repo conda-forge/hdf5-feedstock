@@ -1,6 +1,6 @@
 {% set version = "1.12.0" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 2 %}
+{% set build = 3 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -52,6 +52,9 @@ source:
     - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
     # Disable shared Fortran API building on OSX
     - patches/osx_configure.patch  # [osx]
+    # Fix for curl>7.69
+    # See https://github.com/conda-forge/hdf5-feedstock/issues/125
+    - patches/fix_curl_nobody.patch
 
 build:
   number: {{ build }}
@@ -114,6 +117,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler('fortran') }}  # [not win]
         - pkg-config  # [not win]
+        - m2-grep  # [win]
       files:
         - h5_cmprss.c
         - h5tutr_cmprss.cpp
@@ -175,6 +179,8 @@ outputs:
         - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1  # [win]
         - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1  # [win]
         {% endfor %}
+        # Check ros3 driver
+        - h5dump --filedriver=ros3 "http://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'
 
   - name: hdf5-static                                   # [not win]
     build:                                              # [not win]

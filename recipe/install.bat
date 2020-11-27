@@ -18,6 +18,7 @@ cmake -G "Ninja" ^
       -D HDF5_BUILD_TOOLS:BOOL=ON ^
       -D HDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON ^
       -D HDF5_ENABLE_THREADSAFE:BOOL=ON ^
+      -D HDF5_ENABLE_ROS3_VFD:BOOL=ON ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
       %SRC_DIR%
 if errorlevel 1 exit 1

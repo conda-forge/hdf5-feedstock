@@ -8,54 +8,30 @@ jobs:
     vmImage: ubuntu-16.04
   strategy:
     matrix:
-      linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7mpimpich:
-        CONFIG: linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7mpimpich
+      linux_64_mpimpich:
+        CONFIG: linux_64_mpimpich
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7mpinompi:
-        CONFIG: linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7mpinompi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-comp7
+      linux_64_mpinompi:
+        CONFIG: linux_64_mpinompi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7mpiopenmpi:
-        CONFIG: linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7mpiopenmpi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-comp7
+      linux_64_mpiopenmpi:
+        CONFIG: linux_64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpimpich:
-        CONFIG: linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpimpich
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-comp7
+      linux_ppc64le_mpimpich:
+        CONFIG: linux_ppc64le_mpimpich
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpinompi:
-        CONFIG: linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpinompi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
+      linux_ppc64le_mpinompi:
+        CONFIG: linux_ppc64le_mpinompi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpiopenmpi:
-        CONFIG: linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpiopenmpi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
+      linux_ppc64le_mpiopenmpi:
+        CONFIG: linux_ppc64le_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8mpimpich:
-        CONFIG: linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8mpimpich
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8mpinompi:
-        CONFIG: linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8mpinompi
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8mpiopenmpi:
-        CONFIG: linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8mpiopenmpi
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpimpich:
-        CONFIG: linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpimpich
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpinompi:
-        CONFIG: linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpinompi
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpiopenmpi:
-        CONFIG: linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9mpiopenmpi
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: condaforge/linux-anvil-ppc64le
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
   timeoutInMinutes: 360
 
   steps:
