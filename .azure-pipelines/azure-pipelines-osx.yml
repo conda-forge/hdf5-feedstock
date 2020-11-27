@@ -17,6 +17,15 @@ jobs:
       osx_64_mpiopenmpi:
         CONFIG: osx_64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpimpich:
+        CONFIG: osx_arm64_mpimpich
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpinompi:
+        CONFIG: osx_arm64_mpinompi
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpiopenmpi:
+        CONFIG: osx_arm64_mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
 
   steps:
