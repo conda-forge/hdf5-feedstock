@@ -56,7 +56,7 @@ source:
     - patches/osx_configure.patch  # [osx]
     # Fix for curl>7.69
     # See https://github.com/conda-forge/hdf5-feedstock/issues/125
-    - patches/fix_curl_nobody.patch # [hdf5_version == "1.10.6"]
+    - patches/fix_curl_nobody.patch  # [hdf5_version == "1.10.6"]
 
 build:
   number: {{ build }}
