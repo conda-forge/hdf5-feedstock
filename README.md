@@ -34,339 +34,171 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
+              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
+              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
+              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
+              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
+              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
+              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
+              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
+              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
+              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version7cxx_compiler_version7fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
+              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
+              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
+              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version8cxx_compiler_version8fortran_compiler_version8hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version7hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version7hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version9hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_fortran_compiler_version9hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
