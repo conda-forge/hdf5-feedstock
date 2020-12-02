@@ -30,3 +30,7 @@ if errorlevel 1 exit 1
 :: Install step.
 ninja install
 if errorlevel 1 exit 1
+
+:: Remove extraneous COPYING file that gets installed automatically
+:: https://github.com/conda-forge/hdf5-feedstock/issues/87
+def /f %PREFIX%\Library\COPYING
