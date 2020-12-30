@@ -1,23 +1,23 @@
 #!/bin/bash
 
+set -x
+
 # Get an updated config.sub and config.guess
 cp $BUILD_PREFIX/share/libtool/build-aux/config.* ./bin
-
 
 export LIBRARY_PATH="${PREFIX}/lib"
 
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
 
-  if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
-    mkdir -p $BUILD_PREFIX/share/${mpi}/
-    cp -rf $PREFIX/share/${mpi}/*.txt $BUILD_PREFIX/share/${mpi}/
-  fi
-
   export CC=mpicc
   export CXX=mpic++
   export FC=mpifort
-  if [[ $(uname) == "Linux" ]]; then
+  export CC_FOR_BUILD=mpicc
+  export CXX_FOR_BUILD=mpic++
+  export FC_FOR_BUILD=mpifort
+
+  if [[ "$target_platform" == linux-* ]]; then
     # --as-needed appears to cause problems with fortran compiler detection
     # due to missing libquadmath
     # unclear why required libs are stripped but still linked
@@ -60,6 +60,28 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export hdf5_disable_tests="--enable-tests=no"
 fi
 
+function swap()
+{
+  cp "$1" tmp && cp "$2" "$1" && cp tmp "$2"
+}
+
+function swap_mpi() {
+  if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
+    if [[ "$mpi" == "openmpi" ]]; then
+      for file_full in $PREFIX/share/openmpi/*.txt; do
+        file=$(basename $file_full)
+        $swap $BUILD_PREFIX/share/openmpi/$file $PREFIX/share/openmpi/$file
+      done
+    elif [[ "$mpi" == "mpich" ]]; then
+      swap $BUILD_PREFIX/bin/mpicc $PREFIX/bin/mpicc
+      swap $BUILD_PREFIX/bin/mpic++ $PREFIX/bin/mpic++
+      swap $BUILD_PREFIX/bin/mpifort $PREFIX/bin/mpifort
+    fi
+  fi
+}
+
+swap_mpi
+
 ./configure --prefix="${PREFIX}" \
             ${CONFIGURE_ARGS} \
             --with-pic \
@@ -83,20 +105,20 @@ export OMPI_MCA_rmaps_base_oversubscribe=yes
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
   (
+    swap_mpi
     # Make a native build of the hdetect and H5make_libsettings executables
     mkdir -p native-build/bin
     pushd native-build/bin
 
+    # MACOSX_DEPLOYMENT_TARGET is for the target_platform and not for build_platform
+    unset MACOSX_DEPLOYMENT_TARGET
+
     $CC_FOR_BUILD ../../src/H5detect.c -I ../../src/ -o H5detect
     $CC_FOR_BUILD ../../src/H5make_libsettings.c -I ../../src/ -o H5make_libsettings
     $CC_FOR_BUILD ../../fortran/src/H5match_types.c -I ../../src/ -o H5match_types
-    # When building on osx-64 fortran is confused by 11.0
-    if [[ "$build_platform" == "osx-64" ]]; then
-      export MACOSX_DEPLOYMENT_TARGET=10.15
-    fi
     $FC_FOR_BUILD ../../fortran/src/H5_buildiface.F90 -I ../../fortran/src/ -L $BUILD_PREFIX/lib -o H5_buildiface
     $FC_FOR_BUILD ../../hl/fortran/src/H5HL_buildiface.F90 -I ../../hl/fortran/src -I ../../fortran/src -L $BUILD_PREFIX/lib -o H5HL_buildiface
-
+    swap_mpi
     popd
   )
   export PATH=`pwd`/native-build/bin:$PATH
