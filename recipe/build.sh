@@ -72,6 +72,7 @@ function swap_mpi() {
         file=$(basename $file_full)
         swap $BUILD_PREFIX/share/openmpi/$file $PREFIX/share/openmpi/$file
       done
+      swap $BUILD_PREFIX/include/mpif-sizeof.h $PREFIX/include/mpif-sizeof.h
     elif [[ "$mpi" == "mpich" ]]; then
       swap $BUILD_PREFIX/bin/mpicc $PREFIX/bin/mpicc
       swap $BUILD_PREFIX/bin/mpic++ $PREFIX/bin/mpic++
