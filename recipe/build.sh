@@ -9,9 +9,8 @@ export LIBRARY_PATH="${PREFIX}/lib"
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
 
-  if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
-    mkdir -p $BUILD_PREFIX/share/${mpi}/
-    cp -rf $PREFIX/share/${mpi}/*.txt $BUILD_PREFIX/share/${mpi}/
+  if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && "$mpi" == "openmpi" ]]; then
+    cp -rf $PREFIX/share/openmpi/*.txt $BUILD_PREFIX/share/openmpi/
   fi
 
   export CC=mpicc
