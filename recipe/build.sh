@@ -70,7 +70,7 @@ function swap_mpi() {
     if [[ "$mpi" == "openmpi" ]]; then
       for file_full in $PREFIX/share/openmpi/*.txt; do
         file=$(basename $file_full)
-        $swap $BUILD_PREFIX/share/openmpi/$file $PREFIX/share/openmpi/$file
+        swap $BUILD_PREFIX/share/openmpi/$file $PREFIX/share/openmpi/$file
       done
     elif [[ "$mpi" == "mpich" ]]; then
       swap $BUILD_PREFIX/bin/mpicc $PREFIX/bin/mpicc
