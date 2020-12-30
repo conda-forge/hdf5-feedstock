@@ -1,7 +1,7 @@
 {% set version = hdf5_version|default("1.10.5") %}
 
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1011 %}
+{% set build = 1010 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -54,10 +54,17 @@ source:
     - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
     # Disable shared Fortran API building on OSX
     - patches/osx_configure.patch  # [osx]
+    # Enable cross-compiling on osx
+    - patches/osx_cross_configure.patch  # [osx and build_platform != target_platform]
+    - patches/osx_cross_src_makefile.patch  # [osx and build_platform != target_platform]
+    - patches/osx_cross_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
+    - patches/osx_cross_hl_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
+
 
 build:
   number: {{ build }}
   skip: True  # [win and vc<14]
+  skip: True  # [osx and arm64 and hdf5_version == "1.10.5"]
   string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
 
 requirements:
@@ -67,9 +74,11 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
     - cmake >=3.2.2              # [win]
-    - libtool                    # [not win]
-    - make                       # [not win]
+    - make      # [unix]
+    - libtool   # [unix]
     - ninja                      # [win]
+    - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
+    - libgfortran-devel_osx-64  # [build_platform != target_platform and build_platform == 'osx-64']
   host:
     - {{ mpi }}  # [mpi != 'nompi']
     - zlib
@@ -100,6 +109,7 @@ outputs:
         - libtool                    # [not win]
         - make                       # [not win]
         - ninja                      # [win]
+        - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
       host:
         - {{ mpi }}  # [mpi != 'nompi']
         - zlib

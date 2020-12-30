@@ -1,0 +1,33 @@
+--- fortran/src/Makefile.in.orig	2020-12-28 22:19:06.000000000 -0800
++++ fortran/src/Makefile.in	2020-12-28 22:19:20.000000000 -0800
+@@ -114,6 +114,14 @@
+ # pass the -static flag to the library linker.
+ @FORTRAN_SHARED_CONDITIONAL_FALSE@am__append_1 = -static
+ noinst_PROGRAMS = H5match_types$(EXEEXT) H5_buildiface$(EXEEXT)
++
++cross_compiling = @cross_compiling@
++ifeq ($(cross_compiling),yes)
++  src_run = 
++else
++  src_run = ./
++endif
++
+ TESTS =
+ subdir = fortran/src
+ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+@@ -1445,13 +1453,13 @@
+ # header, then H5match_types which includes that header, then
+ # it needs to run H5match_types.
+ H5fortran_types.F90 H5f90i_gen.h: H5match_types$(EXEEXT)
+-	$(RUNSERIAL) ./H5match_types$(EXEEXT)
++	$(RUNSERIAL) $(src_run)H5match_types$(EXEEXT)
+ 
+ # H5_buildiface.F90 generates all the APIs that have a KIND type associated
+ # with them.
+ 
+ H5_gen.F90: H5_buildiface$(EXEEXT)
+-	$(RUNSERIAL) ./H5_buildiface$(EXEEXT)
++	$(RUNSERIAL) $(src_run)H5_buildiface$(EXEEXT)
+ 
+ # Hardcode the dependencies of these files. There isn't a known way of
+ # determining this automagically (like we do with the C files). So, when

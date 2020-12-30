@@ -1,0 +1,26 @@
+--- hl/fortran/src/Makefile.in.orig	2020-12-28 22:44:14.000000000 -0800
++++ hl/fortran/src/Makefile.in	2020-12-28 22:48:08.000000000 -0800
+@@ -114,6 +114,14 @@
+ # pass the -static flag to the library linker.
+ @FORTRAN_SHARED_CONDITIONAL_FALSE@am__append_1 = -static
+ noinst_PROGRAMS = H5HL_buildiface$(EXEEXT)
++
++cross_compiling = @cross_compiling@
++ifeq ($(cross_compiling),yes)
++  src_run = 
++else
++  src_run = ./
++endif
++
+ TESTS =
+ subdir = hl/fortran/src
+ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+@@ -1386,7 +1394,7 @@
+ # with them.
+ 
+ H5LTff_gen.F90: H5HL_buildiface$(EXEEXT)
+-	$(RUNSERIAL) ./H5HL_buildiface$(EXEEXT)
++	$(RUNSERIAL) $(src_run)H5HL_buildiface$(EXEEXT)
+ 
+ H5TBff_gen.F90: H5HL_buildiface$(EXEEXT)
+ # Hardcode the dependencies of these files. There isn't a known way of
