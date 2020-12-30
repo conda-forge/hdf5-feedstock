@@ -60,7 +60,7 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export hdf5_disable_tests="--enable-tests=no"
 fi
 
-export OPAL_PREFIX=$PREFIX
+export OPAL_PREFIX=$BUILD_PREFIX
 
 function swap()
 {
