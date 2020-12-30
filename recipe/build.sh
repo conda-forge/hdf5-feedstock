@@ -11,12 +11,11 @@ if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
 
   if [[ "$mpi" == "openmpi" ]]; then
-    echo '#!/bin/bash' > $PREFIX/bin/mpicc
-    echo "export OPAL_PREFIX=$PREFIX" >> $PREFIX/bin/mpicc
-    echo "$BUILD_PREFIX/bin/\$(basename \"\$0\") \"\$@\"" >> $PREFIX/bin/mpicc
-    chmod +x $PREFIX/bin/mpicc
-    cp $PREFIX/bin/mpicc $PREFIX/bin/mpic++
-    cp $PREFIX/bin/mpicc $PREFIX/bin/mpifort
+    rm $PREFIX/bin/opal_wrapper
+    echo '#!/bin/bash' > $PREFIX/bin/opal_wrapper
+    echo "export OPAL_PREFIX=$PREFIX" >> $PREFIX/bin/opal_wrapper
+    echo "$BUILD_PREFIX/bin/\$(basename \"\$0\") \"\$@\"" >> $PREFIX/bin/opal_wrapper
+    chmod +x $PREFIX/bin/opal_wrapper
   fi
 
   export CC=$PREFIX/bin/mpicc
