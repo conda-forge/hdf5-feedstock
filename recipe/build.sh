@@ -1,23 +1,31 @@
 #!/bin/bash
 
+set -x
+
 # Get an updated config.sub and config.guess
 cp $BUILD_PREFIX/share/libtool/build-aux/config.* ./bin
-
 
 export LIBRARY_PATH="${PREFIX}/lib"
 
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
 
-  if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
-    mkdir -p $BUILD_PREFIX/share/${mpi}/
-    cp -rf $PREFIX/share/${mpi}/*.txt $BUILD_PREFIX/share/${mpi}/
+  if [[ "$mpi" == "openmpi" ]]; then
+    rm $PREFIX/bin/opal_wrapper
+    echo '#!/bin/bash' > $PREFIX/bin/opal_wrapper
+    echo "export OPAL_PREFIX=$PREFIX" >> $PREFIX/bin/opal_wrapper
+    echo "$BUILD_PREFIX/bin/\$(basename \"\$0\") \"\$@\"" >> $PREFIX/bin/opal_wrapper
+    chmod +x $PREFIX/bin/opal_wrapper
   fi
 
-  export CC=mpicc
-  export CXX=mpic++
-  export FC=mpifort
-  if [[ $(uname) == "Linux" ]]; then
+  export CC=$PREFIX/bin/mpicc
+  export CXX=$PREFIX/bin/mpic++
+  export FC=$PREFIX/bin/mpifort
+  export CC_FOR_BUILD=$BUILD_PREFIX/bin/mpicc
+  export CXX_FOR_BUILD=$BUILD_PREFIX/bin/mpic++
+  export FC_FOR_BUILD=$BUILD_PREFIX/bin/mpifort
+
+  if [[ "$target_platform" == linux-* ]]; then
     # --as-needed appears to cause problems with fortran compiler detection
     # due to missing libquadmath
     # unclear why required libs are stripped but still linked
@@ -87,16 +95,14 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
     mkdir -p native-build/bin
     pushd native-build/bin
 
+    # MACOSX_DEPLOYMENT_TARGET is for the target_platform and not for build_platform
+    unset MACOSX_DEPLOYMENT_TARGET
+
     $CC_FOR_BUILD ../../src/H5detect.c -I ../../src/ -o H5detect
     $CC_FOR_BUILD ../../src/H5make_libsettings.c -I ../../src/ -o H5make_libsettings
     $CC_FOR_BUILD ../../fortran/src/H5match_types.c -I ../../src/ -o H5match_types
-    # When building on osx-64 fortran is confused by 11.0
-    if [[ "$build_platform" == "osx-64" ]]; then
-      export MACOSX_DEPLOYMENT_TARGET=10.15
-    fi
     $FC_FOR_BUILD ../../fortran/src/H5_buildiface.F90 -I ../../fortran/src/ -L $BUILD_PREFIX/lib -o H5_buildiface
     $FC_FOR_BUILD ../../hl/fortran/src/H5HL_buildiface.F90 -I ../../hl/fortran/src -I ../../fortran/src -L $BUILD_PREFIX/lib -o H5HL_buildiface
-
     popd
   )
   export PATH=`pwd`/native-build/bin:$PATH
