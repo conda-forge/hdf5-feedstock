@@ -10,12 +10,21 @@ export LIBRARY_PATH="${PREFIX}/lib"
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
 
-  export CC=mpicc
-  export CXX=mpic++
-  export FC=mpifort
-  export CC_FOR_BUILD=mpicc
-  export CXX_FOR_BUILD=mpic++
-  export FC_FOR_BUILD=mpifort
+  if [[ "$mpi" == "openmpi" ]]; then
+    echo '#!/bin/bash' > $PREFIX/bin/mpicc
+    echo "export OPAL_PREFIX=$PREFIX" >> $PREFIX/bin/mpicc
+    echo "$BUILD_PREFIX/bin/\$(basename \"\$0\") \"\$@\"" >> $PREFIX/bin/mpicc
+    chmod +x $PREFIX/bin/mpicc
+    cp $PREFIX/bin/mpicc $PREFIX/bin/mpic++
+    cp $PREFIX/bin/mpicc $PREFIX/bin/mpifort
+  fi
+
+  export CC=$PREFIX/bin/mpicc
+  export CXX=$PREFIX/bin/mpic++
+  export FC=$PREFIX/bin/mpifort
+  export CC_FOR_BUILD=$BUILD_PREFIX/bin/mpicc
+  export CXX_FOR_BUILD=$BUILD_PREFIX/bin/mpic++
+  export FC_FOR_BUILD=$BUILD_PREFIX/bin/mpifort
 
   if [[ "$target_platform" == linux-* ]]; then
     # --as-needed appears to cause problems with fortran compiler detection
@@ -60,31 +69,6 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export hdf5_disable_tests="--enable-tests=no"
 fi
 
-export OPAL_PREFIX=$BUILD_PREFIX
-
-function swap()
-{
-  cp "$1" tmp && cp "$2" "$1" && cp tmp "$2"
-}
-
-function swap_mpi() {
-  if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
-    if [[ "$mpi" == "openmpi" ]]; then
-      if [[ "$OPAL_PREFIX" == "$PREFIX" ]]; then
-        export OPAL_PREFIX=$BUILD_PREFIX
-      else
-        export OPAL_PREFIX=$PREFIX
-      fi
-    elif [[ "$mpi" == "mpich" ]]; then
-      swap $BUILD_PREFIX/bin/mpicc $PREFIX/bin/mpicc
-      swap $BUILD_PREFIX/bin/mpic++ $PREFIX/bin/mpic++
-      swap $BUILD_PREFIX/bin/mpifort $PREFIX/bin/mpifort
-    fi
-  fi
-}
-
-swap_mpi
-
 ./configure --prefix="${PREFIX}" \
             ${CONFIGURE_ARGS} \
             --with-pic \
@@ -108,7 +92,6 @@ export OMPI_MCA_rmaps_base_oversubscribe=yes
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
   (
-    swap_mpi
     # Make a native build of the hdetect and H5make_libsettings executables
     mkdir -p native-build/bin
     pushd native-build/bin
@@ -121,7 +104,6 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
     $CC_FOR_BUILD ../../fortran/src/H5match_types.c -I ../../src/ -o H5match_types
     $FC_FOR_BUILD ../../fortran/src/H5_buildiface.F90 -I ../../fortran/src/ -L $BUILD_PREFIX/lib -o H5_buildiface
     $FC_FOR_BUILD ../../hl/fortran/src/H5HL_buildiface.F90 -I ../../hl/fortran/src -I ../../fortran/src -L $BUILD_PREFIX/lib -o H5HL_buildiface
-    swap_mpi
     popd
   )
   export PATH=`pwd`/native-build/bin:$PATH
