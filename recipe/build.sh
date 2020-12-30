@@ -60,6 +60,8 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export hdf5_disable_tests="--enable-tests=no"
 fi
 
+export OPAL_PREFIX=$PREFIX
+
 function swap()
 {
   cp "$1" tmp && cp "$2" "$1" && cp tmp "$2"
@@ -68,10 +70,11 @@ function swap()
 function swap_mpi() {
   if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
     if [[ "$mpi" == "openmpi" ]]; then
-      for file_full in $PREFIX/share/openmpi/*.txt; do
-        file=$(basename $file_full)
-        $swap $BUILD_PREFIX/share/openmpi/$file $PREFIX/share/openmpi/$file
-      done
+      if [[ "$OPAL_PREFIX" == "$PREFIX" ]]; then
+        export OPAL_PREFIX=$BUILD_PREFIX
+      else
+        export OPAL_PREFIX=$PREFIX
+      fi
     elif [[ "$mpi" == "mpich" ]]; then
       swap $BUILD_PREFIX/bin/mpicc $PREFIX/bin/mpicc
       swap $BUILD_PREFIX/bin/mpic++ $PREFIX/bin/mpic++
