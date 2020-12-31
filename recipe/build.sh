@@ -10,20 +10,26 @@ export LIBRARY_PATH="${PREFIX}/lib"
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
 
-  if [[ "$mpi" == "openmpi" ]]; then
-    rm $PREFIX/bin/opal_wrapper
-    echo '#!/bin/bash' > $PREFIX/bin/opal_wrapper
-    echo "export OPAL_PREFIX=$PREFIX" >> $PREFIX/bin/opal_wrapper
-    echo "$BUILD_PREFIX/bin/\$(basename \"\$0\") \"\$@\"" >> $PREFIX/bin/opal_wrapper
-    chmod +x $PREFIX/bin/opal_wrapper
-  fi
-
   export CC=$PREFIX/bin/mpicc
   export CXX=$PREFIX/bin/mpic++
   export FC=$PREFIX/bin/mpifort
-  export CC_FOR_BUILD=$BUILD_PREFIX/bin/mpicc
-  export CXX_FOR_BUILD=$BUILD_PREFIX/bin/mpic++
-  export FC_FOR_BUILD=$BUILD_PREFIX/bin/mpifort
+
+  if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
+    if [[ "$mpi" == "openmpi" ]]; then
+      rm $PREFIX/bin/opal_wrapper
+      echo '#!/bin/bash' > $PREFIX/bin/opal_wrapper
+      echo "export OPAL_PREFIX=$PREFIX" >> $PREFIX/bin/opal_wrapper
+      echo "$BUILD_PREFIX/bin/\$(basename \"\$0\") \"\$@\"" >> $PREFIX/bin/opal_wrapper
+      chmod +x $PREFIX/bin/opal_wrapper
+    fi
+    export CC_FOR_BUILD=$BUILD_PREFIX/bin/mpicc
+    export CXX_FOR_BUILD=$BUILD_PREFIX/bin/mpic++
+    export FC_FOR_BUILD=$BUILD_PREFIX/bin/mpifort
+  else
+    export CC_FOR_BUILD=$PREFIX/bin/mpicc
+    export CXX_FOR_BUILD=$PREFIX/bin/mpic++
+    export FC_FOR_BUILD=$PREFIX/bin/mpifort
+  fi
 
   if [[ "$target_platform" == linux-* ]]; then
     # --as-needed appears to cause problems with fortran compiler detection
