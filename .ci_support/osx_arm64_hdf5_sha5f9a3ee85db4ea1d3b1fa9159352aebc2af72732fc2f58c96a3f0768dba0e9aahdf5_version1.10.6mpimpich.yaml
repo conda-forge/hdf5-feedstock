@@ -1,0 +1,49 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '11.0'
+c_compiler:
+- clang
+c_compiler_version:
+- '11'
+channel_sources:
+- conda-forge/label/rust_dev,conda-forge
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- clangxx
+cxx_compiler_version:
+- '11'
+fortran_compiler:
+- gfortran
+fortran_compiler_version:
+- '11'
+hdf5:
+- 1.10.5
+hdf5_sha:
+- 5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aa
+hdf5_version:
+- 1.10.6
+libcurl:
+- '7'
+macos_machine:
+- arm64-apple-darwin20.0.0
+mpi:
+- mpich
+openssl:
+- 1.1.1
+pin_run_as_build:
+  libcurl:
+    max_pin: x
+  openssl:
+    max_pin: x.x.x
+  zlib:
+    max_pin: x.x
+target_platform:
+- osx-arm64
+zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
+  - fortran_compiler_version
+- - hdf5_version
+  - hdf5_sha
+zlib:
+- '1.2'
