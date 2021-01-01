@@ -1,6 +1,6 @@
 {% set version = "1.12.0" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 4 %}
+{% set build = 5 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -55,6 +55,11 @@ source:
     # Fix for curl>7.69
     # See https://github.com/conda-forge/hdf5-feedstock/issues/125
     - patches/fix_curl_nobody.patch
+    # Enable cross-compiling on osx
+    - patches/osx_cross_configure.patch  # [osx and build_platform != target_platform]
+    - patches/osx_cross_src_makefile.patch  # [osx and build_platform != target_platform]
+    - patches/osx_cross_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
+    - patches/osx_cross_hl_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
 
 build:
   number: {{ build }}
@@ -63,6 +68,7 @@ build:
 
 requirements:
   build:
+    - gnuconfig  # [unix]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
@@ -70,6 +76,8 @@ requirements:
     - libtool                    # [not win]
     - make                       # [not win]
     - ninja                      # [win]
+    - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
+    - libgfortran-devel_osx-64  # [build_platform != target_platform and build_platform == 'osx-64']
   host:
     - {{ mpi }}  # [mpi != 'nompi']
     - zlib
@@ -100,6 +108,7 @@ outputs:
         - libtool  # [not win]
         - make                       # [not win]
         - ninja  # [win]
+        - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
       host:
         - {{ mpi }}  # [mpi != 'nompi']
         - zlib
