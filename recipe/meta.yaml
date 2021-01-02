@@ -1,7 +1,7 @@
 {% set version = hdf5_version|default("1.10.5") %}
 
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1013 %}
+{% set build = 1014 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -151,10 +151,16 @@ outputs:
             "h5pfc",
         ] %}
         {% endif %}
+        {% if build_platform == target_platform %}
         {% set hdf5_unix_cmds = h5_compilers + [
             "h5perf_serial",
             "h5redeploy",
         ] %}
+        {% else %}
+        {% set hdf5_unix_cmds = h5_compilers + [
+            "h5redeploy",
+        ] %}
+        {% endif %}
         {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
         - command -v {{ each_hdf5_unix_cmd }}   # [not win]
         {% endfor %}
