@@ -148,14 +148,12 @@ outputs:
             "h5pfc",
         ] %}
         {% endif %}
-        {% if build_platform == target_platform %}
         {% set hdf5_unix_cmds = h5_compilers + [
-            "h5perf_serial",
             "h5redeploy",
         ] %}
-        {% else %}
-        {% set hdf5_unix_cmds = h5_compilers + [
-            "h5redeploy",
+        {% if build_platform == target_platform %}
+        {% set hdf5_unix_cmds = hdf5_unix_cmds + [
+            "h5perf_serial",
         ] %}
         {% endif %}
         {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
