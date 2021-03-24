@@ -50,8 +50,6 @@ source:
     - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
     - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
-    # Disable shared Fortran API building on OSX
-    - patches/osx_configure.patch  # [osx]
     # Fix for curl>7.69
     # See https://github.com/conda-forge/hdf5-feedstock/issues/125
     - patches/fix_curl_nobody.patch
