@@ -1,6 +1,6 @@
-{% set version = "1.12.0" %}
+{% set version = "1.12.1" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 7 %}
+{% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -37,7 +37,7 @@ package:
 
 source:
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  sha256: a62dcb276658cb78e6795dd29bf926ed7a9bc4edf6e77025cd2c689a8f97c17a
+  sha256: 79c66ff67e666665369396e9c90b32e238e501f345afd2234186bfb8331081ca
   patches:
     # Patches the test suite to skip the cache, cache_image, and fheap tests
     # This test has been found to rather resource intensive.
@@ -61,8 +61,8 @@ source:
 
 build:
   number: {{ build }}
-  skip: True  # [win and vc<14]
-  string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
+  skip: true  # [win and vc<14]
+  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
 
 requirements:
   build:
@@ -90,10 +90,10 @@ requirements:
 outputs:
   - name: hdf5
     build:
-      skip: True  # [win and vc<14]
+      skip: true  # [win and vc<14]
       run_exports:
         - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
-      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
+      string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
     script: install.sh  # [not win]
     script: install.bat  # [win]
 
@@ -193,19 +193,19 @@ outputs:
         # Check ros3 driver
         - h5dump --filedriver=ros3 "http://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'
 
-  - name: hdf5-static                                   # [not win]
-    build:                                              # [not win]
-      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"  # [not win]
-    requirements:                                       # [not win]
-      build:                                            # [not win]
+  - name: hdf5-static  # [not win]
+    build:   # [not win]
+      string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}  # [not win]
+    requirements:   # [not win]
+      build:   # [not win]
         - {{ compiler('c') }}                           # [not win]
         - {{ compiler('cxx') }}                         # [not win]
         - {{ compiler('fortran') }}                     # [not win]
-      run:                                              # [not win]
+      run:   # [not win]
         - {{ pin_subpackage('hdf5', exact=True) }}      # [not win]
-    script: install-static.sh                           # [not win]
-    test:                                               # [not win]
-      commands:                                         # [not win]
+    script: install-static.sh  # [not win]
+    test:   # [not win]
+      commands:   # [not win]
         {% set hdf5_libs = ["hdf5", "hdf5_cpp", "hdf5_hl", "hdf5_hl_cpp"] %}  # [not win]
         {% for each_hdf5_lib in hdf5_libs %}            # [not win]
         - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}.a  # [not win]
