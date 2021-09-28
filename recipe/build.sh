@@ -6,7 +6,11 @@ set -x
 cp $BUILD_PREFIX/share/libtool/build-aux/config.* ./bin
 
 export LIBRARY_PATH="${PREFIX}/lib"
-
+if [[ "$target_platform" == linux-* ]]; then
+    # Direct Virtual File System (O_DIRECT)
+    # is only valid for linux
+    HDF5_OPTIONS="${HDF5_OPTIONS} --enable-direct-vfd"
+fi
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
 
@@ -84,6 +88,7 @@ fi
             --enable-cxx \
             --enable-fortran \
             --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
+	    ${HDF5_OPTIONS} \
             --enable-threadsafe \
             --enable-build-mode=production \
             --enable-unsupported \
