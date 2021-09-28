@@ -202,45 +202,24 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
@@ -280,6 +259,7 @@ Installing `hdf5_split` from the `conda-forge` channel can be achieved by adding
 
 ```
 conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
 Once the `conda-forge` channel has been enabled, `hdf5, hdf5-static` can be installed with:
@@ -350,9 +330,9 @@ build distinct package versions.
 
 In order to produce a uniquely identifiable distribution:
  * If the version of a package **is not** being increased, please add or increase
-   the [``build/number``](https://conda.io/docs/user-guide/tasks/build-packages/define-metadata.html#build-number-and-string).
+   the [``build/number``](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#build-number-and-string).
  * If the version of a package **is** being increased, please remember to return
-   the [``build/number``](https://conda.io/docs/user-guide/tasks/build-packages/define-metadata.html#build-number-and-string)
+   the [``build/number``](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#build-number-and-string)
    back to 0.
 
 Feedstock Maintainers
@@ -360,7 +340,6 @@ Feedstock Maintainers
 
 * [@SylvainCorlay](https://github.com/SylvainCorlay/)
 * [@astrofrog-conda-forge](https://github.com/astrofrog-conda-forge/)
-* [@beckermr](https://github.com/beckermr/)
 * [@davidbrochart](https://github.com/davidbrochart/)
 * [@gillins](https://github.com/gillins/)
 * [@groutr](https://github.com/groutr/)

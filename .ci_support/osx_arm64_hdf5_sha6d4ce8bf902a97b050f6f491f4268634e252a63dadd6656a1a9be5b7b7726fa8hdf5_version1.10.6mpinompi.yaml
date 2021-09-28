@@ -5,7 +5,7 @@ c_compiler:
 c_compiler_version:
 - '11'
 channel_sources:
-- conda-forge/label/rust_dev,conda-forge
+- conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
@@ -17,9 +17,9 @@ fortran_compiler:
 fortran_compiler_version:
 - '11'
 hdf5:
-- 1.10.5
+- 1.10.6
 hdf5_sha:
-- 5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aa
+- 6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8
 hdf5_version:
 - 1.10.6
 libcurl:
@@ -27,14 +27,12 @@ libcurl:
 macos_machine:
 - arm64-apple-darwin20.0.0
 mpi:
-- openmpi
+- nompi
 openssl:
 - 1.1.1
 pin_run_as_build:
   libcurl:
     max_pin: x
-  openssl:
-    max_pin: x.x.x
   zlib:
     max_pin: x.x
 target_platform:
