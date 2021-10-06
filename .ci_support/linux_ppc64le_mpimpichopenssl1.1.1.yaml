@@ -1,0 +1,39 @@
+c_compiler:
+- gcc
+c_compiler_version:
+- '9'
+cdt_name:
+- cos7
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- gxx
+cxx_compiler_version:
+- '9'
+docker_image:
+- quay.io/condaforge/linux-anvil-ppc64le
+fortran_compiler:
+- gfortran
+fortran_compiler_version:
+- '9'
+libcurl:
+- '7'
+mpi:
+- mpich
+openssl:
+- 1.1.1
+pin_run_as_build:
+  libcurl:
+    max_pin: x
+  zlib:
+    max_pin: x.x
+target_platform:
+- linux-ppc64le
+zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
+  - fortran_compiler_version
+zlib:
+- '1.2'
