@@ -1,0 +1,39 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '10.9'
+c_compiler:
+- clang
+c_compiler_version:
+- '11'
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- clangxx
+cxx_compiler_version:
+- '11'
+fortran_compiler:
+- gfortran
+fortran_compiler_version:
+- '9'
+libcurl:
+- '7'
+macos_machine:
+- x86_64-apple-darwin13.4.0
+mpi:
+- nompi
+openssl:
+- 1.1.1
+pin_run_as_build:
+  libcurl:
+    max_pin: x
+  zlib:
+    max_pin: x.x
+target_platform:
+- osx-64
+zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
+  - fortran_compiler_version
+zlib:
+- '1.2'
