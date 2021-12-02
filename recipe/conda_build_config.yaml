@@ -3,10 +3,6 @@ mpi:
   - mpich  # [unix]
   - openmpi  # [unix]
 
-pin_run_as_build:
-  mpich: x.x
-  openmpi: x.x
-
 hdf5_version:
   - 1.10.5
   - 1.10.6
@@ -16,5 +12,5 @@ hdf5_sha:
   - 5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aa
 
 zip_keys:
-  - - hdf5_version
-    - hdf5_sha
+  -   - hdf5_version
+      - hdf5_sha
