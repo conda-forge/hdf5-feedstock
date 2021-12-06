@@ -8,23 +8,41 @@ jobs:
     vmImage: macOS-10.15
   strategy:
     matrix:
-      osx_64_mpimpich:
-        CONFIG: osx_64_mpimpich
+      osx_64_mpimpichopenssl1.1.1:
+        CONFIG: osx_64_mpimpichopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpinompi:
-        CONFIG: osx_64_mpinompi
+      osx_64_mpimpichopenssl3:
+        CONFIG: osx_64_mpimpichopenssl3
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpiopenmpi:
-        CONFIG: osx_64_mpiopenmpi
+      osx_64_mpinompiopenssl1.1.1:
+        CONFIG: osx_64_mpinompiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpimpich:
-        CONFIG: osx_arm64_mpimpich
+      osx_64_mpinompiopenssl3:
+        CONFIG: osx_64_mpinompiopenssl3
         UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpinompi:
-        CONFIG: osx_arm64_mpinompi
+      osx_64_mpiopenmpiopenssl1.1.1:
+        CONFIG: osx_64_mpiopenmpiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpiopenmpi:
-        CONFIG: osx_arm64_mpiopenmpi
+      osx_64_mpiopenmpiopenssl3:
+        CONFIG: osx_64_mpiopenmpiopenssl3
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpimpichopenssl1.1.1:
+        CONFIG: osx_arm64_mpimpichopenssl1.1.1
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpimpichopenssl3:
+        CONFIG: osx_arm64_mpimpichopenssl3
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpinompiopenssl1.1.1:
+        CONFIG: osx_arm64_mpinompiopenssl1.1.1
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpinompiopenssl3:
+        CONFIG: osx_arm64_mpinompiopenssl3
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpiopenmpiopenssl1.1.1:
+        CONFIG: osx_arm64_mpiopenmpiopenssl1.1.1
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpiopenmpiopenssl3:
+        CONFIG: osx_arm64_mpiopenmpiopenssl3
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
 
@@ -35,6 +53,11 @@ jobs:
       export OSX_FORCE_SDK_DOWNLOAD="1"
       export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
       export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
+      if [[ "${BUILD_REASON:-}" == "PullRequest" ]]; then
+        export IS_PR_BUILD="True"
+      else
+        export IS_PR_BUILD="False"
+      fi
       ./.scripts/run_osx_build.sh
     displayName: Run OSX build
     env:
