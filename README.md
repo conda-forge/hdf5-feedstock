@@ -13,14 +13,7 @@ Current build status
 ====================
 
 
-<table><tr>
-    <td>Drone</td>
-    <td>
-      <a href="https://cloud.drone.io/conda-forge/hdf5-feedstock">
-        <img alt="linux" src="https://img.shields.io/drone/build/conda-forge/hdf5-feedstock/master.svg?label=Linux">
-      </a>
-    </td>
-  </tr>
+<table>
     
   <tr>
     <td>Azure</td>
@@ -34,227 +27,409 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
+              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
+              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
+              <td>linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
+              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
+              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
+              <td>linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
+              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
+              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
+              <td>linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
+              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
+              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
+              <td>linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich</td>
+              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi</td>
+              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi</td>
+              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich</td>
+              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi</td>
+              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi</td>
+              <td>linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl3" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6</td>
+              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl1.1.1</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=win&configuration=win_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl1.1.1" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5</td>
+              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl3</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=win&configuration=win_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpimpichopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpinompiopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6mpiopenmpiopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpimpichopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpinompiopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5mpiopenmpiopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpimpichopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpimpichopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpimpichopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpimpichopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpinompiopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpinompiopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpinompiopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpinompiopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpiopenmpiopenssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpiopenmpiopenssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpiopenmpiopenssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=osx&configuration=osx_arm64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.6mpiopenmpiopenssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6openssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=win&configuration=win_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6openssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6openssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=win&configuration=win_64_hdf5_sha5f9a3ee85db4ea1d3b1fa9159352aebc2af72732fc2f58c96a3f0768dba0e9aahdf5_version1.10.6openssl3" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5openssl1.1.1</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=win&configuration=win_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5openssl1.1.1" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5openssl3</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=master&jobName=win&configuration=win_64_hdf5_sha6d4ce8bf902a97b050f6f491f4268634e252a63dadd6656a1a9be5b7b7726fa8hdf5_version1.10.5openssl3" alt="variant">
                 </a>
               </td>
             </tr>
@@ -280,6 +455,7 @@ Installing `hdf5_split` from the `conda-forge` channel can be achieved by adding
 
 ```
 conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
 Once the `conda-forge` channel has been enabled, `hdf5, hdf5-static` can be installed with:
@@ -298,7 +474,8 @@ conda search hdf5 --channel conda-forge
 About conda-forge
 =================
 
-[![Powered by NumFOCUS](https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](http://numfocus.org)
+[![Powered by
+NumFOCUS](https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](https://numfocus.org)
 
 conda-forge is a community-led conda channel of installable packages.
 In order to provide high-quality builds, the process has been automated into the
@@ -350,9 +527,9 @@ build distinct package versions.
 
 In order to produce a uniquely identifiable distribution:
  * If the version of a package **is not** being increased, please add or increase
-   the [``build/number``](https://conda.io/docs/user-guide/tasks/build-packages/define-metadata.html#build-number-and-string).
+   the [``build/number``](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#build-number-and-string).
  * If the version of a package **is** being increased, please remember to return
-   the [``build/number``](https://conda.io/docs/user-guide/tasks/build-packages/define-metadata.html#build-number-and-string)
+   the [``build/number``](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#build-number-and-string)
    back to 0.
 
 Feedstock Maintainers
@@ -360,7 +537,6 @@ Feedstock Maintainers
 
 * [@SylvainCorlay](https://github.com/SylvainCorlay/)
 * [@astrofrog-conda-forge](https://github.com/astrofrog-conda-forge/)
-* [@beckermr](https://github.com/beckermr/)
 * [@davidbrochart](https://github.com/davidbrochart/)
 * [@gillins](https://github.com/gillins/)
 * [@groutr](https://github.com/groutr/)
