@@ -4,5 +4,7 @@ mpi:
   - openmpi  # [unix]
 
 pin_run_as_build:
-  mpich: x.x
-  openmpi: x.x
+  mpich:
+    max_pin: x.x
+  openmpi:
+    max_pin: x.x
