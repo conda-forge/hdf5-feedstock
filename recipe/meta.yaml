@@ -1,6 +1,6 @@
-{% set version = "1.12.1" %}
+{% set version = "1.12.2" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 4 %}
+{% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -58,7 +58,6 @@ source:
 
 build:
   number: {{ build }}
-  skip: true  # [win and vc<14]
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
 
 requirements:
@@ -80,9 +79,6 @@ requirements:
     - openssl
   run:
     - {{ mpi }}  # [mpi != 'nompi']
-    - zlib
-    - libcurl
-    - openssl
 
 outputs:
   - name: hdf5
@@ -111,9 +107,6 @@ outputs:
         - openssl
       run:
         - {{ mpi }}  # [mpi != 'nompi']
-        - zlib
-        - libcurl
-        - openssl
 
     test:
       requires:
