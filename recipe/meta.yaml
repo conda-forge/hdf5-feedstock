@@ -51,7 +51,7 @@ source:
     # h5diff help output test is flaky with mpi
     - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
     # Enable cross-compiling on osx
-    - pathces/osx_cross_configure.patch
+    - patches/osx_cross_configure.patch
     - patches/osx_cross_src_makefile.patch  # [osx and build_platform != target_platform]
     - patches/osx_cross_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
     - patches/osx_cross_hl_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
