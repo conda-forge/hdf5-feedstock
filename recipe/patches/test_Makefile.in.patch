@@ -1,6 +1,6 @@
---- hdf5-1.12.0.orig/test/Makefile.in	2020-07-18 17:38:20.172820206 -0500
-+++ hdf5-1.12.0/test/Makefile.in	2020-07-18 17:54:19.524081521 -0500
-@@ -1505,8 +1505,8 @@
+--- a/test/Makefile.in
++++ b/test/Makefile.in
+@@ -1590,8 +1590,8 @@ check_SCRIPTS = $(TEST_SCRIPT)
  # As an exception, long-running tests should occur earlier in the list.
  # This gives them more time to run when tests are executing in parallel.
  TEST_PROG = testhdf5 \
@@ -8,6 +8,6 @@
 -           stab gheap evict_on_close farray earray btree2 fheap \
 +           cache_api cache_tagging lheap ohdr \
 +           stab gheap evict_on_close farray earray btree2 \
-            pool accum hyperslab istore bittests dt_arith page_buffer \
-            dtypes dsets chunk_info cmpd_dset filter_fail extend direct_chunk \
-            external efc objcopy objcopy_ref links unlink twriteorder big mtime fillval mount \
+            accum hyperslab istore bittests dt_arith page_buffer \
+            dtypes dsets chunk_info cmpd_dset cmpd_dtransform filter_fail extend direct_chunk \
+            external efc objcopy objcopy_ref links unlink twriteorder big mtime \
