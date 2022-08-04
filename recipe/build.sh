@@ -97,7 +97,8 @@ fi
             --enable-using-memchecker \
             --enable-static=yes \
             --enable-ros3-vfd \
-	    ${hdf5_disable_tests}
+	    ${hdf5_disable_tests} \
+	    || (cat config.log; false)
 
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
