@@ -75,6 +75,7 @@ requirements:
   host:
     - {{ mpi }}  # [mpi != 'nompi']
     - zlib
+    - libaec
     - libcurl
     - openssl
   run:
@@ -103,6 +104,7 @@ outputs:
       host:
         - {{ mpi }}  # [mpi != 'nompi']
         - zlib
+        - libaec
         - libcurl
         - openssl
       run:

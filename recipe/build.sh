@@ -85,6 +85,7 @@ fi
             --host="${HOST}" \
             --build="${BUILD}" \
             --with-zlib="${PREFIX}" \
+            --with-szlib="${PREFIX}" \
             --with-pthread=yes  \
             ${HDF5_OPTIONS} \
             --enable-cxx \
