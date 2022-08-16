@@ -19,10 +19,6 @@ openssl:
 pin_run_as_build:
   libcurl:
     max_pin: x
-  mpich:
-    max_pin: x.x
-  openmpi:
-    max_pin: x.x
   zlib:
     max_pin: x.x
 target_platform:
