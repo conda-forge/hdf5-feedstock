@@ -77,6 +77,7 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export PAC_FC_ALL_REAL_KINDS_SIZEOF="{4,8}"
   export PAC_FC_ALL_INTEGER_KINDS_SIZEOF="{1,2,4,8,16}"
   export hdf5_disable_tests="--enable-tests=no"
+  export hdf5_cv_szlib_can_encode=yes
 fi
 
 ./configure --prefix="${PREFIX}" \
@@ -85,6 +86,7 @@ fi
             --host="${HOST}" \
             --build="${BUILD}" \
             --with-zlib="${PREFIX}" \
+            --with-szlib="${PREFIX}" \
             --with-pthread=yes  \
             ${HDF5_OPTIONS} \
             --enable-cxx \
@@ -96,7 +98,8 @@ fi
             --enable-using-memchecker \
             --enable-static=yes \
             --enable-ros3-vfd \
-	    ${hdf5_disable_tests}
+	    ${hdf5_disable_tests} \
+	    || (cat config.log; false)
 
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
