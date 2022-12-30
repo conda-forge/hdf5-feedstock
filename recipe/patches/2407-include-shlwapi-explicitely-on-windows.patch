@@ -1,0 +1,57 @@
+From d300febacda44b5f81d7d882c6f45b56c0424c97 Mon Sep 17 00:00:00 2001
+From: Mark Kittisopikul <markkitt@gmail.com>
+Date: Mon, 16 Jan 2023 23:43:53 -0500
+Subject: [PATCH 1/2] Include shlwapi.h explicitly
+
+---
+ src/H5private.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/H5private.h b/src/H5private.h
+index 0b68305483..6ed0aa2a98 100644
+--- a/src/H5private.h
++++ b/src/H5private.h
+@@ -125,6 +125,7 @@
+ #include <direct.h>   /* For _getcwd() */
+ #include <io.h>       /* POSIX I/O */
+ #include <winsock2.h> /* For GetUserName() */
++#include <shlwapi.h>  /* For StrStrIA */
+ 
+ #ifdef H5_HAVE_THREADSAFE
+ #include <process.h> /* For _beginthread() */
+
+From b83aaf7ed0329be222be8594cbb1bb6a3d85ac7b Mon Sep 17 00:00:00 2001
+From: Mark Kittisopikul <markkitt@gmail.com>
+Date: Tue, 17 Jan 2023 00:24:45 -0500
+Subject: [PATCH 2/2] Add shlwapi library to LINK_LIB when header is detected
+
+Looking for StrStrIA in the shlwapi library is not reliable due
+to stdcall on mingw32.
+---
+ config/cmake/ConfigureChecks.cmake | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/config/cmake/ConfigureChecks.cmake b/config/cmake/ConfigureChecks.cmake
+index ef434b37e0..70a210404e 100644
+--- a/config/cmake/ConfigureChecks.cmake
++++ b/config/cmake/ConfigureChecks.cmake
+@@ -131,6 +131,8 @@ CHECK_INCLUDE_FILE_CONCAT ("netdb.h"         ${HDF_PREFIX}_HAVE_NETDB_H)
+ CHECK_INCLUDE_FILE_CONCAT ("arpa/inet.h"     ${HDF_PREFIX}_HAVE_ARPA_INET_H)
+ if (WINDOWS)
+   CHECK_INCLUDE_FILE_CONCAT ("shlwapi.h"         ${HDF_PREFIX}_HAVE_SHLWAPI_H)
++  # Checking for StrStrIA in the library is not relaible for mingw32 to stdcall
++  set (LINK_LIBS ${LINK_LIBS} "shlwapi")
+ endif ()
+ 
+ ## Check for non-standard extension quadmath.h
+@@ -156,10 +158,6 @@ if (MINGW OR NOT WINDOWS)
+   CHECK_LIBRARY_EXISTS_CONCAT ("wsock32" gethostbyname ${HDF_PREFIX}_HAVE_LIBWSOCK32)
+ endif ()
+ 
+-if (WINDOWS)
+-  CHECK_LIBRARY_EXISTS_CONCAT ("shlwapi" StrStrIA ${HDF_PREFIX}_HAVE_SHLWAPI)
+-endif ()
+-
+ # UCB (BSD) compatibility library
+ CHECK_LIBRARY_EXISTS_CONCAT ("ucb"    gethostname  ${HDF_PREFIX}_HAVE_LIBUCB)
+ 

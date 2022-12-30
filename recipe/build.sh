@@ -1,11 +1,13 @@
 #!/bin/bash
+set -ex
 
-set -x
+export LIBRARY_PATH="${PREFIX}/lib"
 
 # Get an updated config.sub and config.guess
 cp $BUILD_PREFIX/share/libtool/build-aux/config.* ./bin
 
-export LIBRARY_PATH="${PREFIX}/lib"
+HDF5_OPTIONS=
+
 if [[ "$target_platform" == linux-* ]]; then
     # Direct Virtual File System (O_DIRECT)
     # is only valid for linux
@@ -13,7 +15,7 @@ if [[ "$target_platform" == linux-* ]]; then
 fi
 
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
-  export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
+  export HDF5_OPTIONS="${HDF5_OPTIONS} --enable-parallel"
 
   export CC=$PREFIX/bin/mpicc
   export CXX=$PREFIX/bin/mpic++
@@ -59,6 +61,9 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export hdf5_cv_disable_some_ldouble_conv=no
   export hdf5_cv_system_scope_threads=yes
   export hdf5_cv_printf_ll="l"
+
+  export hdf5_cv_system_scope_threads=yes
+  export hdf5_cv_printf_ll="l"
   export PAC_FC_MAX_REAL_PRECISION=15
   export PAC_C_MAX_REAL_PRECISION=17
   export PAC_FC_ALL_INTEGER_KINDS="{1,2,4,8,16}"
@@ -76,12 +81,14 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export PAC_FORTRAN_NUM_INTEGER_KINDS="5"
   export PAC_FC_ALL_REAL_KINDS_SIZEOF="{4,8}"
   export PAC_FC_ALL_INTEGER_KINDS_SIZEOF="{1,2,4,8,16}"
-  export hdf5_disable_tests="--enable-tests=no"
+  # Do we need this below?
   export hdf5_cv_szlib_can_encode=yes
+
+  HDF5_OPTIONS="${HDF5_OPTIONS} --enable-tests=no"
 fi
 
+
 ./configure --prefix="${PREFIX}" \
-            ${CONFIGURE_ARGS} \
             --with-pic \
             --host="${HOST}" \
             --build="${BUILD}" \
@@ -95,11 +102,11 @@ fi
             --enable-threadsafe \
             --enable-build-mode=production \
             --enable-unsupported \
+            --enable-hlgiftools=yes \
             --enable-using-memchecker \
-            --enable-static=yes \
+            --enable-static=no \
             --enable-ros3-vfd \
-	    ${hdf5_disable_tests} \
-	    || (cat config.log; false)
+            || (cat config.log; false)
 
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
@@ -113,30 +120,31 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
     # MACOSX_DEPLOYMENT_TARGET is for the target_platform and not for build_platform
     unset MACOSX_DEPLOYMENT_TARGET
 
-    $CC_FOR_BUILD ../../src/H5detect.c -I ../../src/ -o H5detect
-    $CC_FOR_BUILD ../../src/H5make_libsettings.c -I ../../src/ -o H5make_libsettings
-    $CC_FOR_BUILD ../../fortran/src/H5match_types.c -I ../../src/ -o H5match_types
-    $FC_FOR_BUILD ../../fortran/src/H5_buildiface.F90 -I ../../fortran/src/ -L $BUILD_PREFIX/lib -o H5_buildiface
-    $FC_FOR_BUILD ../../hl/fortran/src/H5HL_buildiface.F90 -I ../../hl/fortran/src -I ../../fortran/src -L $BUILD_PREFIX/lib -o H5HL_buildiface
+    $CC_FOR_BUILD ${SRC_DIR}/src/H5detect.c -I ${SRC_DIR}/src/ -o H5detect
+    $CC_FOR_BUILD ${SRC_DIR}/src/H5make_libsettings.c -I ${SRC_DIR}/src/ -o H5make_libsettings
+    $CC_FOR_BUILD ${SRC_DIR}/fortran/src/H5match_types.c -I ${SRC_DIR}/src/ -o H5match_types
+    $FC_FOR_BUILD ${SRC_DIR}/fortran/src/H5_buildiface.F90 -I ${SRC_DIR}/fortran/src/ -L $BUILD_PREFIX/lib -o H5_buildiface
+    $FC_FOR_BUILD ${SRC_DIR}/hl/fortran/src/H5HL_buildiface.F90 -I ${SRC_DIR}/hl/fortran/src -I ${SRC_DIR}/fortran/src -L $BUILD_PREFIX/lib -o H5HL_buildiface
     popd
   )
   export PATH=`pwd`/native-build/bin:$PATH
 fi
 
-if [[ "$CI" != "travis" ]]; then
-  make -j "${CPU_COUNT}" ${VERBOSE_AT}
-else
-# using || to quiet logs unless there is an issue
-{
-    # see this https://github.com/travis-ci/travis-ci/issues/4190#issuecomment-353342526
-    while sleep 1m; do echo "make is still running..."; done &
-    make -j "${CPU_COUNT}" ${VERBOSE_AT} >& make_logs.txt
-    # make sure to kill the loop
-    kill %1
-} || {
-    # make sure to kill the loop
-    kill %1
-    tail -n 5000 make_logs.txt
-    exit 1
-}
+make -j "${CPU_COUNT}" ${VERBOSE_AT}
+
+make install V=1
+
+if [[ ${mpi} == "openmpi" && "$(uname)" == "Darwin" ]]; then
+  # ph5diff hangs on darwin with openmpi, skip the test
+  echo <<EOF > tools/test/h5diff/testph5diff.sh
+#!/bin/sh
+exit 0
+EOF
+fi
+if [[ ("$target_platform" != "linux-ppc64le") && \
+      ("$target_platform" != "linux-aarch64") && \
+      ("$target_platform" != "osx-arm64") ]]; then
+  # https://github.com/h5py/h5py/issues/817
+  # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
+  make check RUNPARALLEL="${RECIPE_DIR}/mpiexec.sh -n 2"
 fi
