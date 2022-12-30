@@ -43,13 +43,13 @@ source:
     # This test has been found to rather resource intensive.
     # In particular, it caused Travis CI's Mac builds to hang.
     # Given that we simply skip the test on all platforms.
-    - patches/test_Makefile.in.patch
+    # - patches/test_Makefile.in.patch
     # same thing, but for parallel tests:
-    - patches/testpar_Makefile.in.patch
+    # - patches/testpar_Makefile.in.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
-    - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
+    # - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
-    - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
+    # - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
     # Enable cross-compiling on osx
     - patches/osx_cross_configure.patch
     - patches/osx_cross_src_makefile.patch  # [osx and build_platform != target_platform]
@@ -66,7 +66,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
-    - cmake >=3.2.2              # [win]
+    - cmake                      # [win]
     - libtool                    # [not win]
     - make                       # [not win]
     - ninja                      # [win]
@@ -96,10 +96,10 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('fortran') }}  # [not win]
-        - cmake >=3.2.2  # [win]
-        - libtool  # [not win]
+        - cmake                      # [win]
+        - libtool                    # [not win]
         - make                       # [not win]
-        - ninja  # [win]
+        - ninja                      # [win]
         - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
       host:
         - {{ mpi }}  # [mpi != 'nompi']
@@ -115,8 +115,8 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('fortran') }}  # [not win]
-        - pkg-config  # [not win]
-        - m2-grep  # [win]
+        - pkg-config                 # [not win]
+        - m2-grep                    # [win]
       files:
         - h5_cmprss.c
         - h5tutr_cmprss.cpp
