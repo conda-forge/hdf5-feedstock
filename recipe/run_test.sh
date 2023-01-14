@@ -11,22 +11,22 @@ else
 fi
 echo "Testing $h5cc"
 $h5cc -showconfig
-$h5cc h5_cmprss.c -o h5_cmprss
+$h5cc ${CFLAGS} ${LDFLAGS} h5_cmprss.c -o h5_cmprss
 ./h5_cmprss
 
 # Test C++ compiler
 echo "Testing h5c++"
 h5c++ -showconfig
-h5c++ h5tutr_cmprss.cpp -o h5tutr_cmprss
+h5c++ ${CXXFLAGS} ${LDFLAGS} h5tutr_cmprss.cpp -o h5tutr_cmprss
 ./h5tutr_cmprss
 
 # Test Fortran 90 compiler
 echo "Testing $h5fc"
 $h5fc -showconfig
-$h5fc h5_cmprss.f90 -o h5_cmprss
+$h5fc ${FFLAGS} ${LDFLAGS} h5_cmprss.f90 -o h5_cmprss
 ./h5_cmprss
 
 # Test Fortran 2003 compiler, note that the file has a 90 extension
 echo "Testing h5fc for Fortran 2003"
-$h5fc compound_fortran2003.f90 -o compound_fortran2003
+$h5fc ${FFLAGS} ${LDFLAGS} compound_fortran2003.f90 -o compound_fortran2003
 ./compound_fortran2003
