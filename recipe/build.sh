@@ -95,7 +95,7 @@ fi
             --enable-threadsafe \
             --enable-build-mode=production \
             --enable-unsupported \
-            --enable-hlgiftools = yes \
+            --enable-hlgiftools=yes \
             --enable-using-memchecker \
             --enable-static=no \
             --enable-ros3-vfd \
