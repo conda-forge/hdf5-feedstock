@@ -3,6 +3,8 @@ set -ex
 
 export LIBRARY_PATH="${PREFIX}/lib"
 
+CMAKE_HDF5_OPTIONS=
+
 if [[ "$target_platform" == linux-* ]]; then
     # Direct Virtual File System (O_DIRECT)
     # is only valid for linux
@@ -82,11 +84,17 @@ fi
 rm -rf build
 mkdir -p build
 cd build
-cmake ${CMAKE_ARGS}                                 \
-    -DCMAKE_INSTALL_PREFIX=${PREFIX}                \
-    -DBUILD_STATIC_LIBS=OFF                         \
-    -DONLY_SHARED_LIBS=ON                           \
-    ${CMAKE_HDF5_OPTIONS}                           \
+cmake ${CMAKE_ARGS}                                  \
+    -DCMAKE_BUILD_TYPE=RELEASE                       \
+    -DH5_DEFAULT_PLUGINDIR=${PREFIX}/lib/hdf5/plugin \
+    -DCMAKE_PREFIX_PATH=${PREFIX}                    \
+    -DCMAKE_INSTALL_PREFIX=${PREFIX}                 \
+    -DBUILD_STATIC_LIBS=OFF                          \
+    -DONLY_SHARED_LIBS=ON                            \
+    -DHDF5_BUILD_CPP_LIB=ON                          \
+    -DHDF5_ENABLE_Z_LIB_SUPPORT=ON                   \
+    -DHDF5_ENABLE_ROS3_VFD=ON                        \
+    ${CMAKE_HDF5_OPTIONS}                            \
     ..
 
 # allow oversubscribing with openmpi in make check
