@@ -1,6 +1,8 @@
 #!/bin/bash
 set -ex
 
+export LIBRARY_PATH="${PREFIX}/lib"
+
 if [[ "$target_platform" == linux-* ]]; then
     # Direct Virtual File System (O_DIRECT)
     # is only valid for linux
