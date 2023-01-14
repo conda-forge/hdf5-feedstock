@@ -1,15 +1,10 @@
 #!/bin/bash
+set -ex
 
-set -x
-
-# Get an updated config.sub and config.guess
-cp $BUILD_PREFIX/share/libtool/build-aux/config.* ./bin
-
-export LIBRARY_PATH="${PREFIX}/lib"
 if [[ "$target_platform" == linux-* ]]; then
     # Direct Virtual File System (O_DIRECT)
     # is only valid for linux
-    HDF5_OPTIONS="${HDF5_OPTIONS} --enable-direct-vfd"
+    HDF5_OPTIONS="${HDF5_OPTIONS} -DHDF5_ENABLE_DIRECT_VFD=ON"
 fi
 
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
@@ -80,27 +75,15 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export hdf5_cv_szlib_can_encode=yes
 fi
 
-./configure --prefix="${PREFIX}" \
-            ${CONFIGURE_ARGS} \
-            --with-pic \
-            --host="${HOST}" \
-            --build="${BUILD}" \
-            --with-zlib="${PREFIX}" \
-            --with-szlib="${PREFIX}" \
-            --with-pthread=yes  \
-            ${HDF5_OPTIONS} \
-            --enable-cxx \
-            --enable-fortran \
-            --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
-            --enable-threadsafe \
-            --enable-build-mode=production \
-            --enable-unsupported \
-            --enable-hlgiftools=yes \
-            --enable-using-memchecker \
-            --enable-static=no \
-            --enable-ros3-vfd \
-            ${hdf5_disable_tests} \
-            || (cat config.log; false)
+rm -rf build
+mkdir -p build
+cd build
+cmake ${CMAKE_ARGS}                                 \
+    -DCMAKE_INSTALL_PREFIX=${PREFIX}                \
+    -DBUILD_STATIC_LIBS=OFF                         \
+    -DONLY_SHARED_LIBS=ON                           \
+    ${HDF5_OPTIONS}                                 \
+    ..
 
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
@@ -140,5 +123,5 @@ if [[ ("$target_platform" != "linux-ppc64le") && \
       ("$target_platform" != "osx-arm64") ]]; then
   # https://github.com/h5py/h5py/issues/817
   # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
-  make check RUNPARALLEL="${RECIPE_DIR}/mpiexec.sh -n 2"
+  make test RUNPARALLEL="${RECIPE_DIR}/mpiexec.sh -n 2"
 fi
