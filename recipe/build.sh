@@ -12,7 +12,7 @@ if [[ "$target_platform" == linux-* ]]; then
 fi
 
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
-  export CONFIGURE_ARGS="--enable-parallel ${CONFIGURE_ARGS}"
+  CMAKE_HDF5_OPTIONS="${CMAKE_HDF5_OPTIONS} -DHDF5_ENABLE_PARALLEL=ON"
 
   export CC=$PREFIX/bin/mpicc
   export CXX=$PREFIX/bin/mpic++
