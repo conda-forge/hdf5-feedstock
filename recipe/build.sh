@@ -89,6 +89,7 @@ cmake ${CMAKE_ARGS}                                  \
     -DH5_DEFAULT_PLUGINDIR=${PREFIX}/lib/hdf5/plugin \
     -DCMAKE_PREFIX_PATH=${PREFIX}                    \
     -DCMAKE_INSTALL_PREFIX=${PREFIX}                 \
+    -DHDF5_BUILD_FORTRAN=ON                          \
     -DBUILD_STATIC_LIBS=OFF                          \
     -DONLY_SHARED_LIBS=ON                            \
     -DHDF5_BUILD_CPP_LIB=ON                          \
