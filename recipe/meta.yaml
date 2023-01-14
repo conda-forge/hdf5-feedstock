@@ -91,6 +91,8 @@ test:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
     - pkg-config                 # [not win]
+    # Need zlib to compile test programs
+    - zlib
   files:
     - h5_cmprss.c
     - h5tutr_cmprss.cpp
