@@ -56,6 +56,9 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   CMAKE_HDF5_OPTIONS="${CMAKE_HDF5_OPTIONS} -DH5_LLONG_TO_LDOUBLE_CORRECT=1"
   CMAKE_HDF5_OPTIONS="${CMAKE_HDF5_OPTIONS} -DH5_DISABLE_SOME_LDOUBLE_CONV=1"
 
+  # Taken from the file H5pubconf.h from HDF5 1.12.2 build for osx-arm64
+  CMAKE_HDF5_OPTIONS="${CMAKE_HDF5_OPTIONS} -DFORTRAN_C_LONG_DOUBLE_IS_UNIQUE=0"
+
   # export hdf5_cv_system_scope_threads=yes
   # export hdf5_cv_printf_ll="l"
   export PAC_FC_MAX_REAL_PRECISION=15
