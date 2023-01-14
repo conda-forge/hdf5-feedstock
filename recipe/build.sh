@@ -96,7 +96,7 @@ fi
             --enable-build-mode=production \
             --enable-unsupported \
             --enable-using-memchecker \
-            --enable-static=yes \
+            --enable-static=no \
             --enable-ros3-vfd \
 	    ${hdf5_disable_tests} \
 	    || (cat config.log; false)
@@ -139,4 +139,21 @@ else
     tail -n 5000 make_logs.txt
     exit 1
 }
+fi
+
+make install V=1
+
+if [[ ${mpi} == "openmpi" && "$(uname)" == "Darwin" ]]; then
+  # ph5diff hangs on darwin with openmpi, skip the test
+  echo <<EOF > tools/test/h5diff/testph5diff.sh
+#!/bin/sh
+exit 0
+EOF
+fi
+if [[ ("$target_platform" != "linux-ppc64le") && \
+      ("$target_platform" != "linux-aarch64") && \
+      ("$target_platform" != "osx-arm64") ]]; then
+  # https://github.com/h5py/h5py/issues/817
+  # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
+  make check RUNPARALLEL="${RECIPE_DIR}/mpiexec.sh -n 2"
 fi
