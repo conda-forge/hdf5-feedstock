@@ -98,8 +98,8 @@ fi
             --enable-using-memchecker \
             --enable-static=no \
             --enable-ros3-vfd \
-	    ${hdf5_disable_tests} \
-	    || (cat config.log; false)
+            ${hdf5_disable_tests} \
+            || (cat config.log; false)
 
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
@@ -123,23 +123,7 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
   export PATH=`pwd`/native-build/bin:$PATH
 fi
 
-if [[ "$CI" != "travis" ]]; then
-  make -j "${CPU_COUNT}" ${VERBOSE_AT}
-else
-# using || to quiet logs unless there is an issue
-{
-    # see this https://github.com/travis-ci/travis-ci/issues/4190#issuecomment-353342526
-    while sleep 1m; do echo "make is still running..."; done &
-    make -j "${CPU_COUNT}" ${VERBOSE_AT} >& make_logs.txt
-    # make sure to kill the loop
-    kill %1
-} || {
-    # make sure to kill the loop
-    kill %1
-    tail -n 5000 make_logs.txt
-    exit 1
-}
-fi
+make -j "${CPU_COUNT}" ${VERBOSE_AT}
 
 make install V=1
 
