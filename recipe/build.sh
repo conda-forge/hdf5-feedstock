@@ -110,11 +110,11 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
     # MACOSX_DEPLOYMENT_TARGET is for the target_platform and not for build_platform
     unset MACOSX_DEPLOYMENT_TARGET
 
-    $CC_FOR_BUILD ../../src/H5detect.c -I ../../src/ -o H5detect
-    $CC_FOR_BUILD ../../src/H5make_libsettings.c -I ../../src/ -o H5make_libsettings
-    $CC_FOR_BUILD ../../fortran/src/H5match_types.c -I ../../src/ -o H5match_types
-    $FC_FOR_BUILD ../../fortran/src/H5_buildiface.F90 -I ../../fortran/src/ -L $BUILD_PREFIX/lib -o H5_buildiface
-    $FC_FOR_BUILD ../../hl/fortran/src/H5HL_buildiface.F90 -I ../../hl/fortran/src -I ../../fortran/src -L $BUILD_PREFIX/lib -o H5HL_buildiface
+    $CC_FOR_BUILD ${SRC_DIR}/src/H5detect.c -I ${SRC_DIR}/src/ -o H5detect
+    $CC_FOR_BUILD ${SRC_DIR}/src/H5make_libsettings.c -I ${SRC_DIR}/src/ -o H5make_libsettings
+    $CC_FOR_BUILD ${SRC_DIR}/fortran/src/H5match_types.c -I ${SRC_DIR}/src/ -o H5match_types
+    $FC_FOR_BUILD ${SRC_DIR}/fortran/src/H5_buildiface.F90 -I ${SRC_DIR}/fortran/src/ -L $BUILD_PREFIX/lib -o H5_buildiface
+    $FC_FOR_BUILD ${SRC_DIR}/hl/fortran/src/H5HL_buildiface.F90 -I ${SRC_DIR}/hl/fortran/src -I ${SRC_DIR}/fortran/src -L $BUILD_PREFIX/lib -o H5HL_buildiface
     popd
   )
   export PATH=`pwd`/native-build/bin:$PATH
