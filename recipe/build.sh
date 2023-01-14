@@ -98,6 +98,7 @@ cmake ${CMAKE_ARGS}                                  \
     -DONLY_SHARED_LIBS=ON                            \
     -DHDF5_ENABLE_THREADSAFE=ON                      \
     -DALLOW_UNSUPPORTED=ON                           \
+    -DHDF5_BUILD_HL_GIF_TOOLS=ON                     \
     -DHDF5_ENABLE_Z_LIB_SUPPORT=ON                   \
     -DHDF5_ENABLE_SZIP_SUPPORT=ON                    \
     -DHDF5_ENABLE_USING_MEMCHECKER=ON                \
