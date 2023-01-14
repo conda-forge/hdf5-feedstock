@@ -4,7 +4,7 @@ set -ex
 if [[ "$target_platform" == linux-* ]]; then
     # Direct Virtual File System (O_DIRECT)
     # is only valid for linux
-    HDF5_OPTIONS="${HDF5_OPTIONS} -DHDF5_ENABLE_DIRECT_VFD=ON"
+    CMAKE_HDF5_OPTIONS="${CMAKE_HDF5_OPTIONS} -DHDF5_ENABLE_DIRECT_VFD=ON"
 fi
 
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
@@ -46,14 +46,14 @@ else
 fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]]; then
-  export ac_cv_sizeof_long_double=8
-  export hdf5_cv_ldouble_to_long_special=no
-  export hdf5_cv_long_to_ldouble_special=no
-  export hdf5_cv_ldouble_to_llong_accurate=yes
-  export hdf5_cv_llong_to_ldouble_correct=yes
-  export hdf5_cv_disable_some_ldouble_conv=no
-  export hdf5_cv_system_scope_threads=yes
-  export hdf5_cv_printf_ll="l"
+  export H5_LDOUBLE_TO_LONG_SPECIAL_RUN=0
+  export H5_LONG_TO_LDOUBLE_SPECIAL_RUN=0
+  export H5_LDOUBLE_TO_LLONG_ACCURATE_RUN=1
+  export H5_LLONG_TO_LDOUBLE_CORRECT_RUN=1
+  export H5_DISABLE_SOME_LDOUBLE_CONV_RUN=1
+
+  # export hdf5_cv_system_scope_threads=yes
+  # export hdf5_cv_printf_ll="l"
   export PAC_FC_MAX_REAL_PRECISION=15
   export PAC_C_MAX_REAL_PRECISION=17
   export PAC_FC_ALL_INTEGER_KINDS="{1,2,4,8,16}"
@@ -71,8 +71,10 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export PAC_FORTRAN_NUM_INTEGER_KINDS="5"
   export PAC_FC_ALL_REAL_KINDS_SIZEOF="{4,8}"
   export PAC_FC_ALL_INTEGER_KINDS_SIZEOF="{1,2,4,8,16}"
-  export hdf5_disable_tests="--enable-tests=no"
+  # Do we need this below?
   export hdf5_cv_szlib_can_encode=yes
+
+  CMAKE_HDF5_OPTIONS="${CMAKE_HDF5_OPTIONS} -DBUILD_TESTING=OFF"
 fi
 
 rm -rf build
@@ -82,7 +84,7 @@ cmake ${CMAKE_ARGS}                                 \
     -DCMAKE_INSTALL_PREFIX=${PREFIX}                \
     -DBUILD_STATIC_LIBS=OFF                         \
     -DONLY_SHARED_LIBS=ON                           \
-    ${HDF5_OPTIONS}                                 \
+    ${CMAKE_HDF5_OPTIONS}                           \
     ..
 
 # allow oversubscribing with openmpi in make check
