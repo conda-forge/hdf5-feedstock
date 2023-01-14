@@ -1,5 +1,5 @@
 # Stop on first error
-set -ex
+set -euxo pipefail
 
 # Test C compiler
 if [[ "$mpi" != "nompi" ]]; then
