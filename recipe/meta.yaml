@@ -38,7 +38,10 @@ package:
 source:
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
   sha256: a571cc83efda62e1a51a0a912dd916d01895801c5025af91669484a1575a6ef4
-  # patches:
+  patches:
+    # Private scope for MPI with cmake
+    # https://github.com/HDFGroup/hdf5/pull/2400
+    - patches/2400-mpi-private-scope.patch
     # Patches the test suite to skip the cache, cache_image, and fheap tests
     # This test has been found to rather resource intensive.
     # In particular, it caused Travis CI's Mac builds to hang.
@@ -49,7 +52,7 @@ source:
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
     # - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
-    # - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
+    - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
     # Enable cross-compiling on osx
     # - patches/osx_cross_configure.patch
     # - patches/osx_cross_src_makefile.patch  # [osx and build_platform != target_platform]
