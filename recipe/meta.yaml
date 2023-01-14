@@ -59,6 +59,8 @@ source:
 build:
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
+  # TODO: remove this once the build has settled
+  skip: true   # [openssl == '1.1.1']
   run_exports:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
 
