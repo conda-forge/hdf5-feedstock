@@ -8,38 +8,20 @@ jobs:
     vmImage: macOS-11
   strategy:
     matrix:
-      osx_64_mpimpichopenssl1.1.1:
-        CONFIG: osx_64_mpimpichopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
       osx_64_mpimpichopenssl3:
         CONFIG: osx_64_mpimpichopenssl3
-        UPLOAD_PACKAGES: 'True'
-      osx_64_mpinompiopenssl1.1.1:
-        CONFIG: osx_64_mpinompiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
       osx_64_mpinompiopenssl3:
         CONFIG: osx_64_mpinompiopenssl3
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpiopenmpiopenssl1.1.1:
-        CONFIG: osx_64_mpiopenmpiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
       osx_64_mpiopenmpiopenssl3:
         CONFIG: osx_64_mpiopenmpiopenssl3
-        UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpimpichopenssl1.1.1:
-        CONFIG: osx_arm64_mpimpichopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
       osx_arm64_mpimpichopenssl3:
         CONFIG: osx_arm64_mpimpichopenssl3
         UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpinompiopenssl1.1.1:
-        CONFIG: osx_arm64_mpinompiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
       osx_arm64_mpinompiopenssl3:
         CONFIG: osx_arm64_mpinompiopenssl3
-        UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpiopenmpiopenssl1.1.1:
-        CONFIG: osx_arm64_mpiopenmpiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
       osx_arm64_mpiopenmpiopenssl3:
         CONFIG: osx_arm64_mpiopenmpiopenssl3

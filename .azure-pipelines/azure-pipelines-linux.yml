@@ -8,72 +8,36 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_mpimpichopenssl1.1.1:
-        CONFIG: linux_64_mpimpichopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_64_mpimpichopenssl3:
         CONFIG: linux_64_mpimpichopenssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_mpinompiopenssl1.1.1:
-        CONFIG: linux_64_mpinompiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_64_mpinompiopenssl3:
         CONFIG: linux_64_mpinompiopenssl3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_mpiopenmpiopenssl1.1.1:
-        CONFIG: linux_64_mpiopenmpiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_64_mpiopenmpiopenssl3:
         CONFIG: linux_64_mpiopenmpiopenssl3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_aarch64_mpimpichopenssl1.1.1:
-        CONFIG: linux_aarch64_mpimpichopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
       linux_aarch64_mpimpichopenssl3:
         CONFIG: linux_aarch64_mpimpichopenssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_mpinompiopenssl1.1.1:
-        CONFIG: linux_aarch64_mpinompiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
       linux_aarch64_mpinompiopenssl3:
         CONFIG: linux_aarch64_mpinompiopenssl3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_mpiopenmpiopenssl1.1.1:
-        CONFIG: linux_aarch64_mpiopenmpiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
       linux_aarch64_mpiopenmpiopenssl3:
         CONFIG: linux_aarch64_mpiopenmpiopenssl3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_ppc64le_mpimpichopenssl1.1.1:
-        CONFIG: linux_ppc64le_mpimpichopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
       linux_ppc64le_mpimpichopenssl3:
         CONFIG: linux_ppc64le_mpimpichopenssl3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_mpinompiopenssl1.1.1:
-        CONFIG: linux_ppc64le_mpinompiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
       linux_ppc64le_mpinompiopenssl3:
         CONFIG: linux_ppc64le_mpinompiopenssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_mpiopenmpiopenssl1.1.1:
-        CONFIG: linux_ppc64le_mpiopenmpiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
       linux_ppc64le_mpiopenmpiopenssl3:
