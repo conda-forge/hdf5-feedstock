@@ -21,7 +21,7 @@
 #include <iostream>
 #include <string>
 
-#include "H5Cpp.h"
+#include <H5Cpp.h>
 
 #ifndef H5_NO_NAMESPACE
     using namespace H5;
@@ -49,7 +49,7 @@ int main (void)
 	// handle the errors appropriately
 	Exception::dontPrint();
 
-	// Create a new file using the default property lists. 
+	// Create a new file using the default property lists.
 	H5File file(FILE_NAME, H5F_ACC_TRUNC);
 
 	// Create the data space for the dataset.
@@ -67,9 +67,9 @@ int main (void)
 	// unsigned szip_options_mask = H5_SZIP_NN_OPTION_MASK;
 	// unsigned szip_pixels_per_block = 16;
 	// plist->setSzip(szip_options_mask, szip_pixels_per_block);
-     
-	// Create the dataset.      
-	DataSet *dataset = new DataSet(file.createDataSet( DATASET_NAME, 
+
+	// Create the dataset.
+	DataSet *dataset = new DataSet(file.createDataSet( DATASET_NAME,
 	                        PredType::STD_I32BE, *dataspace, *plist) );
 
 	for (i = 0; i< DIM0; i++)
@@ -86,10 +86,10 @@ int main (void)
 	file.close();
 
 	// -----------------------------------------------
-	// Re-open the file and dataset, retrieve filter 
+	// Re-open the file and dataset, retrieve filter
 	// information for dataset and read the data back.
 	// -----------------------------------------------
-	
+
 	int        rbuf[DIM0][DIM1];
 	int        numfilt;
 	size_t     nelmts={1}, namelen={1};
@@ -120,7 +120,7 @@ int main (void)
 	           cout << "H5Z_FILTER_DEFLATE" << endl;
 	           break;
 	      case H5Z_FILTER_SZIP:
-	           cout << "H5Z_FILTER_SZIP" << endl; 
+	           cout << "H5Z_FILTER_SZIP" << endl;
 	           break;
 	      default:
 	           cout << "Other filter type included." << endl;
@@ -130,7 +130,7 @@ int main (void)
 	// Read data.
 	dataset->read(rbuf, PredType::NATIVE_INT);
 
-	delete plist; 
+	delete plist;
 	delete dataset;
 	file.close();	// can be skipped
 
