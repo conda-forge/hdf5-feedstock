@@ -89,11 +89,15 @@ cmake ${CMAKE_ARGS}                                  \
     -DH5_DEFAULT_PLUGINDIR=${PREFIX}/lib/hdf5/plugin \
     -DCMAKE_PREFIX_PATH=${PREFIX}                    \
     -DCMAKE_INSTALL_PREFIX=${PREFIX}                 \
+    -DHDF5_BUILD_CPP_LIB=ON                          \
     -DHDF5_BUILD_FORTRAN=ON                          \
     -DBUILD_STATIC_LIBS=OFF                          \
     -DONLY_SHARED_LIBS=ON                            \
-    -DHDF5_BUILD_CPP_LIB=ON                          \
+    -DHDF5_ENABLE_THREADSAFE=ON                      \
+    -DALLOW_UNSUPPORTED=ON                           \
     -DHDF5_ENABLE_Z_LIB_SUPPORT=ON                   \
+    -DHDF5_ENABLE_SZIP_SUPPORT=ON                    \
+    -DHDF5_ENABLE_USING_MEMCHECKER=ON                \
     -DHDF5_ENABLE_ROS3_VFD=ON                        \
     ${CMAKE_HDF5_OPTIONS}                            \
     ..
