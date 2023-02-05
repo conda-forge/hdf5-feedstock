@@ -1,6 +1,6 @@
-{% set version = "1.12.2" %}
+{% set version = "1.14.0" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1 %}
+{% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -32,33 +32,38 @@
 {% endif %}
 
 package:
-  name: hdf5_split
+  name: hdf5
   version: {{ version }}
 
 source:
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  sha256: 2a89af03d56ce7502dcae18232c241281ad1773561ec00c0f0e8ee2463910f14
+  sha256: a571cc83efda62e1a51a0a912dd916d01895801c5025af91669484a1575a6ef4
   patches:
-    # Patches the test suite to skip the cache, cache_image, and fheap tests
-    # This test has been found to rather resource intensive.
-    # In particular, it caused Travis CI's Mac builds to hang.
-    # Given that we simply skip the test on all platforms.
-    - patches/test_Makefile.in.patch
-    # same thing, but for parallel tests:
+    # Private scope for MPI with cmake
+    # https://github.com/HDFGroup/hdf5/pull/2400
+    - patches/2400-mpi-private-scope.patch
+    # Atomicity tests seem to fail for openmpi
+    # This seems to be a known bug
+    # https://github.com/HDFGroup/hdf5/issues/2196
     - patches/testpar_Makefile.in.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
     - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
-    - patches/testh5diff.sh.in.patch  # [mpi != 'nompi']
+    - patches/testh5diff.sh.in.patch              # [mpi != 'nompi']
     # Enable cross-compiling on osx
     - patches/osx_cross_configure.patch
-    - patches/osx_cross_src_makefile.patch  # [osx and build_platform != target_platform]
-    - patches/osx_cross_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
+    - patches/osx_cross_src_makefile.patch             # [osx and build_platform != target_platform]
+    - patches/osx_cross_fortran_src_makefile.patch     # [osx and build_platform != target_platform]
     - patches/osx_cross_hl_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
+
+    # https://github.com/HDFGroup/hdf5/pull/2407
+    - patches/2407-include-shlwapi-explicitely-on-windows.patch   # [win]
 
 build:
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
+  run_exports:
+    - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
 
 requirements:
   build:
@@ -66,7 +71,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
-    - cmake >=3.2.2              # [win]
+    - cmake                      # [win]
     - libtool                    # [not win]
     - make                       # [not win]
     - ninja                      # [win]
@@ -75,133 +80,91 @@ requirements:
   host:
     - {{ mpi }}  # [mpi != 'nompi']
     - zlib
-    - libaec
+    # sz support was never working on conda-forge for windows
+    - libaec     # [unix]
     - libcurl
     - openssl
   run:
     - {{ mpi }}  # [mpi != 'nompi']
 
-outputs:
-  - name: hdf5
-    build:
-      skip: true  # [win and vc<14]
-      run_exports:
-        - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
-      string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
-    script: install.sh  # [not win]
-    script: install.bat  # [win]
-
-    requirements:
-      build:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        - {{ compiler('fortran') }}  # [not win]
-        - cmake >=3.2.2  # [win]
-        - libtool  # [not win]
-        - make                       # [not win]
-        - ninja  # [win]
-        - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
-      host:
-        - {{ mpi }}  # [mpi != 'nompi']
-        - zlib
-        - libaec
-        - libcurl
-        - openssl
-      run:
-        - {{ mpi }}  # [mpi != 'nompi']
-
-    test:
-      requires:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        - {{ compiler('fortran') }}  # [not win]
-        - pkg-config  # [not win]
-        - m2-grep  # [win]
-      files:
-        - h5_cmprss.c
-        - h5tutr_cmprss.cpp
-        - h5_cmprss.f90
-        - compound_fortran2003.f90
-      commands:
-        # Verify UNIX CLI tools.
-        {% if mpi == 'nompi' %}
-        {% set h5_compilers = [
-            "h5c++",
-            "h5cc",
-            "h5fc",
-        ] %}
-        {% else %}
-        # no p on parallel h5c++!
-        {% set h5_compilers = [
-            "h5c++",
-            "h5pcc",
-            "h5pfc",
-        ] %}
-        {% endif %}
-        {% set hdf5_unix_cmds = h5_compilers + [
-            "h5redeploy",
-        ] %}
-        {% if build_platform == target_platform %}
-        {% set hdf5_unix_cmds = hdf5_unix_cmds + [
-            "h5perf_serial",
-        ] %}
-        {% endif %}
-        {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
-        - command -v {{ each_hdf5_unix_cmd }}   # [not win]
-        {% endfor %}
-        # Verify CLI tools.
-        {% set hdf5_cmds = [
-            "gif2h5",
-            "h52gif",
-            "h5copy",
-            "h5debug",
-            "h5diff",
-            "h5dump",
-            "h5import",
-            "h5jam",
-            "h5ls",
-            "h5mkgrp",
-            "h5repack",
-            "h5repart",
-            "h5stat",
-            "h5unjam"
-        ] %}
-        {% for each_hdf5_cmd in hdf5_cmds %}
-        - command -v {{ each_hdf5_cmd }}  # [not win]
-        - where {{ each_hdf5_cmd }}  # [win]
-        {% endfor %}
-        # Verify libraries.
-        {% set hdf5_libs = [
-            "hdf5",
-            "hdf5_cpp",
-            "hdf5_hl",
-            "hdf5_hl_cpp"
-        ] %}
-        {% for each_hdf5_lib in hdf5_libs %}
-        - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}${SHLIB_EXT}  # [not win]
-        - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1  # [win]
-        - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1  # [win]
-        {% endfor %}
-        # Check ros3 driver
-        - h5dump --filedriver=ros3 "http://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'
-
-  - name: hdf5-static  # [not win]
-    build:   # [not win]
-      string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}  # [not win]
-    requirements:   # [not win]
-      build:   # [not win]
-        - {{ compiler('c') }}                           # [not win]
-        - {{ compiler('cxx') }}                         # [not win]
-        - {{ compiler('fortran') }}                     # [not win]
-      run:   # [not win]
-        - {{ pin_subpackage('hdf5', exact=True) }}      # [not win]
-    script: install-static.sh  # [not win]
-    test:   # [not win]
-      commands:   # [not win]
-        {% set hdf5_libs = ["hdf5", "hdf5_cpp", "hdf5_hl", "hdf5_hl_cpp"] %}  # [not win]
-        {% for each_hdf5_lib in hdf5_libs %}            # [not win]
-        - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}.a  # [not win]
-        {% endfor %}                                    # [not win]
+test:
+  requires:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}  # [not win]
+    - pkg-config                 # [not win]
+    # Need zlib to compile test programs
+    - zlib
+  files:
+    - h5_cmprss.c
+    - h5tutr_cmprss.cpp
+    - h5_cmprss.f90
+    - compound_fortran2003.f90
+  commands:
+    # Verify UNIX CLI tools.
+    {% if mpi == 'nompi' %}
+    {% set h5_compilers = [
+        "h5c++",
+        "h5cc",
+        "h5fc",
+    ] %}
+    {% else %}
+    # no p on parallel h5c++!
+    {% set h5_compilers = [
+        "h5c++",
+        "h5pcc",
+        "h5pfc",
+    ] %}
+    {% endif %}
+    {% set hdf5_unix_cmds = h5_compilers + [
+        "h5redeploy",
+    ] %}
+    {% if build_platform == target_platform %}
+    {% set hdf5_unix_cmds = hdf5_unix_cmds + [
+        "h5perf_serial",
+    ] %}
+    {% endif %}
+    {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
+    - command -v {{ each_hdf5_unix_cmd }}   # [not win]
+    {% endfor %}
+    # Verify CLI tools.
+    {% set hdf5_cmds = [
+        "gif2h5",
+        "h52gif",
+        "h5copy",
+        "h5debug",
+        "h5diff",
+        "h5dump",
+        "h5import",
+        "h5jam",
+        "h5ls",
+        "h5mkgrp",
+        "h5repack",
+        "h5repart",
+        "h5stat",
+        "h5unjam"
+    ] %}
+    {% for each_hdf5_cmd in hdf5_cmds %}
+    - command -v {{ each_hdf5_cmd }}  # [not win]
+    - where {{ each_hdf5_cmd }}  # [win]
+    {% endfor %}
+    # Verify libraries.
+    {% set hdf5_libs = [
+        "hdf5",
+        "hdf5_cpp",
+        "hdf5_hl",
+        "hdf5_hl_cpp"
+    ] %}
+    {% for each_hdf5_lib in hdf5_libs %}
+    - test -f $PREFIX/lib/lib{{ each_hdf5_lib }}${SHLIB_EXT}  # [not win]
+    - if not exist %PREFIX%\\Library\\lib\\{{ each_hdf5_lib }}.lib exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1  # [win]
+    {% endfor %}
+    # Check ros3 driver
+    - h5dump --filedriver=ros3 "http://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'  # [unix]
+    # Jan 2023 -- hmaarrfk. Tests will fail on windows without --s3-cred specified
+    # https://github.com/HDFGroup/hdf5/issues/2406
+    - h5dump --filedriver=ros3 --s3-cred="(,,)" "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | findstr "^HDF5"  # [win]
 
 about:
   home: http://www.hdfgroup.org/HDF5/

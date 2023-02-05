@@ -1,6 +1,8 @@
---- a/configure 2022-04-19 12:44:19.000000000 -0400
-+++ b/configure	2022-05-18 14:54:28.621115700 -0400
-@@ -670,6 +670,7 @@
+diff --git a/configure b/configure
+index 3d4c226933..0c068d6e2c 100755
+--- a/configure
++++ b/configure
+@@ -670,6 +670,7 @@ DEFAULT_API_VERSION
  DEPRECATED_SYMBOLS
  BUILD_ALL_CONDITIONAL_FALSE
  BUILD_ALL_CONDITIONAL_TRUE
@@ -8,7 +10,7 @@
  ROOT
  JAVA_VERSION
  CXX_VERSION
-@@ -6686,12 +6687,7 @@
+@@ -6673,12 +6674,7 @@ main ()
  }
  
  _ACEOF
@@ -22,27 +24,23 @@
    if ac_fn_c_try_run "$LINENO"; then :
  
              LDBL_DIG=$(./conftest$EXEEXT 2>&1 | sed -n '1p')
-@@ -6710,13 +6706,15 @@
+@@ -6697,6 +6693,7 @@ fi
  
  
  
--if test "$ac_cv_sizeof___float128" != 0 && test "$FLT128_DIG" != 0 ; then
 +if [ -z "$PAC_C_MAX_REAL_PRECISION" ]; then
-+  if test "$ac_cv_sizeof___float128" != 0 && test "$FLT128_DIG" != 0 ; then
+   if test "$ac_cv_sizeof___float128" != 0 && test "$FLT128_DIG" != 0 ; then
  
  $as_echo "#define HAVE_FLOAT128 1" >>confdefs.h
- 
--  PAC_C_MAX_REAL_PRECISION=$FLT128_DIG
--else
--  PAC_C_MAX_REAL_PRECISION=$LDBL_DIG
-+    PAC_C_MAX_REAL_PRECISION=$FLT128_DIG
-+  else
-+    PAC_C_MAX_REAL_PRECISION=$LDBL_DIG
-+  fi
- fi
+@@ -6705,6 +6702,7 @@ $as_echo "#define HAVE_FLOAT128 1" >>confdefs.h
+   else
+     PAC_C_MAX_REAL_PRECISION=$LDBL_DIG
+   fi
++fi
  
  cat >>confdefs.h <<_ACEOF
-@@ -8177,10 +8175,32 @@
+ #define PAC_C_MAX_REAL_PRECISION $PAC_C_MAX_REAL_PRECISION
+@@ -8152,10 +8150,32 @@ ac_compiler_gnu=$ac_cv_fc_compiler_gnu
  
  TEST_SRC="`sed -n '/PROGRAM FC_AVAIL_KINDS/,/END PROGRAM FC_AVAIL_KINDS/p' $srcdir/m4/aclocal_fc.f90`"
  if test "$cross_compiling" = yes; then :
@@ -79,7 +77,7 @@
  else
    cat > conftest.$ac_ext <<_ACEOF
  $TEST_SRC
-@@ -8332,92 +8352,6 @@
+@@ -8307,91 +8327,6 @@ ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
  ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
  ac_compiler_gnu=$ac_cv_fc_compiler_gnu
  
@@ -168,11 +166,10 @@
 -ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
 -ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
 -ac_compiler_gnu=$ac_cv_fc_compiler_gnu
--
+ 
  
    ## Find all sizeofs for available KINDs
- 
-@@ -8465,7 +8399,9 @@
+@@ -8440,7 +8375,9 @@ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
  fi
  
  done
@@ -183,7 +180,7 @@
  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PAC_FC_ALL_INTEGER_KINDS_SIZEOF" >&5
  $as_echo "$PAC_FC_ALL_INTEGER_KINDS_SIZEOF" >&6; }
  ac_ext=${ac_fc_srcext-f}
-@@ -8519,7 +8455,9 @@
+@@ -8494,7 +8431,9 @@ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
  fi
  
  done
@@ -194,16 +191,3 @@
  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PAC_FC_ALL_REAL_KINDS_SIZEOF" >&5
  $as_echo "$PAC_FC_ALL_REAL_KINDS_SIZEOF" >&6; }
  ac_ext=${ac_fc_srcext-f}
-@@ -33937,8 +33875,10 @@
- 
- if test "$cross_compiling" = yes; then :
- 
--    { $as_echo "$as_me:${as_lineno-$LINENO}: result: unknown, assuming yes" >&5
--$as_echo "unknown, assuming yes" >&6; }
-+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: unknown, assuming no" >&5
-+$as_echo "unknown, assuming no" >&6; }
-+
-+$as_echo "#define NO_ALIGNMENT_RESTRICTIONS 1" >>confdefs.h
- 
- else
-   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
