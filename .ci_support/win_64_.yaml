@@ -1,11 +1,11 @@
 c_compiler:
-- vs2017
+- vs2019
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- vs2017
+- vs2019
 libcurl:
 - '7'
 mpi:
@@ -15,19 +15,8 @@ mpich:
 openmpi:
 - '4'
 openssl:
-- 1.1.1
-pin_run_as_build:
-  libcurl:
-    max_pin: x
-  mpich:
-    max_pin: x.x
-  openmpi:
-    max_pin: x.x
-  zlib:
-    max_pin: x.x
+- '3'
 target_platform:
 - win-64
-vc:
-- '14'
 zlib:
 - '1.2'
