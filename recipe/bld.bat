@@ -46,73 +46,75 @@ if errorlevel 1 exit 1
 
 :: The CMake Build process adds a -shared at the end of every exe when you don't
 :: build the static libraries.
-:: We move the shared executables to a name withtout the -shared prefix to ensure
-:: the yare found by programs that expect them in the standard location
+:: We copy the shared executables to a name withtout the -shared prefix to ensure
+:: they are found by programs that expect them in the standard location
+:: We cannot move the files since the generated CMake files from HDF5 still
+:: expect them to exists with the -shared suffix
 :: https://github.com/conda-forge/hdf5-feedstock/pull/188
-echo Moving %LIBRARY_PREFIX%\bin\h5repart-shared.exe %LIBRARY_PREFIX%\bin\h5repart.exe
-move %LIBRARY_PREFIX%\bin\h5repart-shared.exe %LIBRARY_PREFIX%\bin\h5repart.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5repart-shared.exe %LIBRARY_PREFIX%\bin\h5repart.exe
+copy %LIBRARY_PREFIX%\bin\h5repart-shared.exe %LIBRARY_PREFIX%\bin\h5repart.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5debug-shared.exe %LIBRARY_PREFIX%\bin\h5debug.exe
-move %LIBRARY_PREFIX%\bin\h5debug-shared.exe %LIBRARY_PREFIX%\bin\h5debug.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5debug-shared.exe %LIBRARY_PREFIX%\bin\h5debug.exe
+copy %LIBRARY_PREFIX%\bin\h5debug-shared.exe %LIBRARY_PREFIX%\bin\h5debug.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5jam-shared.exe %LIBRARY_PREFIX%\bin\h5jam.exe
-move %LIBRARY_PREFIX%\bin\h5jam-shared.exe %LIBRARY_PREFIX%\bin\h5jam.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5jam-shared.exe %LIBRARY_PREFIX%\bin\h5jam.exe
+copy %LIBRARY_PREFIX%\bin\h5jam-shared.exe %LIBRARY_PREFIX%\bin\h5jam.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5unjam-shared.exe %LIBRARY_PREFIX%\bin\h5unjam.exe
-move %LIBRARY_PREFIX%\bin\h5unjam-shared.exe %LIBRARY_PREFIX%\bin\h5unjam.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5unjam-shared.exe %LIBRARY_PREFIX%\bin\h5unjam.exe
+copy %LIBRARY_PREFIX%\bin\h5unjam-shared.exe %LIBRARY_PREFIX%\bin\h5unjam.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5clear-shared.exe %LIBRARY_PREFIX%\bin\h5clear.exe
-move %LIBRARY_PREFIX%\bin\h5clear-shared.exe %LIBRARY_PREFIX%\bin\h5clear.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5clear-shared.exe %LIBRARY_PREFIX%\bin\h5clear.exe
+copy %LIBRARY_PREFIX%\bin\h5clear-shared.exe %LIBRARY_PREFIX%\bin\h5clear.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h52gif-shared.exe %LIBRARY_PREFIX%\bin\h52gif.exe
-move %LIBRARY_PREFIX%\bin\h52gif-shared.exe %LIBRARY_PREFIX%\bin\h52gif.exe
+echo Copying %LIBRARY_PREFIX%\bin\h52gif-shared.exe %LIBRARY_PREFIX%\bin\h52gif.exe
+copy %LIBRARY_PREFIX%\bin\h52gif-shared.exe %LIBRARY_PREFIX%\bin\h52gif.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5mkgrp-shared.exe %LIBRARY_PREFIX%\bin\h5mkgrp.exe
-move %LIBRARY_PREFIX%\bin\h5mkgrp-shared.exe %LIBRARY_PREFIX%\bin\h5mkgrp.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5mkgrp-shared.exe %LIBRARY_PREFIX%\bin\h5mkgrp.exe
+copy %LIBRARY_PREFIX%\bin\h5mkgrp-shared.exe %LIBRARY_PREFIX%\bin\h5mkgrp.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5format_convert-shared.exe %LIBRARY_PREFIX%\bin\h5format_convert.exe
-move %LIBRARY_PREFIX%\bin\h5format_convert-shared.exe %LIBRARY_PREFIX%\bin\h5format_convert.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5format_convert-shared.exe %LIBRARY_PREFIX%\bin\h5format_convert.exe
+copy %LIBRARY_PREFIX%\bin\h5format_convert-shared.exe %LIBRARY_PREFIX%\bin\h5format_convert.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\gif2h5-shared.exe %LIBRARY_PREFIX%\bin\gif2h5.exe
-move %LIBRARY_PREFIX%\bin\gif2h5-shared.exe %LIBRARY_PREFIX%\bin\gif2h5.exe
+echo Copying %LIBRARY_PREFIX%\bin\gif2h5-shared.exe %LIBRARY_PREFIX%\bin\gif2h5.exe
+copy %LIBRARY_PREFIX%\bin\gif2h5-shared.exe %LIBRARY_PREFIX%\bin\gif2h5.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5copy-shared.exe %LIBRARY_PREFIX%\bin\h5copy.exe
-move %LIBRARY_PREFIX%\bin\h5copy-shared.exe %LIBRARY_PREFIX%\bin\h5copy.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5copy-shared.exe %LIBRARY_PREFIX%\bin\h5copy.exe
+copy %LIBRARY_PREFIX%\bin\h5copy-shared.exe %LIBRARY_PREFIX%\bin\h5copy.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5stat-shared.exe %LIBRARY_PREFIX%\bin\h5stat.exe
-move %LIBRARY_PREFIX%\bin\h5stat-shared.exe %LIBRARY_PREFIX%\bin\h5stat.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5stat-shared.exe %LIBRARY_PREFIX%\bin\h5stat.exe
+copy %LIBRARY_PREFIX%\bin\h5stat-shared.exe %LIBRARY_PREFIX%\bin\h5stat.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5import-shared.exe %LIBRARY_PREFIX%\bin\h5import.exe
-move %LIBRARY_PREFIX%\bin\h5import-shared.exe %LIBRARY_PREFIX%\bin\h5import.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5import-shared.exe %LIBRARY_PREFIX%\bin\h5import.exe
+copy %LIBRARY_PREFIX%\bin\h5import-shared.exe %LIBRARY_PREFIX%\bin\h5import.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5watch-shared.exe %LIBRARY_PREFIX%\bin\h5watch.exe
-move %LIBRARY_PREFIX%\bin\h5watch-shared.exe %LIBRARY_PREFIX%\bin\h5watch.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5watch-shared.exe %LIBRARY_PREFIX%\bin\h5watch.exe
+copy %LIBRARY_PREFIX%\bin\h5watch-shared.exe %LIBRARY_PREFIX%\bin\h5watch.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5diff-shared.exe %LIBRARY_PREFIX%\bin\h5diff.exe
-move %LIBRARY_PREFIX%\bin\h5diff-shared.exe %LIBRARY_PREFIX%\bin\h5diff.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5diff-shared.exe %LIBRARY_PREFIX%\bin\h5diff.exe
+copy %LIBRARY_PREFIX%\bin\h5diff-shared.exe %LIBRARY_PREFIX%\bin\h5diff.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5repack-shared.exe %LIBRARY_PREFIX%\bin\h5repack.exe
-move %LIBRARY_PREFIX%\bin\h5repack-shared.exe %LIBRARY_PREFIX%\bin\h5repack.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5repack-shared.exe %LIBRARY_PREFIX%\bin\h5repack.exe
+copy %LIBRARY_PREFIX%\bin\h5repack-shared.exe %LIBRARY_PREFIX%\bin\h5repack.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5ls-shared.exe %LIBRARY_PREFIX%\bin\h5ls.exe
-move %LIBRARY_PREFIX%\bin\h5ls-shared.exe %LIBRARY_PREFIX%\bin\h5ls.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5ls-shared.exe %LIBRARY_PREFIX%\bin\h5ls.exe
+copy %LIBRARY_PREFIX%\bin\h5ls-shared.exe %LIBRARY_PREFIX%\bin\h5ls.exe
 if errorlevel 1 exit 1
 
-echo Moving %LIBRARY_PREFIX%\bin\h5dump-shared.exe %LIBRARY_PREFIX%\bin\h5dump.exe
-move %LIBRARY_PREFIX%\bin\h5dump-shared.exe %LIBRARY_PREFIX%\bin\h5dump.exe
+echo Copying %LIBRARY_PREFIX%\bin\h5dump-shared.exe %LIBRARY_PREFIX%\bin\h5dump.exe
+copy %LIBRARY_PREFIX%\bin\h5dump-shared.exe %LIBRARY_PREFIX%\bin\h5dump.exe
 if errorlevel 1 exit 1
