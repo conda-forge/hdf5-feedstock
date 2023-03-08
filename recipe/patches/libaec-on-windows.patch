@@ -1,5 +1,5 @@
---- a/CMakeFilters.cmake
-+++ b/CMakeFilters.cmake
+--- a/src/CMakeFilters.cmake
++++ b/src/CMakeFilters.cmake
 @@ -59,9 +59,9 @@
        find_package (ZLIB NAMES ${ZLIB_PACKAGE_NAME}${HDF_PACKAGE_EXT} COMPONENTS static shared)
        if (NOT ZLIB_FOUND)
