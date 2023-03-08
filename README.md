@@ -1,11 +1,11 @@
-About hdf5
-==========
+About hdf5-feedstock
+====================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/hdf5-feedstock/blob/main/LICENSE.txt)
 
 Home: http://www.hdfgroup.org/HDF5/
 
 Package license: LicenseRef-HDF5
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/hdf5-feedstock/blob/main/LICENSE.txt)
 
 Summary: HDF5 is a data model, library, and file format for storing and managing data
 
