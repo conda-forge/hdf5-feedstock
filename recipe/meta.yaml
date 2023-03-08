@@ -1,6 +1,6 @@
 {% set version = "1.14.0" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 2 %}
+{% set build = 3 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -58,6 +58,7 @@ source:
 
     # https://github.com/HDFGroup/hdf5/pull/2407
     - patches/2407-include-shlwapi-explicitely-on-windows.patch   # [win]
+    - patches/libaec-on-windows.patch   # [win]
 
 build:
   number: {{ build }}
@@ -82,8 +83,7 @@ requirements:
   host:
     - {{ mpi }}  # [mpi != 'nompi']
     - zlib
-    # sz support was never working on conda-forge for windows
-    - libaec     # [unix]
+    - libaec
     - libcurl
     - openssl
   run:
