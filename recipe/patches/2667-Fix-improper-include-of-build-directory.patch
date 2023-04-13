@@ -20,7 +20,7 @@
 
      HAVE_STDATOMIC_H="yes"
      AC_CHECK_HEADERS([stdatomic.h],,[HAVE_STDATOMIC_H="no"])
---- a/configure.orig
+--- a/configure
 +++ b/configure
 @@ -31556,8 +31556,7 @@
  HAVE_MERCURY="no"
