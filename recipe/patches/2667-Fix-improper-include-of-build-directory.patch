@@ -20,21 +20,23 @@
 
      HAVE_STDATOMIC_H="yes"
      AC_CHECK_HEADERS([stdatomic.h],,[HAVE_STDATOMIC_H="no"])
---- a/configure
+--- a/configure.orig
 +++ b/configure
-@@ -31557,7 +31557,7 @@
+@@ -31556,8 +31556,7 @@
+ HAVE_MERCURY="no"
 
  ## Always include subfiling directory so public header files are available
- CPPFLAGS="$CPPFLAGS -I$ac_abs_confdir/src/H5FDsubfiling"
+-CPPFLAGS="$CPPFLAGS -I$ac_abs_confdir/src/H5FDsubfiling"
 -AM_CPPFLAGS="$AM_CPPFLAGS -I$ac_abs_confdir/src/H5FDsubfiling"
 +H5_CPPFLAGS="$H5_CPPFLAGS -I$ac_abs_confdir/src/H5FDsubfiling"
 
  { $as_echo "$as_me:${as_lineno-$LINENO}: checking if the subfiling I/O virtual file driver (VFD) is enabled" >&5
  $as_echo_n "checking if the subfiling I/O virtual file driver (VFD) is enabled... " >&6; }
-@@ -31635,7 +31635,7 @@
+@@ -31634,8 +31633,7 @@
+     mercury_dir="$ac_abs_confdir/src/H5FDsubfiling/mercury"
      mercury_inc="$mercury_dir/src/util"
 
-     CPPFLAGS="$CPPFLAGS -I$mercury_inc"
+-    CPPFLAGS="$CPPFLAGS -I$mercury_inc"
 -    AM_CPPFLAGS="$AM_CPPFLAGS -I$mercury_inc"
 +    H5_CPPFLAGS="$H5_CPPFLAGS -I$mercury_inc"
 
