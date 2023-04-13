@@ -1,16 +1,3 @@
-From b77cb393b884c1dbdaffb300aa8c4967d9ba7fb0 Mon Sep 17 00:00:00 2001
-From: jhendersonHDF <jhenderson@hdfgroup.org>
-Date: Tue, 11 Apr 2023 14:31:25 -0500
-Subject: [PATCH] Fix improper include of build directory (#2422, #2621)
- (#2667)
-
----
- configure.ac             |  6 ++----
- release_docs/RELEASE.txt | 18 ++++++++++++++++++
- 2 files changed, 20 insertions(+), 4 deletions(-)
-
-diff --git a/configure.ac b/configure.ac
-index 7c8c958bf..d5f46da75 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -3012,8 +3012,7 @@ SUBFILING_VFD=no
@@ -33,3 +20,23 @@ index 7c8c958bf..d5f46da75 100644
 
      HAVE_STDATOMIC_H="yes"
      AC_CHECK_HEADERS([stdatomic.h],,[HAVE_STDATOMIC_H="no"])
+--- a/configure
++++ b/configure
+@@ -31557,7 +31557,7 @@
+
+ ## Always include subfiling directory so public header files are available
+ CPPFLAGS="$CPPFLAGS -I$ac_abs_confdir/src/H5FDsubfiling"
+-AM_CPPFLAGS="$AM_CPPFLAGS -I$ac_abs_confdir/src/H5FDsubfiling"
++H5_CPPFLAGS="$H5_CPPFLAGS -I$ac_abs_confdir/src/H5FDsubfiling"
+
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking if the subfiling I/O virtual file driver (VFD) is enabled" >&5
+ $as_echo_n "checking if the subfiling I/O virtual file driver (VFD) is enabled... " >&6; }
+@@ -31635,7 +31635,7 @@
+     mercury_inc="$mercury_dir/src/util"
+
+     CPPFLAGS="$CPPFLAGS -I$mercury_inc"
+-    AM_CPPFLAGS="$AM_CPPFLAGS -I$mercury_inc"
++    H5_CPPFLAGS="$H5_CPPFLAGS -I$mercury_inc"
+
+     HAVE_STDATOMIC_H="yes"
+     for ac_header in stdatomic.h
