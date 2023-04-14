@@ -61,7 +61,7 @@ source:
     - patches/libaec-on-windows.patch   # [win]
 
     # https://github.com/HDFGroup/hdf5/pull/2667
-    # - patches/2667-Fix-improper-include-of-build-directory.patch
+    - patches/2667-Fix-improper-include-of-build-directory.patch
 
 build:
   number: {{ build }}
