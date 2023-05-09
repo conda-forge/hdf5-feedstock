@@ -9,7 +9,7 @@ cxx_compiler:
 libaec:
 - '1'
 libcurl:
-- '7'
+- '8'
 mpi:
 - nompi
 mpich:
