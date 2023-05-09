@@ -11,38 +11,38 @@ jobs:
       osx_64_mpimpichopenssl1.1.1:
         CONFIG: osx_64_mpimpichopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpimpichopenssl3:
-        CONFIG: osx_64_mpimpichopenssl3
+      osx_64_mpimpichopenssl3.1:
+        CONFIG: osx_64_mpimpichopenssl3.1
         UPLOAD_PACKAGES: 'True'
       osx_64_mpinompiopenssl1.1.1:
         CONFIG: osx_64_mpinompiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpinompiopenssl3:
-        CONFIG: osx_64_mpinompiopenssl3
+      osx_64_mpinompiopenssl3.1:
+        CONFIG: osx_64_mpinompiopenssl3.1
         UPLOAD_PACKAGES: 'True'
       osx_64_mpiopenmpiopenssl1.1.1:
         CONFIG: osx_64_mpiopenmpiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpiopenmpiopenssl3:
-        CONFIG: osx_64_mpiopenmpiopenssl3
+      osx_64_mpiopenmpiopenssl3.1:
+        CONFIG: osx_64_mpiopenmpiopenssl3.1
         UPLOAD_PACKAGES: 'True'
       osx_arm64_mpimpichopenssl1.1.1:
         CONFIG: osx_arm64_mpimpichopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpimpichopenssl3:
-        CONFIG: osx_arm64_mpimpichopenssl3
+      osx_arm64_mpimpichopenssl3.1:
+        CONFIG: osx_arm64_mpimpichopenssl3.1
         UPLOAD_PACKAGES: 'True'
       osx_arm64_mpinompiopenssl1.1.1:
         CONFIG: osx_arm64_mpinompiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpinompiopenssl3:
-        CONFIG: osx_arm64_mpinompiopenssl3
+      osx_arm64_mpinompiopenssl3.1:
+        CONFIG: osx_arm64_mpinompiopenssl3.1
         UPLOAD_PACKAGES: 'True'
       osx_arm64_mpiopenmpiopenssl1.1.1:
         CONFIG: osx_arm64_mpiopenmpiopenssl1.1.1
         UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpiopenmpiopenssl3:
-        CONFIG: osx_arm64_mpiopenmpiopenssl3
+      osx_arm64_mpiopenmpiopenssl3.1:
+        CONFIG: osx_arm64_mpiopenmpiopenssl3.1
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
 

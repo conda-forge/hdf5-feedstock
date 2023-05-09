@@ -17,7 +17,7 @@ mpich:
 openmpi:
 - '4'
 openssl:
-- '3'
+- '3.1'
 target_platform:
 - win-64
 zlib:

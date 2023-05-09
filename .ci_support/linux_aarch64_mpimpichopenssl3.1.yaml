@@ -27,13 +27,13 @@ libaec:
 libcurl:
 - '8'
 mpi:
-- nompi
+- mpich
 mpich:
 - '4'
 openmpi:
 - '4'
 openssl:
-- '3'
+- '3.1'
 target_platform:
 - linux-aarch64
 zip_keys:
