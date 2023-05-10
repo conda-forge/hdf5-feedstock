@@ -53,8 +53,6 @@ source:
     - patches/osx_cross_fortran_src_makefile.patch     # [osx and build_platform != target_platform]
     - patches/osx_cross_hl_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
 
-    # https://github.com/HDFGroup/hdf5/pull/2407
-    - patches/2407-include-shlwapi-explicitely-on-windows.patch   # [win]
     - patches/libaec-on-windows.patch   # [win]
 
 build:
