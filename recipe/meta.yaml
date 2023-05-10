@@ -42,7 +42,7 @@ source:
     # Atomicity tests seem to fail for openmpi
     # This seems to be a known bug
     # https://github.com/HDFGroup/hdf5/issues/2196
-    # - patches/testpar_Makefile.in.patch
+    - patches/testpar_Makefile.in.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
     - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
