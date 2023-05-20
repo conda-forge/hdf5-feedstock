@@ -53,8 +53,6 @@ source:
     - patches/osx_cross_fortran_src_makefile.patch     # [osx and build_platform != target_platform]
     - patches/osx_cross_hl_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
 
-    # - patches/libaec-on-windows.patch   # [win]
-
 build:
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
