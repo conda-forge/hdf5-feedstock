@@ -36,7 +36,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
+  url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}-2.tar.gz
   sha256: c5c0bc37d070eb2ce2561594106ed6e2adad9ef06d889d2ee16c92b0a488017d
   patches:
     # Atomicity tests seem to fail for openmpi
