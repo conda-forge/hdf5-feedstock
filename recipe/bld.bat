@@ -24,7 +24,7 @@ cmake -G "Ninja" ^
       -D HDF5_ENABLE_ROS3_VFD:BOOL=ON ^
       -D HDF5_ENABLE_SZIP_SUPPORT=ON ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
-      -D FORTRAN_LIBRARIES=ON ^
+      -D HDF5_BUILD_FORTRAN=ON ^
       %SRC_DIR%
 if errorlevel 1 exit 1
 
