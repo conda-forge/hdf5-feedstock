@@ -9,7 +9,9 @@ cxx_compiler:
 libaec:
 - '1'
 libcurl:
-- '7'
+- '8'
+m2w64_fortran_compiler:
+- m2w64-toolchain
 mpi:
 - nompi
 mpich:
