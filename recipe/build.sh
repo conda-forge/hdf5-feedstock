@@ -88,10 +88,10 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export hdf5_cv_szlib_can_encode=yes
 
   HDF5_OPTIONS="${HDF5_OPTIONS} --enable-tests=no"
-  # regen config after patches to configure.ac
-  ./autogen.sh
 fi
 
+# regen config after patches to configure.ac
+./autogen.sh
 
 ./configure --prefix="${PREFIX}" \
             --with-pic \
