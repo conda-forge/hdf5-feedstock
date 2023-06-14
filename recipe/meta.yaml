@@ -50,6 +50,9 @@ source:
     # Enable cross-compiling on osx
     - patches/osx_cross_configure.patch           # [osx and build_platform != target_platform]
     - patches/osx_cross_makefile.patch            # [osx and build_platform != target_platform]
+    # gfortran 13 compatibility
+    # https://github.com/HDFGroup/hdf5/pull/2957
+    - patches/2957.patch
 
 build:
   number: {{ build }}
