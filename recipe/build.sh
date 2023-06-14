@@ -6,6 +6,9 @@ export LIBRARY_PATH="${PREFIX}/lib"
 # Get an updated config.sub and config.guess
 cp $BUILD_PREFIX/share/libtool/build-aux/config.* ./bin
 
+# hdf5 autogen.sh doesn't find libtool on mac correctly
+export HDF5_LIBTOOL=$BUILD_PREFIX/bin/libtool
+
 HDF5_OPTIONS=
 
 if [[ "$target_platform" == linux-* ]]; then
