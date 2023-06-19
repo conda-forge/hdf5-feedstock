@@ -1,6 +1,6 @@
-{% set version = "1.14.0" %}
+{% set version = "1.14.1" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 3 %}
+{% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -36,29 +36,23 @@ package:
   version: {{ version }}
 
 source:
-  url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
-  sha256: a571cc83efda62e1a51a0a912dd916d01895801c5025af91669484a1575a6ef4
+  url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}-2.tar.gz
+  sha256: cbe93f275d5231df28ced9549253793e40cd2b555e3d288df09d7b89a9967b07
   patches:
-    # Private scope for MPI with cmake
-    # https://github.com/HDFGroup/hdf5/pull/2400
-    - patches/2400-mpi-private-scope.patch
     # Atomicity tests seem to fail for openmpi
     # This seems to be a known bug
     # https://github.com/HDFGroup/hdf5/issues/2196
-    - patches/testpar_Makefile.in.patch
+    - patches/testpar_Makefile.am.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
     - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
     - patches/testh5diff.sh.in.patch              # [mpi != 'nompi']
     # Enable cross-compiling on osx
-    - patches/osx_cross_configure.patch
-    - patches/osx_cross_src_makefile.patch             # [osx and build_platform != target_platform]
-    - patches/osx_cross_fortran_src_makefile.patch     # [osx and build_platform != target_platform]
-    - patches/osx_cross_hl_fortran_src_makefile.patch  # [osx and build_platform != target_platform]
-
-    # https://github.com/HDFGroup/hdf5/pull/2407
-    - patches/2407-include-shlwapi-explicitely-on-windows.patch   # [win]
-    - patches/libaec-on-windows.patch   # [win]
+    - patches/osx_cross_configure.patch           # [osx and build_platform != target_platform]
+    - patches/osx_cross_makefile.patch            # [osx and build_platform != target_platform]
+    # gfortran 13 compatibility
+    # https://github.com/HDFGroup/hdf5/pull/2957
+    - patches/2957.patch
 
 build:
   number: {{ build }}
@@ -73,6 +67,8 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
     - cmake                      # [win]
+    - automake                   # [not win]
+    - autoconf                   # [not win]
     - libtool                    # [not win]
     - make                       # [not win]
     - ninja                      # [win]

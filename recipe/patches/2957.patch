@@ -1,0 +1,64 @@
+From 49edfce92c14c45c99e450de9927fee95a85cd72 Mon Sep 17 00:00:00 2001
+From: Scot Breitenfeld <brtnfld@hdfgroup.org>
+Date: Mon, 15 May 2023 09:31:59 -0500
+Subject: [PATCH] addresses gfortran issue
+ https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109861
+
+---
+ fortran/src/H5Aff.F90 |  2 +-
+ fortran/src/H5Pff.F90 | 16 ++++++++--------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/fortran/src/H5Aff.F90 b/fortran/src/H5Aff.F90
+index 2f1e6d0ef14..fab86bd34a3 100644
+--- a/fortran/src/H5Aff.F90
++++ b/fortran/src/H5Aff.F90
+@@ -2086,7 +2086,7 @@ SUBROUTINE h5aread_async_f(attr_id, mem_type_id, buf, es_id, hdferr, file, func,
+     IMPLICIT NONE
+     INTEGER(HID_T), INTENT(IN)    :: attr_id
+     INTEGER(HID_T), INTENT(IN)    :: mem_type_id
+-    TYPE(C_PTR)   , INTENT(OUT) :: buf
++    TYPE(C_PTR)   , INTENT(INOUT) :: buf
+     INTEGER(HID_T), INTENT(IN)    :: es_id
+     INTEGER       , INTENT(OUT)   :: hdferr
+     TYPE(C_PTR), OPTIONAL :: file
+diff --git a/fortran/src/H5Pff.F90 b/fortran/src/H5Pff.F90
+index 49917dd6411..098a6c31717 100644
+--- a/fortran/src/H5Pff.F90
++++ b/fortran/src/H5Pff.F90
+@@ -4825,7 +4825,7 @@ SUBROUTINE h5pget_ptr(prp_id, name, value, hdferr)
+     IMPLICIT NONE
+     INTEGER(HID_T), INTENT(IN) :: prp_id
+     CHARACTER(LEN=*), INTENT(IN) :: name
+-    TYPE(C_PTR), INTENT(OUT) :: value
++    TYPE(C_PTR), INTENT(INOUT) :: value
+     INTEGER, INTENT(OUT) :: hdferr
+     INTEGER :: name_len
+ 
+@@ -5090,19 +5090,19 @@ END SUBROUTINE h5pset_file_image_f
+ !!
+   SUBROUTINE h5pget_file_image_f(fapl_id, buf_ptr, buf_len_ptr, hdferr)
+     IMPLICIT NONE
+-    INTEGER(HID_T) , INTENT(IN)                :: fapl_id
+-    TYPE(C_PTR)    , INTENT(OUT), DIMENSION(*) :: buf_ptr
+-    INTEGER(SIZE_T), INTENT(OUT)               :: buf_len_ptr
+-    INTEGER        , INTENT(OUT)               :: hdferr
++    INTEGER(HID_T) , INTENT(IN)                  :: fapl_id
++    TYPE(C_PTR)    , INTENT(INOUT), DIMENSION(*) :: buf_ptr
++    INTEGER(SIZE_T), INTENT(OUT)                 :: buf_len_ptr
++    INTEGER        , INTENT(OUT)                 :: hdferr
+ 
+     INTERFACE
+        INTEGER FUNCTION h5pget_file_image_c(fapl_id, buf_ptr, buf_len_ptr) &
+             BIND(C, NAME='h5pget_file_image_c')
+          IMPORT :: c_ptr
+          IMPORT :: HID_T, SIZE_T
+-         INTEGER(HID_T), INTENT(IN) :: fapl_id
+-         TYPE(C_PTR), DIMENSION(*), INTENT(OUT)  :: buf_ptr
+-         INTEGER(SIZE_T), INTENT(OUT)  :: buf_len_ptr
++         INTEGER(HID_T) :: fapl_id
++         TYPE(C_PTR), DIMENSION(*) :: buf_ptr
++         INTEGER(SIZE_T) :: buf_len_ptr
+        END FUNCTION h5pget_file_image_c
+     END INTERFACE
+ 

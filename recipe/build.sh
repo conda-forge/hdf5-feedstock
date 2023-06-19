@@ -6,6 +6,9 @@ export LIBRARY_PATH="${PREFIX}/lib"
 # Get an updated config.sub and config.guess
 cp $BUILD_PREFIX/share/libtool/build-aux/config.* ./bin
 
+# hdf5 autogen.sh doesn't find libtool on mac correctly
+export HDF5_LIBTOOL=$BUILD_PREFIX/bin/libtool
+
 HDF5_OPTIONS=
 
 if [[ "$target_platform" == linux-* ]]; then
@@ -87,6 +90,8 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   HDF5_OPTIONS="${HDF5_OPTIONS} --enable-tests=no"
 fi
 
+# regen config after patches to configure.ac
+./autogen.sh
 
 ./configure --prefix="${PREFIX}" \
             --with-pic \
@@ -134,8 +139,9 @@ make -j "${CPU_COUNT}" ${VERBOSE_AT}
 
 make install V=1
 
-if [[ ${mpi} == "openmpi" && "$(uname)" == "Darwin" ]]; then
+if [[ ${mpi} == "mpich" || (${mpi} == "openmpi" && "$(uname)" == "Darwin") ]]; then
   # ph5diff hangs on darwin with openmpi, skip the test
+  # ph5diff also crashes on mpich 4.1
   echo <<EOF > tools/test/h5diff/testph5diff.sh
 #!/bin/sh
 exit 0
