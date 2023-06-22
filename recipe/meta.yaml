@@ -91,13 +91,11 @@ test:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
     - pkg-config                 # [not win]
+    - cmake                      # [not win]
     # Need zlib to compile test programs
     - zlib
   files:
-    - h5_cmprss.c
-    - h5tutr_cmprss.cpp
-    - h5_cmprss.f90
-    - compound_fortran2003.f90
+    - test
   commands:
     # Verify UNIX CLI tools.
     {% if mpi == 'nompi' %}
