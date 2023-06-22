@@ -2,8 +2,5 @@ mpi:
   - nompi
   - mpich  # [unix]
   - openmpi  # [unix]
-# Build with both openssl 1 and 3 upon request by mkitti
-# https://github.com/conda-forge/hdf5-feedstock/issues/194
-openssl:
-- 1.1.1
-- '3'
+MACOSX_SDK_VERSION:        # [osx and x86_64]
+  - "10.12"                # [osx and x86_64]
