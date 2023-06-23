@@ -92,6 +92,7 @@ test:
     - {{ compiler('fortran') }}  # [not win]
     - pkg-config                 # [not win]
     - cmake                      # [not win]
+    - make                       # [not win]
     # Need zlib to compile test programs
     - zlib
   files:
