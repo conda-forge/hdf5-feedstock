@@ -164,7 +164,7 @@ test:
     - h5dump --filedriver=ros3 --s3-cred="(,,)" "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | findstr "^HDF5"  # [win]
 
 about:
-  home: http://www.hdfgroup.org/HDF5/
+  home: https://www.hdfgroup.org/solutions/hdf5/
   license: LicenseRef-HDF5
   license_family: BSD
   license_file: COPYING
