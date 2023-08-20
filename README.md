@@ -3,7 +3,7 @@ About hdf5-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/hdf5-feedstock/blob/main/LICENSE.txt)
 
-Home: http://www.hdfgroup.org/HDF5/
+Home: https://www.hdfgroup.org/solutions/hdf5/
 
 Package license: LicenseRef-HDF5
 
@@ -272,7 +272,7 @@ Feedstock Maintainers
 =====================
 
 * [@SylvainCorlay](https://github.com/SylvainCorlay/)
-* [@astrofrog-conda-forge](https://github.com/astrofrog-conda-forge/)
+* [@astrofrog](https://github.com/astrofrog/)
 * [@davidbrochart](https://github.com/davidbrochart/)
 * [@gillins](https://github.com/gillins/)
 * [@groutr](https://github.com/groutr/)
