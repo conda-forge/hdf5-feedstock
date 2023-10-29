@@ -63,6 +63,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
+    - {{ compiler('m2w64_fortran') }}  # [win]
     - cmake                      # [win]
     - automake                   # [not win]
     - autoconf                   # [not win]
@@ -87,6 +88,7 @@ test:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
+    - {{ compiler('m2w64_fortran') }}  # [win]
     - pkg-config                 # [not win]
     - cmake                      # [not win]
     - make                       # [not win]
