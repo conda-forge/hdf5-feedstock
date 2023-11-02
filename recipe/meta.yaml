@@ -65,6 +65,7 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
     - {{ compiler('m2w64_c') }}  # [win]
+    - {{ compiler('m2w64_cxx') }}  # [win]
     - {{ compiler('m2w64_fortran') }}  # [win]
     - cmake                      # [win]
     - automake                   # [not win]
