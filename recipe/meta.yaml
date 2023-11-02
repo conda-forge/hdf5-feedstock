@@ -60,18 +60,18 @@ build:
 
 requirements:
   build:
-    - gnuconfig  # [unix]
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}  # [not win]
-    - {{ compiler('m2w64_c') }}  # [win]
-    - {{ compiler('m2w64_cxx') }}  # [win]
+    - gnuconfig                        # [unix]
+    - {{ compiler('c') }}              # [not win]
+    - {{ compiler('cxx') }}            # [not win]
+    - {{ compiler('fortran') }}        # [not win]
+    - {{ compiler('m2w64_c') }}        # [win]
+    - {{ compiler('m2w64_cxx') }}      # [win]
     - {{ compiler('m2w64_fortran') }}  # [win]
-    - cmake                      # [win]
-    - automake                   # [not win]
-    - autoconf                   # [not win]
-    - libtool                    # [not win]
-    - make                       # [not win]
+    - cmake                            # [win]
+    - automake                         # [not win]
+    - autoconf                         # [not win]
+    - libtool                          # [not win]
+    - make                             # [not win]
     - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
     - libgfortran-devel_osx-64  # [build_platform != target_platform and build_platform == 'osx-64']
     # Keep both versions of openssl in sync
@@ -87,13 +87,15 @@ requirements:
 
 test:
   requires:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}  # [not win]
+    - {{ compiler('c') }}              # [not win]
+    - {{ compiler('cxx') }}            # [not win]
+    - {{ compiler('fortran') }}        # [not win]
+    - {{ compiler('m2w64_c') }}        # [win]
+    - {{ compiler('m2w64_cxx') }}      # [win]
     - {{ compiler('m2w64_fortran') }}  # [win]
-    - pkg-config                 # [not win]
-    - cmake                      # [not win]
-    - make                       # [not win]
+    - pkg-config                       # [not win]
+    - cmake                            # [not win]
+    - make                             # [not win]
     # Need zlib to compile test programs
     - zlib
   files:
