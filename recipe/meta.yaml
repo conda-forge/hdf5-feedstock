@@ -63,12 +63,12 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
+    - {{ compiler('m2w64_fortran') }}  # [win]
     - cmake                      # [win]
     - automake                   # [not win]
     - autoconf                   # [not win]
     - libtool                    # [not win]
     - make                       # [not win]
-    - ninja                      # [win]
     - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
     - libgfortran-devel_osx-64  # [build_platform != target_platform and build_platform == 'osx-64']
     # Keep both versions of openssl in sync
@@ -87,6 +87,7 @@ test:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
+    - {{ compiler('m2w64_fortran') }}  # [win]
     - pkg-config                 # [not win]
     - cmake                      # [not win]
     - make                       # [not win]
