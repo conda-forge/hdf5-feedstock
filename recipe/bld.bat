@@ -3,6 +3,7 @@ cd build
 
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
+set "MINGWBIN=%LIBRARY_PREFIX%/mingw-w64/bin"
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 
@@ -11,6 +12,8 @@ cmake -G "MinGW Makefiles" ^
       -D CMAKE_BUILD_TYPE:STRING=RELEASE ^
       -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
+      -D CMAKE_C_COMPILER:PATH=%MINGWBIN%/gcc.exe ^
+      -D CMAKE_Fortran_COMPILER:PATH=%MINGWBIN%/gfortran.exe ^
       -D HDF5_BUILD_CPP_LIB:BOOL=ON ^
       -D HDF5_BUILD_FORTRAN:BOOL=ON ^
       -D CMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON ^
