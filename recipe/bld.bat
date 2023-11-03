@@ -3,16 +3,22 @@ cd build
 
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
+set "MINGWBIN=%LIBRARY_PREFIX%/mingw-w64/bin"
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 
 :: Configure step.
-cmake -G "Ninja" ^
+cmake -G "MinGW Makefiles" ^
       -D CMAKE_BUILD_TYPE:STRING=RELEASE ^
       -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
       -D CMAKE_INSTALL_PREFIX:PATH=%LIBRARY_PREFIX% ^
+      -D CMAKE_C_COMPILER:PATH=%MINGWBIN%/gcc.exe ^
+      -D CMAKE_CXX_COMPILER:PATH=%MINGWBIN%/g++.exe ^
+      -D CMAKE_Fortran_COMPILER:PATH=%MINGWBIN%/gfortran.exe ^
       -D HDF5_BUILD_CPP_LIB:BOOL=ON ^
+      -D HDF5_BUILD_FORTRAN:BOOL=ON ^
       -D CMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON ^
+      -D CMAKE_GNUtoMS:BOOL=ON ^
       -D BUILD_SHARED_LIBS:BOOL=ON ^
       -D BUILD_STATIC_LIBS:BOOL=OFF ^
       -D ONLY_SHARED_LIBS:BOOL=ON ^
@@ -27,12 +33,12 @@ cmake -G "Ninja" ^
       %SRC_DIR%
 if errorlevel 1 exit 1
 
-:: Build C libraries and tools.
-ninja
+:: Build libraries and tools.
+cmake --build .
 if errorlevel 1 exit 1
 
 :: Install step.
-ninja install
+cmake --install .
 if errorlevel 1 exit 1
 
 :: Remove extraneous COPYING file that gets installed automatically
