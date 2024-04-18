@@ -37,6 +37,8 @@ package:
 source:
   url: https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5_{{ version }}.tar.gz
   sha256: 44c47120e8beeb69f83b2de10203dceb6ef63f253b7859063a60205c8f48ab80
+  patches:
+    - patches/fix_flang_flags.patch  # [win]
 
 build:
   number: {{ build }}
@@ -49,8 +51,7 @@ requirements:
     - gnuconfig  # [unix]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}  # [not win]
-    - flang                      # [win]
+    - {{ compiler('fortran') }}
     - cmake                      # [win]
     - automake                   # [not win]
     - autoconf                   # [not win]
