@@ -1,6 +1,6 @@
 {% set version = "1.14.3" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 0 %}
+{% set build = 1 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -162,7 +162,7 @@ test:
 
 about:
   home: https://www.hdfgroup.org/solutions/hdf5/
-  license: LicenseRef-HDF5
+  license: BSD-3-Clause
   license_family: BSD
   license_file: COPYING
   summary: HDF5 is a data model, library, and file format for storing and managing data
