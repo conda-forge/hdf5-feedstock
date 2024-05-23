@@ -1,4 +1,5 @@
 @echo on
+setlocal EnableDelayedExpansion
 
 mkdir build
 cd build
@@ -8,10 +9,7 @@ set HDF5_EXT_ZLIB=zlib.lib
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
-  set "CMAKE_ARGS=%CMAKE_ARGS% -D MPI_C_ADDITIONAL_INCLUDE_DIRS=%LIBRARY_PREFIX%\include"
   set "CMAKE_ARGS=%CMAKE_ARGS% -D MPI_C_LIBRARIES=impi"
-  set "CMAKE_ARGS=%CMAKE_ARGS% -D MPI_CXX_ADDITIONAL_INCLUDE_DIRS=%LIBRARY_PREFIX%\include"
-  set "CMAKE_ARGS=%CMAKE_ARGS% -D MPI_CXX_LIBRARIES=impi"
   set "CMAKE_ARGS=%CMAKE_ARGS% -D HDF5_ENABLE_PARALLEL:BOOL=ON"
 )
 
