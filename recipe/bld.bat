@@ -17,6 +17,7 @@ if "%mpi%"=="impi" (
 
 :: Configure step.
 cmake -G "Ninja" ^
+      --debug-output ^
       !CMAKE_ARGS! ^
       -D CMAKE_BUILD_TYPE:STRING=RELEASE ^
       -D CMAKE_PREFIX_PATH:PATH=%LIBRARY_PREFIX% ^
