@@ -10,8 +10,6 @@ set HDF5_EXT_ZLIB=zlib.lib
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_LIBRARIES=impi"
-  :: set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_C_COMPILER=%LIBRARY_PREFIX%\bin\mpicc.bat"
-  :: set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_CXX_COMPILER=%LIBRARY_PREFIX%\bin\mpicxx.bat"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_ENABLE_PARALLEL:BOOL=ON"
 )
 
@@ -131,3 +129,9 @@ if errorlevel 1 exit 1
 echo Copying %LIBRARY_PREFIX%\bin\h5dump-shared.exe %LIBRARY_PREFIX%\bin\h5dump.exe
 copy %LIBRARY_PREFIX%\bin\h5dump-shared.exe %LIBRARY_PREFIX%\bin\h5dump.exe
 if errorlevel 1 exit 1
+
+if "%mpi%"=="impi" (
+  echo Copying %LIBRARY_PREFIX%\bin\ph5diff-shared.exe %LIBRARY_PREFIX%\bin\ph5diff.exe
+  copy %LIBRARY_PREFIX%\bin\ph5diff-shared.exe %LIBRARY_PREFIX%\bin\ph5diff.exe
+  if errorlevel 1 exit 1
+)
