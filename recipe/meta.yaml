@@ -137,8 +137,13 @@ test:
         "h5repack",
         "h5repart",
         "h5stat",
-        "h5unjam"
+        "h5unjam",
     ] %}
+    {% if mpi != 'nompi' %}
+    {% set hdf5_cmds = hdf5_cmds + [
+        "ph5diff",
+    ] %}
+    {% endif %}
     {% for each_hdf5_cmd in hdf5_cmds %}
     - command -v {{ each_hdf5_cmd }}  # [not win]
     - where {{ each_hdf5_cmd }}  # [win]
