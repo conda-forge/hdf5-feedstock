@@ -10,8 +10,8 @@ set HDF5_EXT_ZLIB=zlib.lib
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_LIBRARIES=impi"
-  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_C_COMPILER=%LIBRARY_PREFIX%\bin\mpicc.bat"
-  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_CXX_COMPILER=%LIBRARY_PREFIX%\bin\mpicxx.bat"
+  :: set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_C_COMPILER=%LIBRARY_PREFIX%\bin\mpicc.bat"
+  :: set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_CXX_COMPILER=%LIBRARY_PREFIX%\bin\mpicxx.bat"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_ENABLE_PARALLEL:BOOL=ON"
 )
 
@@ -36,7 +36,11 @@ cmake -G "Ninja" ^
       -D HDF5_ENABLE_SZIP_SUPPORT=ON ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
       %SRC_DIR%
-if errorlevel 1 exit 1
+if errorlevel 1 (
+  type CMakeFiles/CMakeOutput.log
+  type CMakeFiles/CMakeError.log
+  exit 1
+)
 
 :: Build C libraries and tools.
 ninja
