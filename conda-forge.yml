@@ -1,11 +1,15 @@
 bot:
-  abi_migration_branches: [1.12.2]
-build_platform: {osx_arm64: osx_64}
+  abi_migration_branches:
+  - 1.12.2
+build_platform:
+  osx_arm64: osx_64
+conda_build:
+  pkg_format: '2'
 conda_forge_output_validation: true
-provider: {linux_aarch64: azure, linux_ppc64le: azure}
 github:
   branch_name: main
   tooling_branch_name: main
-conda_build:
-  pkg_format: '2'
+provider:
+  linux_aarch64: azure
+  linux_ppc64le: azure
 test: native_and_emulated
