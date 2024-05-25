@@ -2,5 +2,3 @@ mpi:
   - nompi
   - mpich  # [unix]
   - openmpi  # [unix]
-MACOSX_SDK_VERSION:        # [osx and x86_64]
-  - "10.12"                # [osx and x86_64]
