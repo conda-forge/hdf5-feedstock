@@ -8,86 +8,46 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_mpimpichopenssl1.1.1:
-        CONFIG: linux_64_mpimpichopenssl1.1.1
+      linux_64_mpimpich:
+        CONFIG: linux_64_mpimpich
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_mpimpichopenssl3:
-        CONFIG: linux_64_mpimpichopenssl3
+      linux_64_mpinompi:
+        CONFIG: linux_64_mpinompi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_mpinompiopenssl1.1.1:
-        CONFIG: linux_64_mpinompiopenssl1.1.1
+      linux_64_mpiopenmpi:
+        CONFIG: linux_64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_mpinompiopenssl3:
-        CONFIG: linux_64_mpinompiopenssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_mpiopenmpiopenssl1.1.1:
-        CONFIG: linux_64_mpiopenmpiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_mpiopenmpiopenssl3:
-        CONFIG: linux_64_mpiopenmpiopenssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_aarch64_mpimpichopenssl1.1.1:
-        CONFIG: linux_aarch64_mpimpichopenssl1.1.1
+      linux_aarch64_mpimpich:
+        CONFIG: linux_aarch64_mpimpich
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_mpimpichopenssl3:
-        CONFIG: linux_aarch64_mpimpichopenssl3
+      linux_aarch64_mpinompi:
+        CONFIG: linux_aarch64_mpinompi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_mpinompiopenssl1.1.1:
-        CONFIG: linux_aarch64_mpinompiopenssl1.1.1
+      linux_aarch64_mpiopenmpi:
+        CONFIG: linux_aarch64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_mpinompiopenssl3:
-        CONFIG: linux_aarch64_mpinompiopenssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_mpiopenmpiopenssl1.1.1:
-        CONFIG: linux_aarch64_mpiopenmpiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_mpiopenmpiopenssl3:
-        CONFIG: linux_aarch64_mpiopenmpiopenssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_ppc64le_mpimpichopenssl1.1.1:
-        CONFIG: linux_ppc64le_mpimpichopenssl1.1.1
+      linux_ppc64le_mpimpich:
+        CONFIG: linux_ppc64le_mpimpich
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_mpimpichopenssl3:
-        CONFIG: linux_ppc64le_mpimpichopenssl3
+      linux_ppc64le_mpinompi:
+        CONFIG: linux_ppc64le_mpinompi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_mpinompiopenssl1.1.1:
-        CONFIG: linux_ppc64le_mpinompiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_mpinompiopenssl3:
-        CONFIG: linux_ppc64le_mpinompiopenssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_mpiopenmpiopenssl1.1.1:
-        CONFIG: linux_ppc64le_mpiopenmpiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_mpiopenmpiopenssl3:
-        CONFIG: linux_ppc64le_mpiopenmpiopenssl3
+      linux_ppc64le_mpiopenmpi:
+        CONFIG: linux_ppc64le_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
   timeoutInMinutes: 360
+  variables: {}
 
   steps:
-  - script: |
-         rm -rf /opt/ghc
-         df -h
-    displayName: Manage disk space
-
   # configure qemu binfmt-misc running.  This allows us to run docker containers
   # embedded qemu-static
   - script: |
@@ -98,6 +58,9 @@ jobs:
 
   - script: |
         export CI=azure
+        export flow_run_id=azure_$(Build.BuildNumber).$(System.JobAttempt)
+        export remote_url=$(Build.Repository.Uri)
+        export sha=$(Build.SourceVersion)
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
         export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
         if [[ "${BUILD_REASON:-}" == "PullRequest" ]]; then

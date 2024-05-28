@@ -5,51 +5,37 @@
 jobs:
 - job: osx
   pool:
-    vmImage: macOS-11
+    vmImage: macOS-12
   strategy:
     matrix:
-      osx_64_mpimpichopenssl1.1.1:
-        CONFIG: osx_64_mpimpichopenssl1.1.1
+      osx_64_mpimpich:
+        CONFIG: osx_64_mpimpich
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpimpichopenssl3:
-        CONFIG: osx_64_mpimpichopenssl3
+      osx_64_mpinompi:
+        CONFIG: osx_64_mpinompi
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpinompiopenssl1.1.1:
-        CONFIG: osx_64_mpinompiopenssl1.1.1
+      osx_64_mpiopenmpi:
+        CONFIG: osx_64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpinompiopenssl3:
-        CONFIG: osx_64_mpinompiopenssl3
+      osx_arm64_mpimpich:
+        CONFIG: osx_arm64_mpimpich
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpiopenmpiopenssl1.1.1:
-        CONFIG: osx_64_mpiopenmpiopenssl1.1.1
+      osx_arm64_mpinompi:
+        CONFIG: osx_arm64_mpinompi
         UPLOAD_PACKAGES: 'True'
-      osx_64_mpiopenmpiopenssl3:
-        CONFIG: osx_64_mpiopenmpiopenssl3
-        UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpimpichopenssl1.1.1:
-        CONFIG: osx_arm64_mpimpichopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpimpichopenssl3:
-        CONFIG: osx_arm64_mpimpichopenssl3
-        UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpinompiopenssl1.1.1:
-        CONFIG: osx_arm64_mpinompiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpinompiopenssl3:
-        CONFIG: osx_arm64_mpinompiopenssl3
-        UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpiopenmpiopenssl1.1.1:
-        CONFIG: osx_arm64_mpiopenmpiopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-      osx_arm64_mpiopenmpiopenssl3:
-        CONFIG: osx_arm64_mpiopenmpiopenssl3
+      osx_arm64_mpiopenmpi:
+        CONFIG: osx_arm64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
+  variables: {}
 
   steps:
   # TODO: Fast finish on azure pipelines?
   - script: |
       export CI=azure
+      export flow_run_id=azure_$(Build.BuildNumber).$(System.JobAttempt)
+      export remote_url=$(Build.Repository.Uri)
+      export sha=$(Build.SourceVersion)
       export OSX_FORCE_SDK_DOWNLOAD="1"
       export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
       export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})

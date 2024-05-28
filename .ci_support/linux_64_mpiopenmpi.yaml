@@ -1,13 +1,9 @@
-BUILD:
-- aarch64-conda_cos7-linux-gnu
 c_compiler:
 - gcc
 c_compiler_version:
-- '10'
-cdt_arch:
-- aarch64
+- '12'
 cdt_name:
-- cos7
+- cos6
 channel_sources:
 - conda-forge
 channel_targets:
@@ -15,34 +11,27 @@ channel_targets:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '10'
+- '12'
 docker_image:
-- quay.io/condaforge/linux-anvil-aarch64
+- quay.io/condaforge/linux-anvil-cos7-x86_64
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '10'
+- '12'
+libaec:
+- '1'
 libcurl:
-- '7'
+- '8'
 mpi:
-- nompi
+- openmpi
 mpich:
 - '4'
 openmpi:
-- '4'
+- '5'
 openssl:
 - '3'
-pin_run_as_build:
-  libcurl:
-    max_pin: x
-  mpich:
-    max_pin: x.x
-  openmpi:
-    max_pin: x.x
-  zlib:
-    max_pin: x.x
 target_platform:
-- linux-aarch64
+- linux-64
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
