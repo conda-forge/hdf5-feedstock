@@ -1,0 +1,26 @@
+c_compiler:
+- vs2019
+c_stdlib:
+- vs
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- vs2019
+libaec:
+- '1'
+libcurl:
+- '8'
+mpi:
+- impi
+mpich:
+- '4'
+openmpi:
+- '4'
+openssl:
+- '3'
+target_platform:
+- win-64
+zlib:
+- '1.2'

@@ -1,6 +1,6 @@
 {% set version = "1.14.3" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1 %}
+{% set build = 2 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -57,10 +57,12 @@ build:
   run_exports:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
 
+
 requirements:
   build:
     - gnuconfig  # [unix]
     - {{ compiler('c') }}
+    - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
     - cmake                      # [win]
@@ -74,13 +76,12 @@ requirements:
     # Keep both versions of openssl in sync
     - openssl
   host:
-    - {{ mpi }}  # [mpi != 'nompi']
+    - {{ mpi }}   # [mpi != 'nompi' and mpi != 'impi']
+    - impi-devel  # [mpi == 'impi']
     - zlib
     - libaec
     - libcurl
     - openssl
-  run:
-    - {{ mpi }}  # [mpi != 'nompi']
 
 test:
   requires:
@@ -136,8 +137,13 @@ test:
         "h5repack",
         "h5repart",
         "h5stat",
-        "h5unjam"
+        "h5unjam",
     ] %}
+    {% if mpi != 'nompi' %}
+    {% set hdf5_cmds = hdf5_cmds + [
+        "ph5diff",
+    ] %}
+    {% endif %}
     {% for each_hdf5_cmd in hdf5_cmds %}
     - command -v {{ each_hdf5_cmd }}  # [not win]
     - where {{ each_hdf5_cmd }}  # [win]

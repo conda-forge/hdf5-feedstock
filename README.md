@@ -136,10 +136,17 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_64</td>
+              <td>win_64_mpiimpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=main&jobName=win&configuration=win%20win_64_" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=main&jobName=win&configuration=win%20win_64_mpiimpi" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64_mpinompi</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=main&jobName=win&configuration=win%20win_64_mpinompi" alt="variant">
                 </a>
               </td>
             </tr>
