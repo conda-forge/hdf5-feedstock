@@ -76,7 +76,8 @@ requirements:
     # Keep both versions of openssl in sync
     - openssl
   host:
-    - {{ mpi | replace("impi", "impi-devel") }}  # [mpi != 'nompi']
+    - {{ mpi }}   # [mpi != 'nompi' and mpi != 'impi']
+    - impi-devel  # [mpi == 'impi']
     - zlib
     - libaec
     - libcurl
