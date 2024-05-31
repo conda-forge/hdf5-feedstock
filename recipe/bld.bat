@@ -42,8 +42,10 @@ cmake -G "Ninja" ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
       %SRC_DIR%
 if errorlevel 1 (
+  dir CMakeFiles
   type CMakeFiles/CMakeOutput.log
   type CMakeFiles/CMakeError.log
+  type CMakeFiles/CMakeConfigureLog.yaml
   exit 1
 )
 
