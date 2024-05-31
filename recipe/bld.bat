@@ -9,6 +9,7 @@ set HDF5_EXT_ZLIB=zlib.lib
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
+  set "CMAKE_ARGS=!CMAKE_ARGS! --debug-output --debug-trycompile"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_LIBRARIES=impi"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_CXX_LIBRARIES=impi"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_ENABLE_PARALLEL:BOOL=ON"
