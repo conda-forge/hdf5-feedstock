@@ -7,11 +7,21 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
+
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
-  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_LIBRARIES=impi"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_ADDITIONAL_INCLUDE_DIRS=%LIBRARY_PREFIX%\include"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_CXX_ADDITIONAL_INCLUDE_DIRS=%LIBRARY_PREFIX%\include"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_LIB_NAMES=IMPI"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_CXX_LIB_NAMES=IMPI"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_IMPI_LIBRARY=impi.lib"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_ASSUME_NO_BUILTIN_MPI=ON"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_SKIP_COMPILER_WRAPPER=ON"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_SKIP_GUESSING=ON"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_ENABLE_PARALLEL:BOOL=ON"
 )
+
+echo "CMAKE_ARGS=!CMAKE_ARGS!"
 
 :: Configure step.
 cmake -G "Ninja" ^
@@ -34,8 +44,10 @@ cmake -G "Ninja" ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
       %SRC_DIR%
 if errorlevel 1 (
+  dir CMakeFiles
   type CMakeFiles/CMakeOutput.log
   type CMakeFiles/CMakeError.log
+  type CMakeFiles/CMakeConfigureLog.yaml
   exit 1
 )
 
