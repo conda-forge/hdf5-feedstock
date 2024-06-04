@@ -3,7 +3,6 @@ set -euo pipefail
 
 if [[ "$mpi" == "mpich" ]]; then
     export HYDRA_LAUNCHER=fork
-    mpiexec="mpiexec"
 fi
 
 if [[ "$mpi" == "openmpi" ]]; then
@@ -15,4 +14,4 @@ if [[ "$mpi" == "openmpi" ]]; then
 fi
 
 # pipe stdout, stderr through cat to avoid O_NONBLOCK issues
-$mpiexec $@ 2>&1 | cat
+mpiexec $@ 2>&1 | cat
