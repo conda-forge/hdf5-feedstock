@@ -286,11 +286,7 @@ Feedstock Maintainers
 * [@hmaarrfk](https://github.com/hmaarrfk/)
 * [@jakirkham](https://github.com/jakirkham/)
 * [@marcelotrevisani](https://github.com/marcelotrevisani/)
-* [@marqh](https://github.com/marqh/)
 * [@ocefpaf](https://github.com/ocefpaf/)
 * [@scopatz](https://github.com/scopatz/)
 * [@varlackc](https://github.com/varlackc/)
-
-
-<!-- dummy commit to enable rerendering -->
 
