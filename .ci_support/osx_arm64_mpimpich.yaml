@@ -33,7 +33,7 @@ mpi:
 mpich:
 - '4'
 openmpi:
-- '4'
+- '5'
 openssl:
 - '3'
 target_platform:
