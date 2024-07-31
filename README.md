@@ -5,7 +5,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/hdf5-feedstock/
 
 Home: https://www.hdfgroup.org/solutions/hdf5/
 
-Package license: LicenseRef-HDF5
+Package license: BSD-3-Clause
 
 Summary: HDF5 is a data model, library, and file format for storing and managing data
 
@@ -136,10 +136,17 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_64</td>
+              <td>win_64_mpiimpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=main&jobName=win&configuration=win%20win_64_" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=main&jobName=win&configuration=win%20win_64_mpiimpi" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64_mpinompi</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=412&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/hdf5-feedstock?branchName=main&jobName=win&configuration=win%20win_64_mpinompi" alt="variant">
                 </a>
               </td>
             </tr>
@@ -279,7 +286,6 @@ Feedstock Maintainers
 * [@hmaarrfk](https://github.com/hmaarrfk/)
 * [@jakirkham](https://github.com/jakirkham/)
 * [@marcelotrevisani](https://github.com/marcelotrevisani/)
-* [@marqh](https://github.com/marqh/)
 * [@ocefpaf](https://github.com/ocefpaf/)
 * [@scopatz](https://github.com/scopatz/)
 * [@varlackc](https://github.com/varlackc/)

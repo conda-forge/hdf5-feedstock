@@ -46,10 +46,12 @@ build:
   run_exports:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
 
+
 requirements:
   build:
     - gnuconfig  # [unix]
     - {{ compiler('c') }}
+    - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - cmake                      # [win]
@@ -63,13 +65,12 @@ requirements:
     # Keep both versions of openssl in sync
     - openssl
   host:
-    - {{ mpi }}  # [mpi != 'nompi']
+    - {{ mpi }}   # [mpi != 'nompi' and mpi != 'impi']
+    - impi-devel  # [mpi == 'impi']
     - zlib
     - libaec
     - libcurl
     - openssl
-  run:
-    - {{ mpi }}  # [mpi != 'nompi']
 
 test:
   requires:
@@ -125,8 +126,13 @@ test:
         "h5repack",
         "h5repart",
         "h5stat",
-        "h5unjam"
+        "h5unjam",
     ] %}
+    {% if mpi != 'nompi' %}
+    {% set hdf5_cmds = hdf5_cmds + [
+        "ph5diff",
+    ] %}
+    {% endif %}
     {% for each_hdf5_cmd in hdf5_cmds %}
     - command -v {{ each_hdf5_cmd }}  # [not win]
     - where {{ each_hdf5_cmd }}  # [win]
@@ -151,7 +157,7 @@ test:
 
 about:
   home: https://www.hdfgroup.org/solutions/hdf5/
-  license: LicenseRef-HDF5
+  license: BSD-3-Clause
   license_family: BSD
   license_file: COPYING
   summary: HDF5 is a data model, library, and file format for storing and managing data
@@ -166,7 +172,6 @@ extra:
     - groutr
     - ocefpaf
     - astrofrog
-    - marqh
     - marcelotrevisani
     - scopatz
     - davidbrochart
