@@ -49,12 +49,13 @@ cmake -G "Ninja" ^
       -D HDF5_ENABLE_SZIP_SUPPORT=ON ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
       %SRC_DIR%
+
 if errorlevel 1 (
   dir CMakeFiles
-  type CMakeFiles/CMakeOutput.log
-  type CMakeFiles/CMakeError.log
-  type CMakeFiles/CMakeConfigureLog.yaml
-  exit 1
+  type CMakeFiles\CMakeOutput.log
+  type CMakeFiles\CMakeError.log
+  type CMakeFiles\CMakeConfigureLog.yaml
+  exit /b 1
 )
 
 :: Build C libraries and tools.
