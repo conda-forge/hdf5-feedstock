@@ -11,7 +11,7 @@ set HDF5_EXT_ZLIB=zlib.lib
 set "FC=flang-new"
 set "LD=lld-link.exe"
 set "FFLAGS=-D_CRT_SECURE_NO_WARNINGS -fms-runtime-lib=dll -fuse-ld=lld -I%LIBRARY_INC%"
-set "LDFLAGS=-Wl,-defaultlib:%CONDA_PREFIX%/lib/clang/19/lib/windows/clang_rt.builtins-x86_64.lib"
+set "LDFLAGS=-Wl,-defaultlib:%CONDA_PREFIX:\=/%/lib/clang/19/lib/windows/clang_rt.builtins-x86_64.lib"
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
