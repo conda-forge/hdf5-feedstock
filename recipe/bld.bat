@@ -5,17 +5,8 @@ mkdir build
 cd build
 
 :: Set environment variables.
-set FC=flang-new
-
-:: need to read clang version for path to compiler-rt
-FOR /F "tokens=* USEBACKQ" %%F IN (`clang.exe -dumpversion`) DO (
-    SET "CLANG_VER=%%F"
-)
-set "FFLAGS=-D_CRT_SECURE_NO_WARNINGS -D_MT -D_DLL --target=x86_64-pc-windows-msvc"
-set "LDFLAGS=--target=x86_64-pc-windows-msvc -fms-runtime-lib=dll -fuse-ld=lld"
-set "LDFLAGS=%LDFLAGS% -Wl,-defaultlib:%BUILD_PREFIX%/Library/lib/clang/!CLANG_VER:~0,2!/lib/windows/clang_rt.builtins-x86_64.lib"
-
 set HDF5_EXT_ZLIB=zlib.lib
+
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
   :: cmake generates syntax errors if there are backslashes in paths
