@@ -1,4 +1,4 @@
-{% set version = "1.14.4.2" %}
+{% set version = "1.14.4.3" %}
 {% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
@@ -36,7 +36,7 @@ package:
 
 source:
   url: https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5_{{ version }}.tar.gz
-  sha256: 44c47120e8beeb69f83b2de10203dceb6ef63f253b7859063a60205c8f48ab80
+  sha256: 690c1db7ba0fed4ffac61709236675ffd99d95d191e8920ee79c58d7e7ea3361
   patches:
     - patches/fix_flang_flags.patch  # [win]
 
