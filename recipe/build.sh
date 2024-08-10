@@ -17,6 +17,13 @@ if [[ "$target_platform" == linux-* ]]; then
     HDF5_OPTIONS="${HDF5_OPTIONS} --enable-direct-vfd"
 fi
 
+# first print CPU_COUNT
+echo "CPU_COUNT: $CPU_COUNT"
+if [[ "$mpi" == "openmpi" ]]; then
+  export CPU_COUNT=3
+fi
+echo "CPU_COUNT: $CPU_COUNT (after setting)"
+
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export HDF5_OPTIONS="${HDF5_OPTIONS} --enable-parallel"
 
