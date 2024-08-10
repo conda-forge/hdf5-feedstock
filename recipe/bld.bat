@@ -4,16 +4,25 @@ setlocal EnableDelayedExpansion
 mkdir build
 cd build
 
-set clanglibdir=%CONDA_PREFIX:\=/%/lib/clang/19/lib/windows
-copy "%clanglibdir%\clang_rt.builtins-x86_64.lib" "%LIBRARY_LIB%\clang_rt.builtins.lib"
+REM set clanglibdir=%CONDA_PREFIX:\=/%/lib/clang/19/lib/windows
+REM copy "%clanglibdir%\clang_rt.builtins-x86_64.lib" "%LIBRARY_LIB%\clang_rt.builtins.lib"
 
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
 :: temporarily vendor flang compiler activation
 set "FC=flang-new"
-REM set "LD=lld-link.exe"
-REM set "FFLAGS=-L=%clanglibdir%"
+set "CC=clang-cl"
+set "CXX=clang-cl"
+
+:: need to read clang version for path to compiler-rt
+FOR /F "tokens=* USEBACKQ" %%F IN (`clang.exe -dumpversion`) DO (
+    SET "CLANG_VER=%%F"
+)
+set "FFLAGS=-D_CRT_SECURE_NO_WARNINGS -D_MT -D_DLL --target=x86_64-pc-windows-msvc"
+set "LDFLAGS=--target=x86_64-pc-windows-msvc -fms-runtime-lib=dll -fuse-ld=lld"
+set "LDFLAGS=%LDFLAGS% -Wl,-defaultlib:%BUILD_PREFIX%/Library/lib/clang/!CLANG_VER:~0,2!/lib/windows/clang_rt.builtins-x86_64.lib"
+
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (

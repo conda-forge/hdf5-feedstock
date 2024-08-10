@@ -17,13 +17,6 @@ if [[ "$target_platform" == linux-* ]]; then
     HDF5_OPTIONS="${HDF5_OPTIONS} --enable-direct-vfd"
 fi
 
-# first print CPU_COUNT
-echo "CPU_COUNT: $CPU_COUNT"
-if [[ "$mpi" == "openmpi" ]]; then
-  export CPU_COUNT=3
-fi
-echo "CPU_COUNT: $CPU_COUNT (after setting)"
-
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export HDF5_OPTIONS="${HDF5_OPTIONS} --enable-parallel"
 
@@ -157,5 +150,5 @@ if [[ ("$target_platform" != "linux-ppc64le") && \
       ("$target_platform" != "osx-arm64") ]]; then
   # https://github.com/h5py/h5py/issues/817
   # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
-  make check RUNPARALLEL="mpiexec -n 2"
+  make check RUNPARALLEL="mpiexec -n 3"
 fi
