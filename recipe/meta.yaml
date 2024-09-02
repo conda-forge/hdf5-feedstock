@@ -1,6 +1,6 @@
 {% set version = "1.14.3" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 5 %}
+{% set build = 6 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -39,6 +39,9 @@ source:
   url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
   sha256: 09cdb287aa7a89148c1638dd20891fdbae08102cf433ef128fd345338aa237c7
   patches:
+    # FPE issue in H5T
+    # https://github.com/HDFGroup/hdf5/pull/3837.patch
+    - 3837.patch
     # Atomicity tests seem to fail for openmpi
     # This seems to be a known bug
     # https://github.com/HDFGroup/hdf5/issues/2196
