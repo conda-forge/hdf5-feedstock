@@ -1,12 +1,11 @@
-diff -ruN hdf5-1.14.4-3/testpar/testpflush.sh.in hdf5-1.14.4-3.orig/testpar/testpflush.sh.in
---- hdf5-1.14.4-3/testpar/testpflush.sh.in	2024-09-04 11:34:34.999254199 +0200
-+++ hdf5-1.14.4-3.orig/testpar/testpflush.sh.in	2024-05-22 20:43:17.000000000 +0200
+--- hdf5-1.14.4-3.orig/testpar/testpflush.sh.in	2024-05-22 20:43:17.000000000 +0200
++++ hdf5-1.14.4-3/testpar/testpflush.sh.in	2024-09-04 11:34:34.999254199 +0200
 @@ -49,7 +49,7 @@
  echo "called MPI_Finalize(). This is an intended characteristic of the"
  echo "test and should not be considered an error."
  echo "********************************************************************"
--#eval ${RUNPARALLELSCRIPT} ./t_pflush1
-+eval ${RUNPARALLELSCRIPT} ./t_pflush1
++#eval ${RUNPARALLELSCRIPT} ./t_pflush1
+-eval ${RUNPARALLELSCRIPT} ./t_pflush1
  
  
  # ===========================================
@@ -14,7 +13,7 @@ diff -ruN hdf5-1.14.4-3/testpar/testpflush.sh.in hdf5-1.14.4-3.orig/testpar/test
  # The return code of this call is the return
  # code of the script.
  # ===========================================
--#eval ${RUNPARALLELSCRIPT} ./t_pflush2
--exit 0
-+eval ${RUNPARALLELSCRIPT} ./t_pflush2
-+
++#eval ${RUNPARALLELSCRIPT} ./t_pflush2
++exit 0
+-eval ${RUNPARALLELSCRIPT} ./t_pflush2
+-
