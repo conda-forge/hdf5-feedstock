@@ -73,7 +73,6 @@ requirements:
     - make                       # [not win]
     - ninja                      # [win]
     - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
-    - libgfortran-devel_osx-64  # [build_platform != target_platform and build_platform == 'osx-64']
     # Keep both versions of openssl in sync
     - openssl
   host:
