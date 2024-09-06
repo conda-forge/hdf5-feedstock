@@ -26,6 +26,7 @@ if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
 
   if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
     if [[ "$mpi" == "openmpi" ]]; then
+      unset OPAL_PREFIX  # unset default OPAL_PREFIX to protect CC_FOR_BUILD
       rm $PREFIX/bin/opal_wrapper
       echo '#!/bin/bash' > $PREFIX/bin/opal_wrapper
       echo "export OPAL_PREFIX=$PREFIX" >> $PREFIX/bin/opal_wrapper
