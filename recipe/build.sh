@@ -25,17 +25,17 @@ if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   export FC=$PREFIX/bin/mpifort
 
   if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
-    if [[ "$mpi" == "openmpi" ]]; then
-      unset OPAL_PREFIX  # unset default OPAL_PREFIX to protect CC_FOR_BUILD
-      rm $PREFIX/bin/opal_wrapper
-      echo '#!/bin/bash' > $PREFIX/bin/opal_wrapper
-      echo "export OPAL_PREFIX=$PREFIX" >> $PREFIX/bin/opal_wrapper
-      echo "$BUILD_PREFIX/bin/\$(basename \"\$0\") \"\$@\"" >> $PREFIX/bin/opal_wrapper
-      chmod +x $PREFIX/bin/opal_wrapper
-    fi
     export CC_FOR_BUILD=$BUILD_PREFIX/bin/mpicc
     export CXX_FOR_BUILD=$BUILD_PREFIX/bin/mpic++
     export FC_FOR_BUILD=$BUILD_PREFIX/bin/mpifort
+    if [[ "$mpi" == "openmpi" ]]; then
+      # openmpi compilers are binaries, so always need to use build prefix
+      # linking is governed by environment variables
+      # openmpi env enables cross-compile by default in conda-build
+      export CC=$CC_FOR_BUILD
+      export CXX=$CXX_FOR_BUILD
+      export FC=$FC_FOR_BUILD
+    fi
   else
     export CC_FOR_BUILD=$PREFIX/bin/mpicc
     export CXX_FOR_BUILD=$PREFIX/bin/mpic++
@@ -118,6 +118,8 @@ fi
 export OMPI_MCA_rmaps_base_oversubscribe=yes
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
+  # parentheses ( make this a sub-shell, so env and cwd changes don't persist
+  # and we can safely unset env vars temporarily
   (
     # Make a native build of the hdetect and H5make_libsettings executables
     mkdir -p native-build/bin
@@ -125,11 +127,14 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
 
     # MACOSX_DEPLOYMENT_TARGET is for the target_platform and not for build_platform
     unset MACOSX_DEPLOYMENT_TARGET
+    # openmpi sets up env for cross-compilation by default
+    # clear it all so it's back to native builds
+    export OPAL_PREFIX=$BUILD_PREFIX
+    unset ${!OMPI_@}
 
     $CC_FOR_BUILD ${SRC_DIR}/fortran/src/H5match_types.c -I ${SRC_DIR}/src/ -o H5match_types
     $FC_FOR_BUILD ${SRC_DIR}/fortran/src/H5_buildiface.F90 -I ${SRC_DIR}/fortran/src/ -L $BUILD_PREFIX/lib -o H5_buildiface
     $FC_FOR_BUILD ${SRC_DIR}/hl/fortran/src/H5HL_buildiface.F90 -I ${SRC_DIR}/hl/fortran/src -I ${SRC_DIR}/fortran/src -L $BUILD_PREFIX/lib -o H5HL_buildiface
-    popd
   )
   export PATH=`pwd`/native-build/bin:$PATH
 fi
