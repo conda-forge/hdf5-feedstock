@@ -8,6 +8,8 @@ channel_targets:
 - conda-forge main
 cxx_compiler:
 - vs2019
+hdf5:
+- 1.14.3
 libaec:
 - '1'
 libcurl:
@@ -23,4 +25,4 @@ openssl:
 target_platform:
 - win-64
 zlib:
-- '1.2'
+- '1'
