@@ -1,0 +1,41 @@
+From ea76013648aac81cee941a7b7a86f21201d1debf Mon Sep 17 00:00:00 2001
+From: Julien Schueller <schueller@phimeca.com>
+Date: Fri, 10 May 2024 23:30:19 +0200
+Subject: [PATCH] H5Group: Fix operator= (#4473)
+
+Closes #4472
+---
+ c++/src/H5Attribute.cpp | 4 +---
+ c++/src/H5Group.cpp     | 4 +---
+ 2 files changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/c++/src/H5Attribute.cpp b/c++/src/H5Attribute.cpp
+index e629a800c76..a79d7c3a024 100644
+--- a/c++/src/H5Attribute.cpp
++++ b/c++/src/H5Attribute.cpp
+@@ -610,9 +610,7 @@ Attribute::~Attribute()
+ Attribute &
+ Attribute::operator=(const Attribute &original)
+ {
+-    if (&original != this) {
+-        setId(original.id);
+-    }
++    IdComponent::operator=(original);
+ 
+     return *this;
+ }
+diff --git a/c++/src/H5Group.cpp b/c++/src/H5Group.cpp
+index 248e71f9571..48358b3a5cb 100644
+--- a/c++/src/H5Group.cpp
++++ b/c++/src/H5Group.cpp
+@@ -279,9 +279,7 @@ Group::~Group()
+ Group &
+ Group::operator=(const Group &original)
+ {
+-    if (&original != this) {
+-        setId(original.id);
+-    }
++    IdComponent::operator=(original);
+ 
+     return *this;
+ }
