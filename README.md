@@ -289,4 +289,5 @@ Feedstock Maintainers
 * [@ocefpaf](https://github.com/ocefpaf/)
 * [@scopatz](https://github.com/scopatz/)
 * [@varlackc](https://github.com/varlackc/)
+* [@zklaus](https://github.com/zklaus/)
 

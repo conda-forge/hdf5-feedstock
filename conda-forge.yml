@@ -10,3 +10,5 @@ provider:
   linux_aarch64: azure
   linux_ppc64le: azure
 test: native_and_emulated
+azure:
+  store_build_artifacts: true
