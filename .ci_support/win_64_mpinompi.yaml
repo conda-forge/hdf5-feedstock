@@ -1,13 +1,17 @@
 c_compiler:
-- vs2022
+- vs2019
 c_stdlib:
 - vs
 channel_sources:
-- conda-forge
+- conda-forge/label/llvm_rc,conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- vs2022
+- vs2019
+fortran_compiler:
+- flang
+fortran_compiler_version:
+- '19'
 hdf5:
 - 1.14.3
 libaec:
