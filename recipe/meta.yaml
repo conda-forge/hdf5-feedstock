@@ -125,10 +125,11 @@ test:
     {% for each_hdf5_unix_cmd in hdf5_unix_cmds %}
     - command -v {{ each_hdf5_unix_cmd }}   # [not win]
     {% endfor %}
+    # Do not test for gif
+    # gif tools have an unresolved CVE https://github.com/HDFGroup/hdf5/pull/2313
+    # "gif2h5", "h52gif",
     # Verify CLI tools.
     {% set hdf5_cmds = [
-        "gif2h5",
-        "h52gif",
         "h5copy",
         "h5debug",
         "h5diff",
