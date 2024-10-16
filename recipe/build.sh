@@ -90,8 +90,7 @@ fi
 
 # regen config after patches to configure.ac
 ./autogen.sh
-# gif tools have a CVE https://github.com/HDFGroup/hdf5/pull/2313
-# that is unresolved
+# gif tools have an unresolved CVE https://github.com/HDFGroup/hdf5/pull/2313
 hlgiftools=no
 ./configure --prefix="${PREFIX}" \
             --with-pic \
