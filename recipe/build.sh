@@ -90,7 +90,9 @@ fi
 
 # regen config after patches to configure.ac
 ./autogen.sh
-
+# gif tools have a CVE https://github.com/HDFGroup/hdf5/pull/2313
+# that is unresolved
+hlgiftools=no
 ./configure --prefix="${PREFIX}" \
             --with-pic \
             --host="${HOST}" \
@@ -105,7 +107,7 @@ fi
             --enable-threadsafe \
             --enable-build-mode=production \
             --enable-unsupported \
-            --enable-hlgiftools=yes \
+            --enable-hlgiftools=${hlgiftools} \
             --enable-using-memchecker \
             --enable-static=no \
             --enable-ros3-vfd \
