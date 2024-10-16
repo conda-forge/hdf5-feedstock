@@ -24,7 +24,8 @@ if "%mpi%"=="impi" (
 )
 
 echo "CMAKE_ARGS=!CMAKE_ARGS!"
-
+:: gif tools have an unresolved CVE https://github.com/HDFGroup/hdf5/pull/2313
+set "HDF5_BUILD_HL_LIB=OFF"
 :: Configure step.
 cmake -G "Ninja" ^
       !CMAKE_ARGS! ^
@@ -38,7 +39,7 @@ cmake -G "Ninja" ^
       -D ONLY_SHARED_LIBS:BOOL=ON ^
       -D HDF5_BUILD_HL_LIB:BOOL=ON ^
       -D HDF5_BUILD_TOOLS:BOOL=ON ^
-      -D HDF5_BUILD_HL_GIF_TOOLS:BOOL=ON ^
+      -D HDF5_BUILD_HL_GIF_TOOLS:BOOL=%HDF5_BUILD_HL_LIB% ^
       -D HDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON ^
       -D HDF5_ENABLE_THREADSAFE:BOOL=ON ^
       -D HDF5_ENABLE_ROS3_VFD:BOOL=ON ^
