@@ -169,7 +169,7 @@ else
 fi
 
 # test for hdf5 C++ exceptions
-$CXX $RECIPE_DIR/testhdf5exc.cpp -o testhdf5exc -L$CONDA_PREFIX/lib -lhdf5_cpp -lhdf5 -I$CONDA_PREFIX/include
-LD_LIBRARY_PATH=$CONDA_PREFIX/lib DYLD_LIBRARY_PATH=$CONDA_PREFIX/lib ./testhdf5exc
+$CXX $RECIPE_DIR/testhdf5exc.cpp -o testhdf5exc -L$PREFIX/lib -lhdf5_cpp -lhdf5 -I$PREFIX/include
+LD_LIBRARY_PATH=$PREFIX/lib DYLD_LIBRARY_PATH=$PREFIX/lib ./testhdf5exc
 
 
