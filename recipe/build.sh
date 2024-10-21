@@ -158,3 +158,9 @@ if [[ ("$target_platform" != "linux-ppc64le") && \
   # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
   make check RUNPARALLEL="mpiexec -n 2"
 fi
+
+# test for hdf5 C++ exceptions
+$CXX testhdf5exc.cpp -o testhdf5exc -L$CONDA_PREFIX/lib -lhdf5_cpp -lhdf5 -I$CONDA_PREFIX/include
+LD_LIBRARY_PATH=$CONDA_PREFIX/lib DYLD_LIBRARY_PATH=$CONDA_PREFIX/lib ./testhdf5exc
+
+
