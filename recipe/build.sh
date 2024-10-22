@@ -161,6 +161,6 @@ fi
 
 # test for hdf5 C++ exceptions
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
-    $CXX ${CXXFLAGS} $RECIPE_DIR/testhdf5exc.cpp -o testhdf5exc -L$PREFIX/lib -lhdf5_cpp -lhdf5 -I$PREFIX/include
+    ${CXX} ${CXXFLAGS} ${LDFLAGS} $RECIPE_DIR/testhdf5exc.cpp -o testhdf5exc -lhdf5_cpp -lhdf5 -I$PREFIX/include
     ./testhdf5exc
 fi
