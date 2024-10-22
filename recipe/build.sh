@@ -160,7 +160,7 @@ if [[ ("$target_platform" != "linux-ppc64le") && \
 fi
 
 # test for hdf5 C++ exceptions
-$CXX $RECIPE_DIR/testhdf5exc.cpp -o testhdf5exc -L$PREFIX/lib -lhdf5_cpp -lhdf5 -I$PREFIX/include
-LD_LIBRARY_PATH=$PREFIX/lib DYLD_LIBRARY_PATH=$PREFIX/lib ./testhdf5exc
-
-
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
+    $CXX $RECIPE_DIR/testhdf5exc.cpp -o testhdf5exc -L$PREFIX/lib -lhdf5_cpp -lhdf5 -I$PREFIX/include
+    ./testhdf5exc
+fi
