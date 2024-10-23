@@ -13,6 +13,11 @@ jobs:
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
         SHORT_CONFIG: linux_64_mpimpich
+      linux_64_mpimvapich:
+        CONFIG: linux_64_mpimvapich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
+        SHORT_CONFIG: linux_64_mpimvapich
       linux_64_mpinompi:
         CONFIG: linux_64_mpinompi
         UPLOAD_PACKAGES: 'True'
@@ -28,6 +33,11 @@ jobs:
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
         SHORT_CONFIG: linux_aarch64_mpimpich
+      linux_aarch64_mpimvapich:
+        CONFIG: linux_aarch64_mpimvapich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
+        SHORT_CONFIG: linux_aarch64_mpimvapich
       linux_aarch64_mpinompi:
         CONFIG: linux_aarch64_mpinompi
         UPLOAD_PACKAGES: 'True'
@@ -43,6 +53,11 @@ jobs:
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
         SHORT_CONFIG: linux_ppc64le_mpimpich
+      linux_ppc64le_mpimvapich:
+        CONFIG: linux_ppc64le_mpimvapich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
+        SHORT_CONFIG: linux_ppc64le_mpimvapich
       linux_ppc64le_mpinompi:
         CONFIG: linux_ppc64le_mpinompi
         UPLOAD_PACKAGES: 'True'
