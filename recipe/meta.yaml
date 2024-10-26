@@ -1,6 +1,6 @@
-{% set version = "1.14.4" %}
+{% set version = "1.14.5" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 1 %}
+{% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -36,23 +36,24 @@ package:
   version: {{ version }}
 
 source:
-  # Note: The additional "-3" at the end of the download link is an upstream accident and should go away with the next version.
-  url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}-3.tar.gz
-  sha256: 019ac451d9e1cf89c0482ba2a06f07a46166caf23f60fea5ef3c37724a318e03
+  url: https://support.hdfgroup.org/releases/hdf5/v{{ maj_min_ver.replace('.', '_') }}/v{{ version.replace('.', '_') }}/downloads/hdf5-{{ version }}.tar.gz
+  sha256: ec2e13c52e60f9a01491bb3158cb3778c985697131fc6a342262d32a26e58e44
   patches:
     # Atomicity tests seem to fail for openmpi
     # This seems to be a known bug
     # https://github.com/HDFGroup/hdf5/issues/2196
+    # Still necessary as of 1.14.5
     - patches/testpar_Makefile.am.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
     - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
     - patches/testh5diff.sh.in.patch              # [mpi != 'nompi']
+
     # Enable cross-compiling on osx
-    - patches/0001-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
+    # This kinda seems fixed in https://github.com/HDFGroup/hdf5/issues/4916
+    # But i'm not sure....
+    # - patches/0001-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
     - patches/0002-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
-    # Fix operator= (https://github.com/HDFGroup/hdf5/pull/4473)
-    - patches/ea760136.patch
     - patches/fix_flang_flags.patch  # [win]
 
 build:
