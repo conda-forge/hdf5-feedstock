@@ -1,0 +1,19 @@
+Subject: [PATCH] add long double
+---
+Index: fortran/src/H5f90.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/fortran/src/H5f90.h b/fortran/src/H5f90.h
+--- a/fortran/src/H5f90.h	(revision bdc7825dac5c61e49cf48959343882d4e12b6822)
++++ b/fortran/src/H5f90.h	(date 1730134907654)
+@@ -25,5 +25,7 @@
+ #define OBJECT_NAMELEN_DEFAULT_F -1
+ 
+ #define H5_MAX(a, b) (((a) > (b)) ? (a) : (b))
+-
++#ifndef real_C_LONG_DOUBLE_f
++#define real_C_LONG_DOUBLE_f long double
++#endif
+ #endif /* H5f90_H */

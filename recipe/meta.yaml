@@ -56,6 +56,7 @@ source:
     - patches/0002-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
     - patches/fix_flang_flags.patch  # [win]
     - patches/skip_flang_real_config_check.patch  # [win]
+    - patches/add_long_double.patch  # [win]
 
 build:
   skip: True  # [not win]
