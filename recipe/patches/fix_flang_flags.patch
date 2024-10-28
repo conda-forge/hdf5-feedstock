@@ -1,0 +1,25 @@
+Subject: [PATCH] fix flang flags
+---
+Index: config/cmake/ConfigureChecks.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/config/cmake/ConfigureChecks.cmake b/config/cmake/ConfigureChecks.cmake
+--- a/config/cmake/ConfigureChecks.cmake	(revision 4041d6f34ffa4630cfb60ce1f42b6cb9ab715a6b)
++++ b/config/cmake/ConfigureChecks.cmake	(date 1713426546921)
+@@ -61,7 +61,13 @@
+ if (WIN32 AND NOT MINGW)
+   if (NOT UNIX)
+     set (WINDOWS 1)
+-    set (CMAKE_REQUIRED_FLAGS "/DWIN32_LEAN_AND_MEAN=1 /DNOGDI=1")
++    # IF CMAKE_Fortran_COMPILER contains
++    if (CMAKE_Fortran_COMPILER MATCHES "flang")
++      message(STATUS "Using flang-new compiler")
++      set (CMAKE_REQUIRED_FLAGS "-DWIN32_LEAN_AND_MEAN=1 -DNOGDI=1")
++    else ()
++      set (CMAKE_REQUIRED_FLAGS "/DWIN32_LEAN_AND_MEAN=1 /DNOGDI=1")
++    endif ()
+     if (MSVC)
+       set (${HDF_PREFIX}_HAVE_VISUAL_STUDIO 1)
+     endif ()
