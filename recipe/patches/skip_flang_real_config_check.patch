@@ -1,27 +1,5 @@
 Subject: [PATCH] skip flang real config check
 ---
-Index: fortran/src/CMakeLists.txt
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
-diff --git a/fortran/src/CMakeLists.txt b/fortran/src/CMakeLists.txt
---- a/fortran/src/CMakeLists.txt	(revision 0fe0459fc24d71be13d5f266513c2832b525671b)
-+++ b/fortran/src/CMakeLists.txt	(date 1730119933063)
-@@ -101,7 +101,12 @@
- #  target_compile_definitions(H5_buildiface PRIVATE "$<$<STREQUAL:x${CMAKE_Fortran_SIMULATE_ID},xMSVC>:/MT>")
- #endif ()
- if(MSVC)
--  set_property(TARGET H5_buildiface PROPERTY COMPILE_FLAGS "/MT")
-+  if (CMAKE_Fortran_COMPILER MATCHES "flang")
-+
-+  else ()
-+    set_property(TARGET H5_buildiface PROPERTY COMPILE_FLAGS "/MT")
-+  endif ()
-+
- endif()
- #set_property(TARGET H5_buildiface APPEND PROPERTY LINK_FLAGS "$<$<STREQUAL:x${CMAKE_Fortran_SIMULATE_ID},xMSVC>:-SUBSYSTEM:CONSOLE>")
- if(MSVC)
 Index: config/cmake/HDF5UseFortran.cmake
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -29,7 +7,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/config/cmake/HDF5UseFortran.cmake b/config/cmake/HDF5UseFortran.cmake
 --- a/config/cmake/HDF5UseFortran.cmake	(revision 0fe0459fc24d71be13d5f266513c2832b525671b)
-+++ b/config/cmake/HDF5UseFortran.cmake	(date 1730121106491)
++++ b/config/cmake/HDF5UseFortran.cmake	(date 1730127502043)
 @@ -162,9 +162,13 @@
  # dnl    -- LINE 6 --  number of valid logical kinds
  # dnl    -- LINE 7 --  valid logical kinds (comma separated list)
@@ -47,6 +25,50 @@ diff --git a/config/cmake/HDF5UseFortran.cmake b/config/cmake/HDF5UseFortran.cma
  
  list (GET PROG_OUTPUT 0 pac_validIntKinds)
  list (GET PROG_OUTPUT 1 pac_validRealKinds)
+Index: fortran/src/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/fortran/src/CMakeLists.txt b/fortran/src/CMakeLists.txt
+--- a/fortran/src/CMakeLists.txt	(revision 0fe0459fc24d71be13d5f266513c2832b525671b)
++++ b/fortran/src/CMakeLists.txt	(date 1730127502043)
+@@ -101,7 +101,12 @@
+ #  target_compile_definitions(H5_buildiface PRIVATE "$<$<STREQUAL:x${CMAKE_Fortran_SIMULATE_ID},xMSVC>:/MT>")
+ #endif ()
+ if(MSVC)
+-  set_property(TARGET H5_buildiface PROPERTY COMPILE_FLAGS "/MT")
++  if (CMAKE_Fortran_COMPILER MATCHES "flang")
++
++  else ()
++    set_property(TARGET H5_buildiface PROPERTY COMPILE_FLAGS "/MT")
++  endif ()
++
+ endif()
+ #set_property(TARGET H5_buildiface APPEND PROPERTY LINK_FLAGS "$<$<STREQUAL:x${CMAKE_Fortran_SIMULATE_ID},xMSVC>:-SUBSYSTEM:CONSOLE>")
+ if(MSVC)
+Index: fortran/test/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/fortran/test/CMakeLists.txt b/fortran/test/CMakeLists.txt
+--- a/fortran/test/CMakeLists.txt	(revision 0fe0459fc24d71be13d5f266513c2832b525671b)
++++ b/fortran/test/CMakeLists.txt	(date 1730127502044)
+@@ -16,8 +16,12 @@
+ #      PRIVATE "$<$<STREQUAL:x${CMAKE_Fortran_SIMULATE_ID},xMSVC>:/MT>"
+ #  )
+ #endif ()
++
+ if(MSVC)
+-  set_property(TARGET H5_test_buildiface PROPERTY COMPILE_FLAGS "/MT")
++  if (CMAKE_Fortran_COMPILER MATCHES "flang")
++  else ()
++    set_property(TARGET H5_test_buildiface PROPERTY COMPILE_FLAGS "/MT")
++  endif ()
+ endif()
+ #set_property(TARGET H5_test_buildiface APPEND PROPERTY
+ #    LINK_FLAGS "$<$<STREQUAL:x${CMAKE_Fortran_SIMULATE_ID},xMSVC>:-SUBSYSTEM:CONSOLE>"
 Index: hl/fortran/src/CMakeLists.txt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -54,7 +76,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/hl/fortran/src/CMakeLists.txt b/hl/fortran/src/CMakeLists.txt
 --- a/hl/fortran/src/CMakeLists.txt	(revision 0fe0459fc24d71be13d5f266513c2832b525671b)
-+++ b/hl/fortran/src/CMakeLists.txt	(date 1730119945619)
++++ b/hl/fortran/src/CMakeLists.txt	(date 1730127502045)
 @@ -19,7 +19,11 @@
  target_include_directories (H5HL_buildiface PRIVATE "${HDF5_SRC_BINARY_DIR};${HDF5_F90_BINARY_DIR}")
  if (WIN32 AND MSVC)
