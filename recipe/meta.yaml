@@ -58,6 +58,7 @@ source:
     - patches/skip_flang_real_config_check.patch  # [win]
 
 build:
+  skip: True  # [not win]
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
   script: '{{ RECIPE_DIR}}/bld-flang.bat'  # [win]
