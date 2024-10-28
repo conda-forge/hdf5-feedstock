@@ -19,6 +19,8 @@ set "CXX=clang-cl"
 FOR /F "tokens=* USEBACKQ" %%F IN (`clang.exe -dumpversion`) DO (
     SET "CLANG_VER=%%F"
 )
+
+set "CFLAGS=-w"
 set "FFLAGS=-D_CRT_SECURE_NO_WARNINGS -D_MT -D_DLL --target=x86_64-pc-windows-msvc"
 set "LDFLAGS=--target=x86_64-pc-windows-msvc -fms-runtime-lib=dll -fuse-ld=lld"
 set "LDFLAGS=%LDFLAGS% -Wl,-defaultlib:%BUILD_PREFIX%/Library/lib/clang/!CLANG_VER:~0,2!/lib/windows/clang_rt.builtins-x86_64.lib"
