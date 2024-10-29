@@ -7,8 +7,8 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
-
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
+
 if "%mpi%"=="impi" (
   :: cmake generates syntax errors if there are backslashes in paths
   set _LIBRARY=%LIBRARY_PREFIX:\=/%
@@ -48,6 +48,7 @@ cmake -G "Ninja" ^
       -D HDF5_ENABLE_SZIP_SUPPORT=ON ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
       %SRC_DIR%
+
 if errorlevel 1 (
   dir CMakeFiles
   type CMakeFiles/CMakeOutput.log
