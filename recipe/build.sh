@@ -93,7 +93,8 @@ fi
 
 # regen config after patches to configure.ac
 ./autogen.sh
-
+# gif tools have an unresolved CVE https://github.com/HDFGroup/hdf5/pull/2313
+hlgiftools=no
 ./configure --prefix="${PREFIX}" \
             --with-pic \
             --host="${HOST}" \
@@ -108,7 +109,7 @@ fi
             --enable-threadsafe \
             --enable-build-mode=production \
             --enable-unsupported \
-            --enable-hlgiftools=yes \
+            --enable-hlgiftools=${hlgiftools} \
             --enable-using-memchecker \
             --enable-static=no \
             --enable-ros3-vfd \
@@ -157,4 +158,10 @@ if [[ ("$target_platform" != "linux-ppc64le") && \
   # https://github.com/h5py/h5py/issues/817
   # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
   make check RUNPARALLEL="mpiexec -n 2"
+fi
+
+# test for hdf5 C++ exceptions
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
+    $CXX $CXXFLAGS $RECIPE_DIR/testhdf5exc.cpp -o testhdf5exc -L$PREFIX/lib -lhdf5_cpp -lhdf5 -I$PREFIX/include
+    ./testhdf5exc
 fi

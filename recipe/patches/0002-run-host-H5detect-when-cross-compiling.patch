@@ -1,46 +1,33 @@
---- hdf5-1.14.4-3.orig/configure.ac	2024-09-04 11:52:50.297783584 +0200
-+++ hdf5-1.14.4-3/configure.ac	2024-09-04 11:54:32.681536979 +0200
-@@ -140,6 +140,14 @@
- 
- AC_SUBST([cross_compiling])
- 
-+## src_run for running h5detect
-+## rely on $PATH for host-native h5detect
-+if test "x${cross_compiling}" = "xyes"; then
-+  src_run=""
-+else
-+  src_run="./"
-+fi
-+AC_SUBST([src_run])
- 
- ## H5_CFLAGS (and company) are for CFLAGS that should be used on HDF5, but
- ## not exported to h5cc (or h5fc, etc.)
---- hdf5-1.14.4-3.orig/fortran/src/Makefile.am	2024-09-04 11:52:50.403781047 +0200
-+++ hdf5-1.14.4-3/fortran/src/Makefile.am	2024-09-04 11:54:32.681536979 +0200
-@@ -121,13 +121,13 @@
+diff --git a/fortran/src/Makefile.am b/fortran/src/Makefile.am
+index 2fdf085f4b..ba7de839c1 100644
+--- a/fortran/src/Makefile.am
++++ b/fortran/src/Makefile.am
+@@ -121,13 +121,13 @@ BUILT_SOURCES = H5f90i_gen.h
  # header, then H5match_types which includes that header, then
  # it needs to run H5match_types.
  H5fortran_types.F90 H5f90i_gen.h: H5match_types$(EXEEXT)
-+	$(RUNSERIAL) $(src_run)H5match_types$(EXEEXT)
 -	$(RUNSERIAL) ./H5match_types$(EXEEXT)
++	$(RUNSERIAL) $(src_run)H5match_types$(EXEEXT)
  
  # H5_buildiface.F90 generates all the APIs that have a KIND type associated
  # with them.
  
  H5_gen.F90: H5_buildiface$(EXEEXT)
-+	$(RUNSERIAL) $(src_run)H5_buildiface$(EXEEXT)
 -	$(RUNSERIAL) ./H5_buildiface$(EXEEXT)
++	$(RUNSERIAL) $(src_run)H5_buildiface$(EXEEXT)
  
  # H5_buildiface.F90 is included in the distribution, and Automake knows
  # how to compile a fortran program given its sources.
---- hdf5-1.14.4-3.orig/hl/fortran/src/Makefile.am	2024-09-04 11:52:50.480779204 +0200
-+++ hdf5-1.14.4-3/hl/fortran/src/Makefile.am	2024-09-04 11:54:32.681536979 +0200
-@@ -95,7 +95,7 @@
+diff --git a/hl/fortran/src/Makefile.am b/hl/fortran/src/Makefile.am
+index 5834c9932d..9b5d1d9dad 100644
+--- a/hl/fortran/src/Makefile.am
++++ b/hl/fortran/src/Makefile.am
+@@ -95,7 +95,7 @@ noinst_PROGRAMS = H5HL_buildiface
  # with them.
  
  H5LTff_gen.F90: H5HL_buildiface$(EXEEXT)
-+	$(RUNSERIAL) $(src_run)H5HL_buildiface$(EXEEXT)
 -	$(RUNSERIAL) ./H5HL_buildiface$(EXEEXT)
+++	$(RUNSERIAL) $(src_run)H5HL_buildiface$(EXEEXT)
  
  H5TBff_gen.F90: H5HL_buildiface$(EXEEXT)
  
