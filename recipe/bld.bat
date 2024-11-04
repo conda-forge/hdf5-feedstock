@@ -67,3 +67,9 @@ del /f %PREFIX%\Library\COPYING
 if errorlevel 1 exit 1
 del /f %PREFIX%\Library\RELEASE.txt
 if errorlevel 1 exit 1
+
+:: Remove Libs.private from h5.pc
+findstr /V "Libs.private"  %LIBRARY_PREFIX%\\lib\\pkgconfig\\hdf5.pc > hdf5.pc.new
+if errorlevel 1 exit 1
+move /y hdf5.pc.new %LIBRARY_PREFIX%\\lib\\pkgconfig\\hdf5.pc
+if errorlevel 1 exit 1
