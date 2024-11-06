@@ -152,9 +152,9 @@ EOF
 fi
 
 if [[ $mpi == "mvapich" ]]; then
-  # The t_filters_parallel test suite ensures the correct application and integrity of HDF5 filters, such as compression, 
-  # in a parallel I/O context. The t_pmulti_dset test suite verifies the proper creation and I/O operations on multiple 
-  # datasets in parallel. We had to disable these tests for MVAPICH due to specific failures for a couple of them, 
+  # The t_filters_parallel test suite ensures the correct application and integrity of HDF5 filters, such as compression,
+  # in a parallel I/O context. The t_pmulti_dset test suite verifies the proper creation and I/O operations on multiple
+  # datasets in parallel. We had to disable these tests for MVAPICH due to specific failures for a couple of them,
   # likely related to resource constraints in the testing environment.
   echo "Replacing problematic test sources with dummy tests for MVAPICH"
   cp $RECIPE_DIR/dummy_t_pmulti_dset.c testpar/t_pmulti_dset.c
