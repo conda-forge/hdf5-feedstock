@@ -1,6 +1,6 @@
-{% set version = "1.14.4" %}
+{% set version = "1.14.3" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 3 %}
+{% set build = 6 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -36,9 +36,8 @@ package:
   version: {{ version }}
 
 source:
-  # Note: The additional "-3" at the end of the download link is an upstream accident and should go away with the next version.
-  url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}-3.tar.gz
-  sha256: 019ac451d9e1cf89c0482ba2a06f07a46166caf23f60fea5ef3c37724a318e03
+  url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}.tar.gz
+  sha256: 09cdb287aa7a89148c1638dd20891fdbae08102cf433ef128fd345338aa237c7
   patches:
     # Atomicity tests seem to fail for openmpi
     # This seems to be a known bug
@@ -51,8 +50,6 @@ source:
     # Enable cross-compiling on osx
     - patches/0001-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
     - patches/0002-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
-    # Fix operator= (https://github.com/HDFGroup/hdf5/pull/4473)
-    - patches/ea760136.patch
 
 build:
   number: {{ build }}
@@ -76,6 +73,7 @@ requirements:
     - make                       # [not win]
     - ninja                      # [win]
     - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
+    - libgfortran-devel_osx-64  # [build_platform != target_platform and build_platform == 'osx-64']
     # Keep both versions of openssl in sync
     - openssl
   host:
