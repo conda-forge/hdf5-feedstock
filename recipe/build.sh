@@ -151,20 +151,18 @@ exit 0
 EOF
 fi
 
-if [[ $mpi == "mvapich" ]]; then
-  # The t_filters_parallel test suite ensures the correct application and integrity of HDF5 filters, such as compression,
-  # in a parallel I/O context. The t_pmulti_dset test suite verifies the proper creation and I/O operations on multiple
-  # datasets in parallel. We had to disable these tests for MVAPICH due to specific failures for a couple of them,
-  # likely related to resource constraints in the testing environment.
-  echo "Replacing problematic test sources with dummy tests for MVAPICH"
-  cp $RECIPE_DIR/dummy_t_pmulti_dset.c testpar/t_pmulti_dset.c
-  cp $RECIPE_DIR/dummy_t_filters_parallel.c testpar/t_filters_parallel.c
-fi
-
-if [[ ("$target_platform" != "linux-ppc64le") && \
-      ("$target_platform" != "linux-aarch64") && \
-      ("$target_platform" != "osx-arm64") ]]; then
-  # https://github.com/h5py/h5py/issues/817
-  # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
-  make check RUNPARALLEL="mpiexec -n 2"
+if [[ ${mpi} == "mvapich" ]]; then
+  # Setting environment variables to allow oversubscription
+  export MV2_ENABLE_AFFINITY=0
+  # Run tests excluding specific ones using ctest
+  ctest -E "(t_bigio|t_pmulti_dset|t_filters_parallel|t_cache_image)"
+else
+  # Run parallel tests for other platforms, but exclude specific platforms
+  if [[ ("$target_platform" != "linux-ppc64le") && \
+        ("$target_platform" != "linux-aarch64") && \
+        ("$target_platform" != "osx-arm64") ]]; then
+    # https://github.com/h5py/h5py/issues/817
+    # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
+    make check RUNPARALLEL="mpiexec -n 2"
+  fi
 fi
