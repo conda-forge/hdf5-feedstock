@@ -17,6 +17,7 @@
 # add build string so packages can depend on
 # mpi or nompi variants
 # dependencies:
+# `hdf5 * mpi_mvapich_*` for mvapich
 # `hdf5 * mpi_mpich_*` for mpich
 # `hdf5 * mpi_*` for any mpi
 # `hdf5 * nompi_*` for no mpi
@@ -69,7 +70,7 @@ requirements:
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
-    - cmake                      # [win]
+    - cmake 
     - automake                   # [not win]
     - autoconf                   # [not win]
     - libtool                    # [not win]
