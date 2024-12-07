@@ -149,6 +149,7 @@ exit 0
 EOF
 fi
 
+# Run parallel tests for other platforms, but exclude specific platforms
 if [[ ("$target_platform" != "linux-ppc64le") && \
       ("$target_platform" != "linux-aarch64") && \
       ("$target_platform" != "osx-arm64") ]]; then
