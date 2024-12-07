@@ -56,8 +56,6 @@ build:
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
-  ignore_run_exports:
-    - libacl
 
 requirements:
   build:
@@ -81,7 +79,6 @@ requirements:
     - impi-devel  # [mpi == 'impi']
     - zlib
     - libaec
-    - libacl      # [linux]
     - libcurl
     - openssl
 
