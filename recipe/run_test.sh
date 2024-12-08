@@ -23,6 +23,10 @@ h5c++ -showconfig
 h5c++ ${CXXFLAGS} ${LDFLAGS} h5tutr_cmprss.cpp -o h5tutr_cmprss
 ./h5tutr_cmprss
 
+echo "test for hdf5 C++ exceptions"
+h5c++ ${CXXFLAGS} ${LDFLAGS} $RECIPE_DIR/testhdf5exc.cpp -o testhdf5exc
+./testhdf5exc
+
 # Test Fortran 90 compiler
 echo "Testing $h5fc"
 $h5fc -showconfig
