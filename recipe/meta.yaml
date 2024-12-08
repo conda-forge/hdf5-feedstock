@@ -1,6 +1,6 @@
 {% set version = "1.14.3" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 7 %}
+{% set build = 8 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -57,8 +57,6 @@ build:
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
-  ignore_run_exports:
-    - libacl
 
 requirements:
   build:
@@ -82,7 +80,6 @@ requirements:
     - impi-devel  # [mpi == 'impi']
     - zlib
     - libaec
-    - libacl      # [linux]
     - libcurl
     - openssl
 
