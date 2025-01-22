@@ -1,6 +1,6 @@
 {% set version = "1.14.3" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 8 %}
+{% set build = 9 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -64,8 +64,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}  # [not win]
-    - cmake 
+    - {{ compiler("fortran") }}
+    - cmake
     - automake                   # [not win]
     - autoconf                   # [not win]
     - libtool                    # [not win]
@@ -87,7 +87,7 @@ test:
   requires:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}  # [not win]
+    - {{ compiler("fortran") }}
     - pkg-config                 # [not win]
     - cmake                      # [not win]
     - make                       # [not win]
