@@ -90,7 +90,8 @@ fi
 
 # regen config after patches to configure.ac
 ./autogen.sh
-
+# gif tools have an unresolved CVE https://github.com/HDFGroup/hdf5/pull/2313
+hlgiftools=no
 ./configure --prefix="${PREFIX}" \
             --with-pic \
             --host="${HOST}" \
@@ -105,7 +106,7 @@ fi
             --enable-threadsafe \
             --enable-build-mode=production \
             --enable-unsupported \
-            --enable-hlgiftools=yes \
+            --enable-hlgiftools=${hlgiftools} \
             --enable-using-memchecker \
             --enable-static=no \
             --enable-ros3-vfd \
@@ -113,8 +114,6 @@ fi
 
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
-# also allow oversubscribing with mvapich
-export MVP_ENABLE_AFFINITY=0
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
   # parentheses ( make this a sub-shell, so env and cwd changes don't persist
@@ -151,18 +150,11 @@ exit 0
 EOF
 fi
 
-if [[ ${mpi} == "mvapich" ]]; then
-  # Setting environment variables to allow oversubscription
-  export MV2_ENABLE_AFFINITY=0
-  # Run tests excluding specific ones using ctest
-  ctest -E "(t_bigio|t_pmulti_dset|t_filters_parallel|t_cache_image)"
-else
-  # Run parallel tests for other platforms, but exclude specific platforms
-  if [[ ("$target_platform" != "linux-ppc64le") && \
-        ("$target_platform" != "linux-aarch64") && \
-        ("$target_platform" != "osx-arm64") ]]; then
-    # https://github.com/h5py/h5py/issues/817
-    # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
-    make check RUNPARALLEL="mpiexec -n 2"
-  fi
+# Run parallel tests for other platforms, but exclude specific platforms
+if [[ ("$target_platform" != "linux-ppc64le") && \
+      ("$target_platform" != "linux-aarch64") && \
+      ("$target_platform" != "osx-arm64") ]]; then
+  # https://github.com/h5py/h5py/issues/817
+  # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
+  make check RUNPARALLEL="mpiexec -n 2"
 fi
