@@ -13,13 +13,21 @@ libaec:
 libcurl:
 - '8'
 m2w64_c_compiler:
-- m2w64-toolchain
+- gcc
+m2w64_c_compiler_version:
+- '13'
 m2w64_c_stdlib:
-- m2w64-toolchain
+- m2w64-sysroot
+m2w64_c_stdlib_version:
+- '12'
 m2w64_cxx_compiler:
-- m2w64-toolchain
+- gxx
+m2w64_cxx_compiler_version:
+- '13'
 m2w64_fortran_compiler:
-- m2w64-toolchain
+- gfortran
+m2w64_fortran_compiler_version:
+- '13'
 mpi:
 - nompi
 mpich:
