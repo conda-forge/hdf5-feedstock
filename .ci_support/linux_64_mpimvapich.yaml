@@ -1,23 +1,23 @@
-MACOSX_DEPLOYMENT_TARGET:
-- '10.13'
-MACOSX_SDK_VERSION:
-- '10.13'
 c_compiler:
-- clang
+- gcc
 c_compiler_version:
-- '18'
+- '13'
 c_stdlib:
-- macosx_deployment_target
+- sysroot
 c_stdlib_version:
-- '10.13'
+- '2.17'
+cdt_name:
+- conda
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- clangxx
+- gxx
 cxx_compiler_version:
-- '18'
+- '13'
+docker_image:
+- quay.io/condaforge/linux-anvil-x86_64:alma9
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
@@ -28,10 +28,8 @@ libaec:
 - '1'
 libcurl:
 - '8'
-macos_machine:
-- x86_64-apple-darwin13.4.0
 mpi:
-- mpich
+- mvapich
 mpich:
 - '4'
 openmpi:
@@ -39,7 +37,7 @@ openmpi:
 openssl:
 - '3'
 target_platform:
-- osx-64
+- linux-64
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
