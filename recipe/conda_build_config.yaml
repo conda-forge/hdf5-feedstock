@@ -3,11 +3,4 @@ mpi:
   - impi  # [win]
   - mpich  # [unix]
   - openmpi  # [unix]
-
-channel_sources:
-- conda-forge/label/llvm_rc,conda-forge   # [win]
-
-fortran_compiler:          # [win]
-- flang                    # [win]
-fortran_compiler_version:  # [win]
-- '19'                     # [win]
+  - mvapich  # [linux]

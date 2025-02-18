@@ -1,6 +1,6 @@
-{% set version = "1.14.5" %}
+{% set version = "1.14.4" %}
 {% set maj_min_ver = ".".join(version.split(".")[:2]) %}
-{% set build = 0 %}
+{% set build = 5 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -17,6 +17,7 @@
 # add build string so packages can depend on
 # mpi or nompi variants
 # dependencies:
+# `hdf5 * mpi_mvapich_*` for mvapich
 # `hdf5 * mpi_mpich_*` for mpich
 # `hdf5 * mpi_*` for any mpi
 # `hdf5 * nompi_*` for no mpi
@@ -36,36 +37,31 @@ package:
   version: {{ version }}
 
 source:
-  url: https://support.hdfgroup.org/releases/hdf5/v{{ maj_min_ver.replace('.', '_') }}/v{{ version.replace('.', '_') }}/downloads/hdf5-{{ version }}.tar.gz
-  sha256: ec2e13c52e60f9a01491bb3158cb3778c985697131fc6a342262d32a26e58e44
+  # Note: The additional "-3" at the end of the download link is an upstream accident and should go away with the next version.
+  url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-{{ maj_min_ver }}/hdf5-{{ version }}/src/hdf5-{{ version }}-3.tar.gz
+  sha256: 019ac451d9e1cf89c0482ba2a06f07a46166caf23f60fea5ef3c37724a318e03
   patches:
     # Atomicity tests seem to fail for openmpi
     # This seems to be a known bug
     # https://github.com/HDFGroup/hdf5/issues/2196
-    # Still necessary as of 1.14.5
     - patches/testpar_Makefile.am.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
     - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
     - patches/testh5diff.sh.in.patch              # [mpi != 'nompi']
-
     # Enable cross-compiling on osx
-    # This kinda seems fixed in https://github.com/HDFGroup/hdf5/issues/4916
-    # But i'm not sure....
-    # - patches/0001-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
+    - patches/0001-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
     - patches/0002-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
-    - patches/fix_flang_flags.patch  # [win]
-    - patches/skip_flang_real_config_check.patch  # [win]
-    - patches/add_long_double.patch  # [win]
+    # Fix operator= (https://github.com/HDFGroup/hdf5/pull/4473)
+    - patches/ea760136.patch
 
 build:
-  skip: True  # [not win]
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
-  script: '{{ RECIPE_DIR}}/bld-flang.bat'  # [win]
   run_exports:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
-
+  ignore_run_exports:
+    - libacl
 
 requirements:
   build:
@@ -73,8 +69,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - cmake                      # [win]
+    - {{ compiler('fortran') }}  # [not win]
+    - cmake 
     - automake                   # [not win]
     - autoconf                   # [not win]
     - libtool                    # [not win]
@@ -88,6 +84,7 @@ requirements:
     - impi-devel  # [mpi == 'impi']
     - zlib
     - libaec
+    - libacl      # [linux]
     - libcurl
     - openssl
 

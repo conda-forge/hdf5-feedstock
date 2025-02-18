@@ -65,9 +65,6 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export hdf5_cv_disable_some_ldouble_conv=no
   export hdf5_cv_system_scope_threads=yes
   export hdf5_cv_printf_ll="l"
-
-  export hdf5_cv_system_scope_threads=yes
-  export hdf5_cv_printf_ll="l"
   export PAC_FC_MAX_REAL_PRECISION=15
   export PAC_C_MAX_REAL_PRECISION=17
   export PAC_FC_ALL_INTEGER_KINDS="{1,2,4,8,16}"
@@ -116,6 +113,8 @@ fi
 
 # allow oversubscribing with openmpi in make check
 export OMPI_MCA_rmaps_base_oversubscribe=yes
+# also allow oversubscribing with mvapich
+export MVP_ENABLE_AFFINITY=0
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
   # parentheses ( make this a sub-shell, so env and cwd changes don't persist
@@ -151,10 +150,19 @@ if [[ ${mpi} == "mpich" || (${mpi} == "openmpi" && "$(uname)" == "Darwin") ]]; t
 exit 0
 EOF
 fi
-if [[ ("$target_platform" != "linux-ppc64le") && \
-      ("$target_platform" != "linux-aarch64") && \
-      ("$target_platform" != "osx-arm64") ]]; then
-  # https://github.com/h5py/h5py/issues/817
-  # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
-  make check RUNPARALLEL="mpiexec -n 2"
+
+if [[ ${mpi} == "mvapich" ]]; then
+  # Setting environment variables to allow oversubscription
+  export MV2_ENABLE_AFFINITY=0
+  # Run tests excluding specific ones using ctest
+  ctest -E "(t_bigio|t_pmulti_dset|t_filters_parallel|t_cache_image)"
+else
+  # Run parallel tests for other platforms, but exclude specific platforms
+  if [[ ("$target_platform" != "linux-ppc64le") && \
+        ("$target_platform" != "linux-aarch64") && \
+        ("$target_platform" != "osx-arm64") ]]; then
+    # https://github.com/h5py/h5py/issues/817
+    # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
+    make check RUNPARALLEL="mpiexec -n 2"
+  fi
 fi

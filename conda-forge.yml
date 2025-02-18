@@ -6,9 +6,10 @@ conda_forge_output_validation: true
 github:
   branch_name: main
   tooling_branch_name: main
+bot:
+  abi_migration_branches:
+  - 1.14.3
 provider:
   linux_aarch64: azure
   linux_ppc64le: azure
 test: native_and_emulated
-azure:
-  store_build_artifacts: true
