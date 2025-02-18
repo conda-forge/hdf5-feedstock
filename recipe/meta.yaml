@@ -53,7 +53,7 @@ source:
     - patches/0001-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
     - patches/0002-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
     # Fix operator= (https://github.com/HDFGroup/hdf5/pull/4473)
-    - patches/ea760136.patch
+    #- patches/ea760136.patch
 
 build:
   skip: true  # [not win]
