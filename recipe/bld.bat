@@ -7,8 +7,8 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
-set "CXXFLAGS=%CXXFLAGS% -LTCG"
 
+set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
   :: cmake generates syntax errors if there are backslashes in paths
   set _LIBRARY=%LIBRARY_PREFIX:\=/%
@@ -24,8 +24,6 @@ if "%mpi%"=="impi" (
 )
 
 echo "CMAKE_ARGS=!CMAKE_ARGS!"
-:: gif tools have an unresolved CVE https://github.com/HDFGroup/hdf5/pull/2313
-set "HDF5_BUILD_HL_LIB=OFF"
 
 :: Configure step.
 cmake -G "Ninja" ^
@@ -41,14 +39,13 @@ cmake -G "Ninja" ^
       -D HDF5_BUILD_HL_LIB:BOOL=ON ^
       -D HDF5_BUILD_TOOLS:BOOL=ON ^
       -D HDF5_BUILD_FORTRAN:BOOL=ON ^
-      -D HDF5_BUILD_HL_GIF_TOOLS:BOOL=%HDF5_BUILD_HL_LIB% ^
+      -D HDF5_BUILD_HL_GIF_TOOLS:BOOL=ON ^
       -D HDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON ^
       -D HDF5_ENABLE_THREADSAFE:BOOL=OFF ^
       -D HDF5_ENABLE_ROS3_VFD:BOOL=ON ^
-      -D HDF5_ENABLE_SZIP_SUPPORT=ON ^
+      -D HDF5_ENABLE_SZIP_SUPPORT=OFF ^
       -D ALLOW_UNSUPPORTED:BOOL=ON ^
       %SRC_DIR%
-
 if errorlevel 1 (
   dir CMakeFiles
   type CMakeFiles/CMakeOutput.log
