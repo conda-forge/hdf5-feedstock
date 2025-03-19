@@ -1,14 +1,14 @@
-From e367eb764879d9c3e07149f28c25f27dab2b16dd Mon Sep 17 00:00:00 2001
+From 6b509fbd7fe0942065a62e018a7bb17b8f45211e Mon Sep 17 00:00:00 2001
 From: Samuel Debionne <samuel.debionne@esrf.fr>
 Date: Wed, 19 Mar 2025 08:47:18 +0100
 Subject: [PATCH 4/6] 0001-avoid-test-execution-when-cross-compiling.patch
 
 ---
- configure.ac | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ configure.ac | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index d9147056c5..1c0a57708b 100644
+index d9147056c5..335bf36fd9 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -138,6 +138,9 @@ AC_SUBST([CPPFLAGS])
@@ -21,7 +21,23 @@ index d9147056c5..1c0a57708b 100644
  ## H5_CFLAGS (and company) are for CFLAGS that should be used on HDF5, but
  ## not exported to h5cc (or h5fc, etc.)
  ##
-@@ -967,6 +970,14 @@ if test "X$HDF_FORTRAN" = "Xyes"; then
+@@ -832,6 +835,7 @@ if test "X$HDF_FORTRAN" = "Xyes"; then
+   MY_LDBL_DIG=0
+ 
+   ## Macro to compare long double and __float128 to see which has higher precision
++  if test "$cross_compiling" = no; then
+   PAC_FC_LDBL_DIG
+ 
+   ## Set results
+@@ -843,6 +847,7 @@ if test "X$HDF_FORTRAN" = "Xyes"; then
+     PRECISION_TYPE="(long double)"
+   fi
+   AC_MSG_RESULT([$PAC_C_MAX_REAL_PRECISION $PRECISION_TYPE])
++  fi
+ 
+   ## Store results in config file
+   AC_SUBST([PAC_C_MAX_REAL_PRECISION])
+@@ -967,6 +972,14 @@ if test "X$HDF_FORTRAN" = "Xyes"; then
      fi
    fi
  
@@ -36,7 +52,7 @@ index d9147056c5..1c0a57708b 100644
    ## Check KIND and size of native integer
    PAC_FC_NATIVE_INTEGER
  
-@@ -980,6 +991,7 @@ if test "X$HDF_FORTRAN" = "Xyes"; then
+@@ -980,6 +993,7 @@ if test "X$HDF_FORTRAN" = "Xyes"; then
    ## Find all SIZEOFs for available KINDs
    PAC_FC_SIZEOF_INT_KINDS
    PAC_FC_SIZEOF_REAL_KINDS
@@ -44,7 +60,7 @@ index d9147056c5..1c0a57708b 100644
  
    AC_SUBST([PAC_FC_ALL_REAL_KINDS])
    AC_SUBST([PAC_FC_MAX_REAL_PRECISION])
-@@ -1091,9 +1103,15 @@ if test "X$HDF_FORTRAN" = "Xyes"; then
+@@ -1091,9 +1105,15 @@ if test "X$HDF_FORTRAN" = "Xyes"; then
    AC_MSG_RESULT([$PAC_FC_ALL_REAL_KINDS])
  
    dnl count the number of real kinds
