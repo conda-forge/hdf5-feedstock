@@ -44,16 +44,14 @@ source:
     # Atomicity tests seem to fail for openmpi
     # This seems to be a known bug
     # https://github.com/HDFGroup/hdf5/issues/2196
-    - patches/testpar_Makefile.am.patch
+    - patches/0001-skip-testphdf5.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
-    - patches/testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
+    - patches/0002-testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
     # h5diff help output test is flaky with mpi
-    - patches/testh5diff.sh.in.patch              # [mpi != 'nompi']
+    - patches/0003-testh5diff.sh.in.patch              # [mpi != 'nompi']
     # Enable cross-compiling on osx
-    - patches/0001-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
-    - patches/0002-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
-    # Fix operator= (https://github.com/HDFGroup/hdf5/pull/4473)
-    - patches/ea760136.patch
+    - patches/0004-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
+    - patches/0005-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
 
 build:
   number: {{ build }}
