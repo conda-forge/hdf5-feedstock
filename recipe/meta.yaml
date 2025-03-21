@@ -53,6 +53,7 @@ source:
     - patches/0004-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
     - patches/0005-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
     - patches/link_ttsafe_to_threads.patch
+    - patches/0007-Use-basenames-for-compilers.patch
 
 build:
   number: {{ build }}
