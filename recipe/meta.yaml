@@ -113,9 +113,7 @@ test:
         "h5pfc",
     ] %}
     {% endif %}
-    {% set hdf5_unix_cmds = h5_compilers + [
-        "h5redeploy",
-    ] %}
+    {% set hdf5_unix_cmds = h5_compilers %}
     {% if build_platform == target_platform %}
     {% set hdf5_unix_cmds = hdf5_unix_cmds + [
         "h5perf_serial",
