@@ -62,9 +62,10 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1"  ]]; then
         # https://github.com/h5py/h5py/issues/817
         # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
         # make check RUNPARALLEL="mpiexec -n 2"
-        echo how do i run make check in parallel???
+        # echo how do i run make check in parallel???
+        make test
     fi
 elif [[ "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
-    echo how do i run make check???
     # make check
+    make test
 fi
