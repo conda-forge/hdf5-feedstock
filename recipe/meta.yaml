@@ -52,6 +52,7 @@ source:
     # Enable cross-compiling on osx
     - patches/0004-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
     - patches/0005-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
+    - patches/link_ttsafe_to_threads.patch
 
 build:
   number: {{ build }}
@@ -63,15 +64,11 @@ build:
 
 requirements:
   build:
-    - gnuconfig  # [unix]
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
     - cmake 
-    - automake                   # [not win]
-    - autoconf                   # [not win]
-    - libtool                    # [not win]
     - make                       # [not win]
     - ninja                      # [win]
     - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']

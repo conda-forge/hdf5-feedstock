@@ -1,0 +1,14 @@
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index c38e26c..68e23a1 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -586,6 +586,9 @@ else ()
+   TARGET_C_PROPERTIES (ttsafe SHARED)
+   target_link_libraries (ttsafe PRIVATE ${HDF5_TEST_LIBSH_TARGET})
+ endif ()
++if (NOT WIN32)
++  target_link_libraries (ttsafe PRIVATE "$<$<BOOL:${HDF5_ENABLE_THREADSAFE}>:Threads::Threads>")
++endif ()
+ set_target_properties (ttsafe PROPERTIES FOLDER test)
+ 
+ #-----------------------------------------------------------------------------
