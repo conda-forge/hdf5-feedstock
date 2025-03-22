@@ -44,18 +44,17 @@ source:
     # Atomicity tests seem to fail for openmpi
     # This seems to be a known bug
     # https://github.com/HDFGroup/hdf5/issues/2196
-    - patches/0001-skip-testphdf5.patch
     # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
-    - patches/0002-testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
+    - patches/0001-testpar_pflush.sh.in.openmpi.patch
     # h5diff help output test is flaky with mpi
-    - patches/0003-testh5diff.sh.in.patch              # [mpi != 'nompi']
+    - patches/0002-testh5diff.sh.in.patch
     # Enable cross-compiling on osx
-    - patches/0004-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
-    - patches/0005-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
-    - patches/link_ttsafe_to_threads.patch
-    - patches/0007-Use-basenames-for-compilers.patch
-    - patches/0008-Skip-problematic-test-on-linux-test_flush_refresh.patch
-    - patches/0009-Skip-problematic-tests-for-linux_ppc64le_mpimvapich.patch
+    - patches/0003-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
+    - patches/0004-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
+    - patches/0005-Link-ttsafe-to-threads.patch
+    - patches/0006-Use-basenames-for-compilers.patch
+    - patches/0007-Skip-problematic-test-on-linux-test_flush_refresh.patch
+    - patches/0008-Skip-problematic-tests-for-linux_ppc64le_mpimvapich.patch
     - patches/0009-Skip-problematic-tests-for-parallel-emulated-systems.patch
     - patches/0010-Skip-H5DIFF-h5diff_601-and-MPI_TEST_H5DIFF-h5diff_60.patch
 

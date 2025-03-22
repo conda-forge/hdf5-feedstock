@@ -1,4 +1,4 @@
-From cc6efe401b1aba84e8ae02e57b8f60263ea0613b Mon Sep 17 00:00:00 2001
+From 14107abf3b19fec786333b95f9515532d3a8c034 Mon Sep 17 00:00:00 2001
 From: Mark Harfouche <mark.harfouche@gmail.com>
 Date: Sat, 22 Mar 2025 10:25:13 -0400
 Subject: [PATCH 10/10] Skip H5DIFF-h5diff_601 and MPI_TEST_H5DIFF-h5diff_601
@@ -17,7 +17,7 @@ MPI_TEST_H5DIFF-h5diff_601 fails on certain parallel platforms
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/test/h5diff/CMakeTests.cmake b/tools/test/h5diff/CMakeTests.cmake
-index 151e73c..5624629 100644
+index 151e73cb2c..5624629401 100644
 --- a/tools/test/h5diff/CMakeTests.cmake
 +++ b/tools/test/h5diff/CMakeTests.cmake
 @@ -808,7 +808,7 @@ ADD_H5_TEST (h5diff_63 1 -v ${STRINGS1} ${STRINGS2} string4 string4)
