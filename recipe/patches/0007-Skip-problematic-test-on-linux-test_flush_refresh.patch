@@ -1,7 +1,7 @@
 From 84cb8ab82d9cc3251bd0c1df59429d446c5dae53 Mon Sep 17 00:00:00 2001
 From: Mark Harfouche <mark.harfouche@gmail.com>
 Date: Thu, 20 Mar 2025 22:28:13 -0400
-Subject: [PATCH 07/10] Skip problematic test on linux -- test_flush_refresh
+Subject: [PATCH 7/9] Skip problematic test on linux -- test_flush_refresh
 
 ---
  test/ShellTests.cmake | 22 +++++++++++-----------

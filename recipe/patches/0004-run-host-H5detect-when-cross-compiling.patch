@@ -1,7 +1,7 @@
 From f8e9c582afa08a42ea5f82a7d880dff52900ca02 Mon Sep 17 00:00:00 2001
 From: Samuel Debionne <samuel.debionne@esrf.fr>
 Date: Wed, 19 Mar 2025 08:47:41 +0100
-Subject: [PATCH 04/10] run-host-H5detect-when-cross-compiling
+Subject: [PATCH 4/9] run-host-H5detect-when-cross-compiling
 
 ---
  configure.ac               | 8 ++++++++

@@ -1,7 +1,7 @@
 From 76be1647cec69fcd75803d1b272fef0b5dcde866 Mon Sep 17 00:00:00 2001
 From: Samuel Debionne <samuel.debionne@esrf.fr>
 Date: Wed, 19 Mar 2025 08:47:18 +0100
-Subject: [PATCH 03/10] avoid-test-execution-when-cross-compiling
+Subject: [PATCH 3/9] avoid-test-execution-when-cross-compiling
 
 ---
  configure.ac | 20 ++++++++++++++++++++
