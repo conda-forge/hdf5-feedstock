@@ -42,6 +42,7 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   export H5_PAC_FORTRAN_NUM_INTEGER_KINDS="5"
   export H5_PAC_FC_ALL_REAL_KINDS_SIZEOF="{4,8}"
   export H5_PAC_FC_ALL_INTEGER_KINDS_SIZEOF="{1,2,4,8,16}"
+  export H5_FORTRAN_HAVE_ISO_C_BINDING=YES
 fi
 
 # Configure step
