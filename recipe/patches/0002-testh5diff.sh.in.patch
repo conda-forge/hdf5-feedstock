@@ -1,7 +1,7 @@
 From d352b1a844f17d41cb5f606b4fda5f3fc89582e2 Mon Sep 17 00:00:00 2001
 From: Samuel Debionne <samuel.debionne@esrf.fr>
 Date: Wed, 19 Mar 2025 08:46:51 +0100
-Subject: [PATCH 2/9] testh5diff.sh.in
+Subject: [PATCH 2/8] testh5diff.sh.in
 
 ---
  tools/test/h5diff/testh5diff.sh.in | 6 +++---

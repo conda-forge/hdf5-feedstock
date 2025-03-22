@@ -1,0 +1,113 @@
+From 93c16b1fd5ae6c66d3edf1329098ccceeacc8cb9 Mon Sep 17 00:00:00 2001
+From: Mark Harfouche <mark.harfouche@gmail.com>
+Date: Thu, 20 Mar 2025 22:04:10 -0400
+Subject: [PATCH 5/8] Use basenames for compilers
+
+---
+ c++/src/CMakeLists.txt        | 4 ++--
+ fortran/src/CMakeLists.txt    | 4 ++--
+ hl/c++/src/CMakeLists.txt     | 4 ++--
+ hl/fortran/src/CMakeLists.txt | 4 ++--
+ hl/src/CMakeLists.txt         | 4 ++--
+ src/CMakeLists.txt            | 4 ++--
+ 6 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/c++/src/CMakeLists.txt b/c++/src/CMakeLists.txt
+index 09546acd45..4fd8588e13 100644
+--- a/c++/src/CMakeLists.txt
++++ b/c++/src/CMakeLists.txt
+@@ -207,9 +207,9 @@ install (
+ 
+ if (NOT WIN32 AND NOT MINGW)
+   if (HDF5_ENABLE_PARALLEL AND MPI_CXX_FOUND)
+-    set (_PKG_CONFIG_COMPILER ${MPI_CXX_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${MPI_CXX_COMPILER} NAME)
+   else ()
+-    set (_PKG_CONFIG_COMPILER ${CMAKE_CXX_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${CMAKE_CXX_COMPILER} NAME)
+   endif ()
+   configure_file (
+       ${HDF_RESOURCES_DIR}/libh5cc.in
+diff --git a/fortran/src/CMakeLists.txt b/fortran/src/CMakeLists.txt
+index c94abaa6c5..052cd541d2 100644
+--- a/fortran/src/CMakeLists.txt
++++ b/fortran/src/CMakeLists.txt
+@@ -623,9 +623,9 @@ install (
+ 
+ if (NOT WIN32 AND NOT MINGW)
+   if (HDF5_ENABLE_PARALLEL AND MPI_Fortran_FOUND)
+-    set (_PKG_CONFIG_COMPILER ${MPI_Fortran_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${MPI_Fortran_COMPILER} NAME)
+   else ()
+-    set (_PKG_CONFIG_COMPILER ${CMAKE_Fortran_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${CMAKE_Fortran_COMPILER} NAME)
+   endif ()
+   configure_file (
+       ${HDF_RESOURCES_DIR}/libh5cc.in
+diff --git a/hl/c++/src/CMakeLists.txt b/hl/c++/src/CMakeLists.txt
+index 3f2bd5af14..fcc75647a7 100644
+--- a/hl/c++/src/CMakeLists.txt
++++ b/hl/c++/src/CMakeLists.txt
+@@ -125,9 +125,9 @@ install (
+ 
+ if (NOT WIN32 AND NOT MINGW)
+   if (HDF5_ENABLE_PARALLEL AND MPI_CXX_FOUND)
+-    set (_PKG_CONFIG_COMPILER ${MPI_CXX_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${MPI_CXX_COMPILER} NAME)
+   else ()
+-    set (_PKG_CONFIG_COMPILER ${CMAKE_CXX_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${CMAKE_CXX_COMPILER} NAME)
+   endif ()
+   configure_file (
+       ${HDF_RESOURCES_DIR}/libh5cc.in
+diff --git a/hl/fortran/src/CMakeLists.txt b/hl/fortran/src/CMakeLists.txt
+index 60226c81ab..6e6d3873cc 100644
+--- a/hl/fortran/src/CMakeLists.txt
++++ b/hl/fortran/src/CMakeLists.txt
+@@ -362,9 +362,9 @@ install (
+ 
+ if (NOT WIN32 AND NOT MINGW)
+   if (HDF5_ENABLE_PARALLEL AND MPI_Fortran_FOUND)
+-    set (_PKG_CONFIG_COMPILER ${MPI_Fortran_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${MPI_Fortran_COMPILER} NAME)
+   else ()
+-    set (_PKG_CONFIG_COMPILER ${CMAKE_Fortran_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${CMAKE_Fortran_COMPILER} NAME)
+   endif ()
+   configure_file (
+       ${HDF_RESOURCES_DIR}/libh5cc.in
+diff --git a/hl/src/CMakeLists.txt b/hl/src/CMakeLists.txt
+index 3bca28e29f..c4b87242c9 100644
+--- a/hl/src/CMakeLists.txt
++++ b/hl/src/CMakeLists.txt
+@@ -157,9 +157,9 @@ install (
+ 
+ if (NOT WIN32 AND NOT MINGW)
+   if (HDF5_ENABLE_PARALLEL AND MPI_C_FOUND)
+-    set (_PKG_CONFIG_COMPILER ${MPI_C_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${MPI_C_COMPILER} NAME)
+   else ()
+-    set (_PKG_CONFIG_COMPILER ${CMAKE_C_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${CMAKE_C_COMPILER} NAME)
+   endif ()
+   configure_file (
+       ${HDF_RESOURCES_DIR}/libh5cc.in
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 5bf8e1f82e..2561050cb4 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -1229,9 +1229,9 @@ install (
+ 
+ if (NOT WIN32)
+   if (HDF5_ENABLE_PARALLEL AND MPI_C_FOUND)
+-    set (_PKG_CONFIG_COMPILER ${MPI_C_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${MPI_C_COMPILER} NAME)
+   else ()
+-    set (_PKG_CONFIG_COMPILER ${CMAKE_C_COMPILER})
++    get_filename_component(_PKG_CONFIG_COMPILER ${CMAKE_C_COMPILER} NAME)
+   endif ()
+   configure_file (
+       ${HDF_RESOURCES_DIR}/libh5cc.in
+-- 
+2.34.1
+

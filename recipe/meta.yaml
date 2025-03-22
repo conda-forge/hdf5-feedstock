@@ -49,13 +49,13 @@ source:
     # h5diff help output test is flaky with mpi
     - patches/0002-testh5diff.sh.in.patch
     # Enable cross-compiling on osx
-    - patches/0003-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
-    - patches/0004-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
-    - patches/0005-Link-ttsafe-to-threads.patch
-    - patches/0006-Use-basenames-for-compilers.patch
-    - patches/0007-Skip-problematic-test-on-linux-test_flush_refresh.patch
-    - patches/0008-Skip-problematic-tests-for-parallel-emulated-systems.patch
-    - patches/0009-Skip-H5DIFF-h5diff_601-and-MPI_TEST_H5DIFF-h5diff_60.patch
+    - patches/0003-Do-not-run-Fortran-checks-for-HDF5-due-to-cross-comp.patch  # [osx and build_platform != target_platform]
+    - patches/0004-Link-ttsafe-to-threads.patch
+    - patches/0005-Use-basenames-for-compilers.patch
+    - patches/0006-Skip-problematic-test-on-linux-test_flush_refresh.patch
+    - patches/0007-Skip-problematic-tests-for-parallel-emulated-systems.patch
+    - patches/0008-Skip-H5DIFF-h5diff_601-and-MPI_TEST_H5DIFF-h5diff_60.patch
+
 build:
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
