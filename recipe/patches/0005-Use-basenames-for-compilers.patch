@@ -1,7 +1,7 @@
 From 93c16b1fd5ae6c66d3edf1329098ccceeacc8cb9 Mon Sep 17 00:00:00 2001
 From: Mark Harfouche <mark.harfouche@gmail.com>
 Date: Thu, 20 Mar 2025 22:04:10 -0400
-Subject: [PATCH 5/8] Use basenames for compilers
+Subject: [PATCH 5/9] Use basenames for compilers
 
 ---
  c++/src/CMakeLists.txt        | 4 ++--

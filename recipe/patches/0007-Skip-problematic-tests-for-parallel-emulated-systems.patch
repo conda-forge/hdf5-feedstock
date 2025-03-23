@@ -1,7 +1,7 @@
 From 5a84786146c9fcab177656b2d942b6726ebbba58 Mon Sep 17 00:00:00 2001
 From: Mark Harfouche <mark.harfouche@gmail.com>
 Date: Sat, 22 Mar 2025 10:20:07 -0400
-Subject: [PATCH 7/8] Skip problematic tests for parallel emulated systems
+Subject: [PATCH 7/9] Skip problematic tests for parallel emulated systems
 
 Skip problematic tests for linux_ppc64le_mpimvapich
 

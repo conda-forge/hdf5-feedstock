@@ -1,7 +1,7 @@
 From 079740b0ef35e4a9bc8a897d78add8261aece14d Mon Sep 17 00:00:00 2001
 From: Samuel Debionne <samuel.debionne@esrf.fr>
 Date: Wed, 19 Mar 2025 08:46:30 +0100
-Subject: [PATCH 1/8] testpar_pflush.sh.in.openmpi
+Subject: [PATCH 1/9] testpar_pflush.sh.in.openmpi
 
 ---
  testpar/testpflush.sh.in | 6 +++---
