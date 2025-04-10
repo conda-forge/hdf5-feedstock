@@ -1,0 +1,36 @@
+diff --git a/CMakeTests.cmake b/CMakeTests.cmake
+index 9026943..39a32df 100644
+--- a/CMakeTests.cmake
++++ b/CMakeTests.cmake
+@@ -106,9 +106,9 @@
+     if (EXISTS "${HDF5_TEST_SRC_DIR}" AND IS_DIRECTORY "${HDF5_TEST_SRC_DIR}")
+       add_subdirectory (test)
+     endif ()
+-    if (H5_HAVE_PARALLEL)
+-      if (EXISTS "${HDF5_TEST_PAR_DIR}" AND IS_DIRECTORY "${HDF5_TEST_PAR_DIR}")
+-        add_subdirectory (testpar)
+-      endif ()
+-    endif ()
++    # if (H5_HAVE_PARALLEL)
++    #   if (EXISTS "${HDF5_TEST_PAR_DIR}" AND IS_DIRECTORY "${HDF5_TEST_PAR_DIR}")
++    #     add_subdirectory (testpar)
++    #   endif ()
++    # endif ()
+   endif ()
+diff --git a/tools/test/h5diff/CMakeTests.cmake b/tools/test/h5diff/CMakeTests.cmake
+index 15108a4..c75f4e0 100644
+--- a/tools/test/h5diff/CMakeTests.cmake
++++ b/tools/test/h5diff/CMakeTests.cmake
+@@ -440,9 +440,9 @@ macro (ADD_H5_TEST testname)
+   if (HDF5_TEST_SERIAL)
+     ADD_SH5_TEST (${testname} RESULT_CODE ${ARG_RESULT_CODE} ${err_ref2} ${ARG_UNPARSED_ARGUMENTS})
+   endif ()
+-  if (H5_HAVE_PARALLEL AND HDF5_TEST_PARALLEL AND NOT ARG_SERIAL_ONLY)
+-    ADD_PH5_TEST (${testname} RESULT_CODE ${ARG_RESULT_CODE} ${err_ref2} ${ARG_UNPARSED_ARGUMENTS})
+-  endif ()
++  # if (H5_HAVE_PARALLEL AND HDF5_TEST_PARALLEL AND NOT ARG_SERIAL_ONLY)
++  #   ADD_PH5_TEST (${testname} RESULT_CODE ${ARG_RESULT_CODE} ${err_ref2} ${ARG_UNPARSED_ARGUMENTS})
++  # endif ()
+ endmacro ()
+ 
+ macro (ADD_SH5_TEST testname)

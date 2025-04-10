@@ -1,3 +1,9 @@
+# aws-c-io was built with a newer version of the MACOSX_SDK_VERSION
+# so we need it here as well
+# https://github.com/conda-forge/aws-c-io-feedstock/blob/main/recipe/conda_build_config.yaml
+c_stdlib_version:            # [osx and x86_64]
+  - '10.5'                   # [osx and x86_64]
+
 mpi:
   - nompi
   - impi  # [win]

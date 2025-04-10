@@ -1,0 +1,26 @@
+From 3be79013f2d25a40968385cf13bf2df240e6d043 Mon Sep 17 00:00:00 2001
+From: Mark Harfouche <mark.harfouche@gmail.com>
+Date: Sat, 22 Mar 2025 15:35:33 -0400
+Subject: [PATCH 3/9] Do not run Fortran checks for HDF5 due to cross
+ compilation
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 93d9e4f622..c27d9ad720 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1122,7 +1122,7 @@ if (EXISTS "${HDF5_SOURCE_DIR}/fortran" AND IS_DIRECTORY "${HDF5_SOURCE_DIR}/for
+   if (HDF5_BUILD_FORTRAN)
+     message (VERBOSE "Fortran compiler ID is ${CMAKE_Fortran_COMPILER_ID}")
+     include (${HDF_RESOURCES_DIR}/HDFFortranCompilerFlags.cmake)
+-    include (${HDF_RESOURCES_DIR}/HDF5UseFortran.cmake)
++    # include (${HDF_RESOURCES_DIR}/HDF5UseFortran.cmake)
+     set (LINK_Fortran_LIBS ${LINK_LIBS})
+ 
+     if (NOT H5_FORTRAN_HAVE_ISO_C_BINDING)
+-- 
+2.34.1
+
