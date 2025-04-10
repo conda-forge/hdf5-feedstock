@@ -7,6 +7,9 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
+:: Needed by IFX
+set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
+set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
@@ -38,6 +41,7 @@ cmake -G "Ninja" ^
       -D ONLY_SHARED_LIBS:BOOL=ON ^
       -D HDF5_BUILD_HL_LIB:BOOL=ON ^
       -D HDF5_BUILD_TOOLS:BOOL=ON ^
+      -D HDF5_BUILD_FORTRAN:BOOL=ON ^
       -D HDF5_BUILD_HL_GIF_TOOLS:BOOL=ON ^
       -D HDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON ^
       -D HDF5_ENABLE_THREADSAFE:BOOL=ON ^

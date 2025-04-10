@@ -72,7 +72,8 @@ requirements:
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
-    - cmake
+    - ifx_win-64  # [win]
+    - cmake <4
     - make                       # [not win]
     - ninja                      # [win]
     - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
