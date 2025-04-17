@@ -10,6 +10,8 @@ cxx_compiler:
 - vs2019
 hdf5:
 - 1.14.3
+impi_devel:
+- '2021.14'
 libaec:
 - '1'
 libcurl:
