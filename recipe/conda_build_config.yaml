@@ -4,3 +4,9 @@ mpi:
   - mpich  # [unix]
   - openmpi  # [unix]
   - mvapich  # [linux]
+
+fortran_compiler:   # [win]
+    - ifx           # [win]
+
+fortran_compiler_version:  # [win]
+    - '2025.*'           # [win]
