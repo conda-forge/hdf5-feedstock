@@ -54,6 +54,7 @@ source:
     - patches/0005-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
 
 build:
+  skip: true  # [not win]
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
