@@ -77,6 +77,7 @@ requirements:
     - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
     # Keep both versions of openssl in sync
     - openssl
+    - diffutils   # [linux]
   host:
     - {{ mpi }}   # [mpi != 'nompi' and mpi != 'impi']
     - impi-devel  # [mpi == 'impi']
@@ -85,7 +86,6 @@ requirements:
     - libacl      # [linux]
     - libcurl
     - openssl
-    - diffutils   # [linux]
 
 test:
   requires:
