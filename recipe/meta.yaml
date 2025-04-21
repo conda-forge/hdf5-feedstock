@@ -85,6 +85,7 @@ requirements:
     - libacl      # [linux]
     - libcurl
     - openssl
+    - diffutils   # [linux]
 
 test:
   requires:
