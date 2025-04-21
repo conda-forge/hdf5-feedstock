@@ -7,12 +7,10 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 echo "FC=%FC%"
-set _LIBRARY=%LIBRARY_PREFIX:\=/%
 :: Needed by IFX
 set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
 set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
 set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
-
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
@@ -20,6 +18,14 @@ if "%mpi%"=="impi" (
   set _LIBRARY=%LIBRARY_PREFIX:\=/%
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_ADDITIONAL_INCLUDE_DIRS:PATH=!_LIBRARY!/include"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_CXX_ADDITIONAL_INCLUDE_DIRS:PATH=!_LIBRARY!/include"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_FC_ADDITIONAL_INCLUDE_DIRS:PATH=!_LIBRARY!/include"
+  :: --- Only Fortran MPI variables added below ---
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_COMPILER:PATH=!_LIBRARY!/bin/mpiifx.bat"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_INCLUDE_PATH:PATH=%BUILD_PREFIX%\opt\compiler\include"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_MODULE_DIR:PATH=%BUILD_PREFIX%\opt\compiler\include\intel64"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_WORKS:BOOL=ON"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_LIB_NAMES=IMPI"
+  :: --- End Fortran MPI additions ---
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_LIB_NAMES=IMPI"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_CXX_LIB_NAMES=IMPI"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_IMPI_LIBRARY:PATH=!_LIBRARY!/lib/impi.lib"
