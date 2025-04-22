@@ -1,7 +1,7 @@
 {% set version = "1.14.6" %}
 {% set maj_min_patch_ver = "_".join(version.split(".")) %}
 {% set maj_min_ver = "_".join(version.split(".")[:2]) %}
-{% set build = 0 %}
+{% set build = 1 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -77,6 +77,7 @@ requirements:
     - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
     # Keep both versions of openssl in sync
     - openssl
+    - diffutils   # [linux]
   host:
     - {{ mpi }}   # [mpi != 'nompi' and mpi != 'impi']
     - impi-devel  # [mpi == 'impi']
