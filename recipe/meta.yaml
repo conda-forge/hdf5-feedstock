@@ -1,7 +1,7 @@
 {% set version = "1.14.6" %}
 {% set maj_min_patch_ver = "_".join(version.split(".")) %}
 {% set maj_min_ver = "_".join(version.split(".")[:2]) %}
-{% set build = 2 %}
+{% set build = 3 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -97,6 +97,10 @@ test:
     - make                       # [not win]
     # Need zlib to compile test programs
     - zlib
+    # ensure new libgfortran is co-installable; in July 2025, there were resolution errors
+    # with hdfs5 depending on `libgfortran =5` (either real or hallucinated). This check can
+    # be dropped again in 1-3 years if the issue does not keep recurring in the meantime.
+    - libgfortran5 >=13.3.0      # [not win]
   files:
     - test
   commands:
