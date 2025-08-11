@@ -2,6 +2,18 @@ MACOSX_DEPLOYMENT_TARGET:
 - '10.13'
 MACOSX_SDK_VERSION:
 - '10.13'
+aws_c_auth:
+- 0.9.0
+aws_c_common:
+- 0.12.4
+aws_c_http:
+- 0.10.4
+aws_c_io:
+- 0.21.2
+aws_c_s3:
+- 0.8.6
+aws_c_sdkutils:
+- 0.2.4
 c_compiler:
 - clang
 c_compiler_version:
