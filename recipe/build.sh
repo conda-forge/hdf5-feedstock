@@ -46,6 +46,14 @@ else
   HDF5_ENABLE_DIRECT_VFD=OFF
 fi
 
+if [[ "${target_platform}" = "linux-ppc64le" ]]; then
+  # The test dt_arith seems to fail on pcc64le (at least when run with emulation)
+  # https://github.com/HDFGroup/hdf5/blob/104bd625aba5c1507cd686dc18268e935fc68dd9/release_docs/HISTORY-1_14_0-2_0_0.txt#L1822
+  HDF5_WANT_DCONV_EXCEPTION=OFF
+else
+  HDF5_WANT_DCONV_EXCEPTION=ON
+fi
+
 THESE_ARGS="${THESE_ARGS} -G Ninja"
 THESE_ARGS="${THESE_ARGS} -D CMAKE_BUILD_TYPE:STRING=RELEASE"
 THESE_ARGS="${THESE_ARGS} -D CMAKE_PREFIX_PATH:PATH=${PREFIX}"
@@ -69,7 +77,7 @@ THESE_ARGS="${THESE_ARGS} -D HDF5_BUILD_FORTRAN:BOOL=ON"
 THESE_ARGS="${THESE_ARGS} -D HDF5_H5CC_C_COMPILER:PATH=${PREFIX}/bin/$(basename ${CC})"
 THESE_ARGS="${THESE_ARGS} -D HDF5_H5CC_CXX_COMPILER:PATH=${PREFIX}/bin/$(basename ${CXX})"
 THESE_ARGS="${THESE_ARGS} -D HDF5_H5CC_Fortran_COMPILER:PATH=${PREFIX}/bin/$(basename ${FC})"
-
+THESE_ARGS="${THESE_ARGS} -D HDF5_WANT_DCONV_EXCEPTION:BOOL=${HDF5_WANT_DCONV_EXCEPTION}"
 
 
 # We don't have emulation in osx...
