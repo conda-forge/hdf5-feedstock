@@ -12,5 +12,5 @@ remote_ci_setup: ["conda-forge-ci-setup=4", "conda-build>=24.1", "git-lfs"]
 provider:
   linux_aarch64: azure
   linux_ppc64le: azure
-  osx_arm64: github_actions
+  osx_arm64: azure
 test: native_and_emulated
