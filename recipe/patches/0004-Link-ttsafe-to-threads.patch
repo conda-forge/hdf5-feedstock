@@ -1,0 +1,26 @@
+From c86414b1c130c76ed62ec8f01665fe39bf112a56 Mon Sep 17 00:00:00 2001
+From: Mark Harfouche <mark.harfouche@gmail.com>
+Date: Sat, 22 Mar 2025 10:42:52 -0400
+Subject: [PATCH 4/9] Link ttsafe to threads
+
+---
+ test/CMakeLists.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index c38e26c05c..68e23a1241 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -586,6 +586,9 @@ else ()
+   TARGET_C_PROPERTIES (ttsafe SHARED)
+   target_link_libraries (ttsafe PRIVATE ${HDF5_TEST_LIBSH_TARGET})
+ endif ()
++if (NOT WIN32)
++  target_link_libraries (ttsafe PRIVATE "$<$<BOOL:${HDF5_ENABLE_THREADSAFE}>:Threads::Threads>")
++endif ()
+ set_target_properties (ttsafe PROPERTIES FOLDER test)
+ 
+ #-----------------------------------------------------------------------------
+-- 
+2.34.1
+

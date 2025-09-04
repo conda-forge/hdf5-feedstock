@@ -1,15 +1,16 @@
 build_platform:
-  osx_arm64: osx_64
+  osx_arm64: osx_arm64
+  linux_aarch64: linux_64
+  linux_ppc64le: linux_64
 conda_build:
   pkg_format: '2'
 conda_forge_output_validation: true
 github:
   branch_name: main
   tooling_branch_name: main
-bot:
-  abi_migration_branches:
-  - 1.14.3
+remote_ci_setup: ["conda-forge-ci-setup=4", "conda-build>=24.1", "git-lfs"]
 provider:
   linux_aarch64: azure
   linux_ppc64le: azure
+  osx_arm64: azure
 test: native_and_emulated

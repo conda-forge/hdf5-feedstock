@@ -38,12 +38,11 @@ cmake -G "Ninja" ^
       -D ONLY_SHARED_LIBS:BOOL=ON ^
       -D HDF5_BUILD_HL_LIB:BOOL=ON ^
       -D HDF5_BUILD_TOOLS:BOOL=ON ^
-      -D HDF5_BUILD_HL_GIF_TOOLS:BOOL=ON ^
-      -D HDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON ^
+      -D HDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON ^
       -D HDF5_ENABLE_THREADSAFE:BOOL=ON ^
       -D HDF5_ENABLE_ROS3_VFD:BOOL=ON ^
       -D HDF5_ENABLE_SZIP_SUPPORT=ON ^
-      -D ALLOW_UNSUPPORTED:BOOL=ON ^
+      -D HDF5_ALLOW_UNSUPPORTED:BOOL=ON ^
       %SRC_DIR%
 if errorlevel 1 (
   dir CMakeFiles
@@ -68,7 +67,7 @@ if errorlevel 1 exit 1
 del /f %PREFIX%\Library\RELEASE.txt
 if errorlevel 1 exit 1
 
-:: Remove Libs.private from h5.pc
+:: Remove Libs.private from hdf5.pc
 :: See https://github.com/conda-forge/hdf5-feedstock/issues/238
 findstr /V "Libs.private"  %LIBRARY_PREFIX%\\lib\\pkgconfig\\hdf5.pc > hdf5.pc.new
 if errorlevel 1 exit 1

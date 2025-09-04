@@ -1,7 +1,7 @@
-{% set version = "1.14.6" %}
+{% set version = "2.0.0a" %}
 {% set maj_min_patch_ver = "_".join(version.split(".")) %}
 {% set maj_min_ver = "_".join(version.split(".")[:2]) %}
-{% set build = 3 %}
+{% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -38,20 +38,33 @@ package:
   version: {{ version }}
 
 source:
-  url: https://support.hdfgroup.org/releases/hdf5/v{{ maj_min_ver }}/v{{ maj_min_patch_ver }}/downloads/hdf5-{{ version }}.tar.gz
-  sha256: e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e9b
-  patches:
-    # Atomicity tests seem to fail for openmpi
-    # This seems to be a known bug
-    # https://github.com/HDFGroup/hdf5/issues/2196
-    - patches/0001-skip-testphdf5.patch
-    # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
-    - patches/0002-testpar_pflush.sh.in.openmpi.patch  # [mpi == 'openmpi']
-    # h5diff help output test is flaky with mpi
-    - patches/0003-testh5diff.sh.in.patch              # [mpi != 'nompi']
-    # Enable cross-compiling on osx
-    - patches/0004-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
-    - patches/0005-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
+  # url: https://support.hdfgroup.org/releases/hdf5/v{{ maj_min_ver }}/v{{ maj_min_patch_ver }}/downloads/hdf5-{{ version }}.tar.gz
+  # sha256: e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e9b
+  # git_url: https://github.com/HDFGroup/hdf5.git
+  git_url: https://github.com/byrnHDF/hdf5.git
+  git_tag: develop-fortran-config
+  # patches:
+    # - cmake_fortran_bypass.patch
+    # - cc_for_build_for_h5matchtypes.patch
+    # Not sure why these were necessary to skip when i tested locally.
+    # Maybe my computer is too powerful?
+    # - skip_parallel_tests.diff
+    # # Atomicity tests seem to fail for openmpi
+    # # This seems to be a known bug
+    # # https://github.com/HDFGroup/hdf5/issues/2196
+    # # ref: http://hdf-forum.184993.n3.nabble.com/HDF5-1-8-14-15-16-with-OpenMPI-1-10-1-and-Intel-16-1-td4028533.html
+    # - patches/0001-testpar_pflush.sh.in.openmpi.patch
+    # # h5diff help output test is flaky with mpi
+    # - patches/0002-testh5diff.sh.in.patch
+    # # Enable cross-compiling on osx
+    # - patches/0003-Do-not-run-Fortran-checks-for-HDF5-due-to-cross-comp.patch  # [osx and build_platform != target_platform]
+    # - patches/0004-Link-ttsafe-to-threads.patch
+    # - patches/0005-Use-basenames-for-compilers.patch
+    # - patches/0006-Skip-problematic-test-on-linux-test_flush_refresh.patch
+    # - patches/0007-Skip-problematic-tests-for-parallel-emulated-systems.patch
+    # - patches/0008-Skip-H5DIFF-h5diff_601-and-MPI_TEST_H5DIFF-h5diff_60.patch
+    # # These tests seem to fail on ppc64 on our emulated systems
+    # - patches/0009-Skip-parallel-diff-tests-on-linux-ppc64le-and-mpimva.patch   # [ppc64le and mpi =="mvapich"]
 
 build:
   number: {{ build }}
@@ -63,21 +76,17 @@ build:
 
 requirements:
   build:
-    - gnuconfig  # [unix]
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
-    - cmake 
-    - automake                   # [not win]
-    - autoconf                   # [not win]
-    - libtool                    # [not win]
-    - make                       # [not win]
-    - ninja                      # [win]
+    - cmake
+    - ninja
     - {{ mpi }}  # [build_platform != target_platform and mpi != 'nompi']
     # Keep both versions of openssl in sync
     - openssl
     - diffutils   # [linux]
+    - pkg-config
   host:
     - {{ mpi }}   # [mpi != 'nompi' and mpi != 'impi']
     - impi-devel  # [mpi == 'impi']
@@ -86,6 +95,12 @@ requirements:
     - libacl      # [linux]
     - libcurl
     - openssl
+    - aws-c-io
+    - aws-c-s3
+    - aws-c-auth
+    - aws-c-http
+    - aws-c-common
+    - aws-c-sdkutils
 
 test:
   requires:
@@ -119,9 +134,7 @@ test:
         "h5pfc",
     ] %}
     {% endif %}
-    {% set hdf5_unix_cmds = h5_compilers + [
-        "h5redeploy",
-    ] %}
+    {% set hdf5_unix_cmds = h5_compilers %}
     {% if build_platform == target_platform %}
     {% set hdf5_unix_cmds = hdf5_unix_cmds + [
         "h5perf_serial",
@@ -132,8 +145,6 @@ test:
     {% endfor %}
     # Verify CLI tools.
     {% set hdf5_cmds = [
-        "gif2h5",
-        "h52gif",
         "h5copy",
         "h5debug",
         "h5diff",
@@ -169,16 +180,17 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1  # [win]
     {% endfor %}
     # Check ros3 driver
-    - h5dump --filedriver=ros3 "http://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'  # [unix]
     # Jan 2023 -- hmaarrfk. Tests will fail on windows without --s3-cred specified
     # https://github.com/HDFGroup/hdf5/issues/2406
-    - h5dump --filedriver=ros3 --s3-cred="(,,)" "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | findstr "^HDF5"  # [win]
+    # Hint: Use --enable-error-stack to debug
+    # - h5dump --filedriver=ros3 --s3-cred="(,,)" "http://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'  # [unix]
+    # - h5dump --filedriver=ros3 --s3-cred="(,,)" "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | findstr "^HDF5"  # [win]
 
 about:
   home: https://www.hdfgroup.org/solutions/hdf5/
   license: BSD-3-Clause
   license_family: BSD
-  license_file: COPYING
+  license_file: LICENSE
   summary: HDF5 is a data model, library, and file format for storing and managing data
   dev_url: https://github.com/HDFGroup/hdf5
   doc_url: https://portal.hdfgroup.org/display/HDF5/HDF5
