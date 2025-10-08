@@ -4,3 +4,6 @@ mpi:
   - mpich  # [unix]
   - openmpi  # [unix]
   - mvapich  # [linux]
+# https://github.com/conda-forge/opencv-feedstock/issues/493
+MACOSX_SDK_VERSION:  # [osx]
+  - 15.5             # [osx]
