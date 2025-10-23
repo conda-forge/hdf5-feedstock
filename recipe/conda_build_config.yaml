@@ -7,3 +7,7 @@ mpi:
 # https://github.com/conda-forge/opencv-feedstock/issues/493
 MACOSX_SDK_VERSION:  # [osx]
   - 15.5             # [osx]
+
+mvapich:
+  # exclude mvapich cuda builds
+  - "4.1.* h*"
