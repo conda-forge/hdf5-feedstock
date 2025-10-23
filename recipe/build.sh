@@ -153,8 +153,8 @@ fi
 
 # at least mac + mpich is timing out with the default 20 minutes
 # in t_filters_parallel
-# increase to 40 minutes
-export HDF5_ALARM_SECONDS=2400
+# increase to 60 minutes
+export HDF5_ALARM_SECONDS=3600
 
 if [[ ${mpi} == "mvapich" ]]; then
   # Setting environment variables to allow oversubscription
