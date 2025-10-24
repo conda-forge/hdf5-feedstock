@@ -52,6 +52,7 @@ source:
     # Enable cross-compiling on osx
     - patches/0004-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
     - patches/0005-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
+    - patches/0006-skip-t_filters_parallel.patch  # [osx and mpi == 'mpich']
 
 build:
   number: {{ build }}
