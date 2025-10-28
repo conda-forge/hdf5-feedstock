@@ -49,12 +49,23 @@ if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
     export FFLAGS="${FFLAGS:-} -Wl,--no-as-needed -Wl,--disable-new-dtags"
     export LDFLAGS="${LDFLAGS} -Wl,--no-as-needed -Wl,--disable-new-dtags"
   fi
+
+  # MVAPICH CUDA stub setup for non-GPU hosts
+  if [[ "${mpi}" == "mvapich" ]]; then
+    source ${RECIPE_DIR}/mvapich_cuda_stub.sh
+  fi
 else
   export CC=$(basename ${CC})
   export CXX=$(basename ${CXX})
   export F95=$(basename ${F95})
   export FC=$(basename ${FC})
 fi
+
+# Suppress missing include dir warnings (standard GCC flag for noisy paths)
+export CPPFLAGS="${CPPFLAGS} -Wno-missing-include-dirs"
+export CFLAGS="${CFLAGS} -Wno-missing-include-dirs"
+export CXXFLAGS="${CXXFLAGS} -Wno-missing-include-dirs"
+export FFLAGS="${FFLAGS} -Wno-missing-include-dirs"
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]]; then
   export ac_cv_sizeof_long_double=8
@@ -88,6 +99,14 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   HDF5_OPTIONS="${HDF5_OPTIONS} --enable-tests=no"
 fi
 
+# Clean flags to avoid embedding transient build env paths (e.g., _build_env) into HDF5 config
+for var in CPPFLAGS CFLAGS CXXFLAGS FFLAGS FCFLAGS; do
+  eval "export $var=\$(echo \$$var | sed 's| -I${BUILD_PREFIX}/[^[:space:]]*/[^[:space:]]*||g')"
+done
+for var in LDFLAGS; do
+  eval "export $var=\$(echo \$$var | sed 's| -L${BUILD_PREFIX}/[^[:space:]]*/[^[:space:]]*||g')"
+done
+
 # regen config after patches to configure.ac
 ./autogen.sh
 
@@ -95,7 +114,7 @@ fi
             --with-pic \
             --host="${HOST}" \
             --build="${BUILD}" \
-            --with-zlib="${PREFIX}" \
+	    --with-zlib="${PREFIX}" \
             --with-szlib="${PREFIX}" \
             --with-pthread=yes  \
             ${HDF5_OPTIONS} \
@@ -140,6 +159,11 @@ fi
 
 make -j "${CPU_COUNT}" ${VERBOSE_AT}
 
+# MVAPICH CUDA stub setup for non-GPU hosts
+if [[ "${mpi}" == "mvapich" ]]; then
+  source ${RECIPE_DIR}/mvapich_cuda_stub.sh
+fi
+
 make install V=1
 
 if [[ ${mpi} == "mpich" || (${mpi} == "openmpi" && "$(uname)" == "Darwin") ]]; then
@@ -157,8 +181,6 @@ fi
 export HDF5_ALARM_SECONDS=3600
 
 if [[ ${mpi} == "mvapich" ]]; then
-  # Setting environment variables to allow oversubscription
-  export MV2_ENABLE_AFFINITY=0
   # Run tests excluding specific ones using ctest
   ctest -E "(t_bigio|t_pmulti_dset|t_filters_parallel|t_cache_image)"
 else

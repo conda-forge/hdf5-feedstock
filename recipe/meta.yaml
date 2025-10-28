@@ -61,6 +61,7 @@ build:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
   ignore_run_exports:
     - libacl
+  skip: true  # [mpi == 'mvapich' and target_platform == 'linux-ppc64le']
 
 requirements:
   build:
@@ -104,6 +105,7 @@ test:
     - libgfortran5 >=13.3.0      # [not win]
   files:
     - test
+    - mvapich_cuda_stub.sh
   commands:
     # Verify UNIX CLI tools.
     {% if mpi == 'nompi' %}

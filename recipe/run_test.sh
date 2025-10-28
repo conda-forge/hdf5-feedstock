@@ -1,6 +1,11 @@
 # Stop on first error
 set -euxo pipefail
 
+# MVAPICH CUDA stub setup for non-GPU hosts
+if [[ "${mpi}" == "mvapich" ]]; then
+  source ${RECIPE_DIR}/mvapich_cuda_stub.sh
+fi
+
 # test dir populated from recipe/test
 pushd test
 
@@ -35,6 +40,10 @@ $h5fc ${FFLAGS} ${LDFLAGS} compound_fortran2003.f90 -o compound_fortran2003
 ./compound_fortran2003
 
 echo "Testing cmake"
+# Disable CMake HDF5 find to avoid stub conflicts in tests
+if [[ "${mpi}" == "mvapich" ]]; then
+  export CMAKE_DISABLE_FIND_PACKAGE_HDF5=ON
+fi
 cmake -B build .
 cmake --build build
 ./build/h5_cmprss

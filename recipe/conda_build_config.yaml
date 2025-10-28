@@ -3,6 +3,17 @@ mpi:
   - impi  # [win]
   - mpich  # [unix]
   - openmpi  # [unix]
+  - mvapich  # [linux]
+
 # https://github.com/conda-forge/opencv-feedstock/issues/493
 MACOSX_SDK_VERSION:  # [osx]
   - 15.5             # [osx]
+
+c_compiler_version:
+  - 13  # [mpi == 'mvapich']
+
+cxx_compiler_version:
+  - 13  # [mpi == 'mvapich']
+
+fortran_compiler_version:
+  - 13  # [mpi == 'mvapich']
