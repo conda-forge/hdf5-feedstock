@@ -61,7 +61,6 @@ build:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
   ignore_run_exports:
     - libacl
-  skip: true  # [mpi == 'mvapich' and target_platform == 'linux-ppc64le']
   skip: true  # [mpi == 'mvapich' and (target_platform == 'linux-ppc64le' or target_platform == 'osx-64')]
 
 requirements:
