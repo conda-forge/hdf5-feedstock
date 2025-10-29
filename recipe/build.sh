@@ -183,6 +183,9 @@ export HDF5_ALARM_SECONDS=3600
 if [[ ${mpi} == "mvapich" ]]; then
   # Run tests excluding specific ones using ctest
   ctest -E "(t_bigio|t_pmulti_dset|t_filters_parallel|t_cache_image)"
+elif [[ ${mpi} == "mpich" && "$(uname)" == "Darwin" ]]; then
+  # Skip flaky parallel filters on MPICH/Darwin (hang in chunked edge writes)
+  ctest -E "t_filters_parallel"
 else
   # Run parallel tests for other platforms, but exclude specific platforms
   if [[ ("$target_platform" != "linux-ppc64le") && \
