@@ -1,7 +1,7 @@
-{% set version = "1.14.6" %}
+{% set version = "2.0.0" %}
 {% set maj_min_patch_ver = "_".join(version.split(".")) %}
 {% set maj_min_ver = "_".join(version.split(".")[:2]) %}
-{% set build = 3 %}
+{% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -39,7 +39,7 @@ package:
 
 source:
   url: https://support.hdfgroup.org/releases/hdf5/v{{ maj_min_ver }}/v{{ maj_min_patch_ver }}/downloads/hdf5-{{ version }}.tar.gz
-  sha256: e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e9b
+  sha256: 6e45a4213cb11bb5860e1b0a7645688ab55562cc2d55c6ff9bcb0984ed12b22b
   patches:
     # Atomicity tests seem to fail for openmpi
     # This seems to be a known bug
@@ -68,7 +68,7 @@ requirements:
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not win]
-    - cmake 
+    - cmake
     - automake                   # [not win]
     - autoconf                   # [not win]
     - libtool                    # [not win]
