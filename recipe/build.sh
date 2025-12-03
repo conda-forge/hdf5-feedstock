@@ -114,7 +114,7 @@ done
             --with-pic \
             --host="${HOST}" \
             --build="${BUILD}" \
-	        --with-zlib="${PREFIX}" \
+	    --with-zlib="${PREFIX}" \
             --with-szlib="${PREFIX}" \
             --with-pthread=yes  \
             ${HDF5_OPTIONS} \
@@ -183,6 +183,12 @@ export HDF5_ALARM_SECONDS=3600
 if [[ ${mpi} == "mvapich" ]]; then
   # Run tests excluding specific ones using ctest
   ctest -E "(t_bigio|t_pmulti_dset|t_filters_parallel|t_cache_image)"
+  # Remove the symlink at the end of the build
+  if [[ "${target_platform}" == "linux-aarch64" ]]; then
+    rm -f "${PREFIX}/targets/sbsa-linux/lib/stubs/libcuda.so.1"
+  else
+    rm -f "${PREFIX}/targets/x86_64-linux/lib/stubs/libcuda.so.1"
+  fi
 elif [[ ${mpi} == "mpich" && "$(uname)" == "Darwin" ]]; then
   # Skip flaky parallel filters on MPICH/Darwin (hang in chunked edge writes)
   ctest -E "t_filters_parallel"
