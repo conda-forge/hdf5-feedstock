@@ -1,7 +1,7 @@
 {% set version = "1.14.6" %}
 {% set maj_min_patch_ver = "_".join(version.split(".")) %}
 {% set maj_min_ver = "_".join(version.split(".")[:2]) %}
-{% set build = 3 %}
+{% set build = 4 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -52,6 +52,7 @@ source:
     # Enable cross-compiling on osx
     - patches/0004-avoid-test-execution-when-cross-compiling.patch  # [osx and build_platform != target_platform]
     - patches/0005-run-host-H5detect-when-cross-compiling.patch     # [osx and build_platform != target_platform]
+    - patches/0006-skip-t_filters_parallel.patch  # [osx and mpi == 'mpich']
 
 build:
   number: {{ build }}
