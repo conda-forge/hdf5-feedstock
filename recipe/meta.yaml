@@ -55,6 +55,8 @@ source:
     - patches/0006-skip-t_filters_parallel.patch  # [osx and mpi == 'mpich']
 
 build:
+  # debug
+  skip: true  # [not win]
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
