@@ -12,6 +12,10 @@ jobs:
         CONFIG: linux_64_mpimpich
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
+      linux_64_mpimvapich:
+        CONFIG: linux_64_mpimvapich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
       linux_64_mpinompi:
         CONFIG: linux_64_mpinompi
         UPLOAD_PACKAGES: 'True'
@@ -22,6 +26,10 @@ jobs:
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
       linux_aarch64_mpimpich:
         CONFIG: linux_aarch64_mpimpich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
+      linux_aarch64_mpimvapich:
+        CONFIG: linux_aarch64_mpimvapich
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
       linux_aarch64_mpinompi:
