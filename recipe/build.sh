@@ -61,12 +61,6 @@ else
   export FC=$(basename ${FC})
 fi
 
-# Suppress missing include dir warnings (standard GCC flag for noisy paths)
-export CPPFLAGS="${CPPFLAGS} -Wno-missing-include-dirs"
-export CFLAGS="${CFLAGS} -Wno-missing-include-dirs"
-export CXXFLAGS="${CXXFLAGS} -Wno-missing-include-dirs"
-export FFLAGS="${FFLAGS} -Wno-missing-include-dirs"
-
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]]; then
   export ac_cv_sizeof_long_double=8
   export hdf5_cv_ldouble_to_long_special=no
