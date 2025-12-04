@@ -55,6 +55,8 @@ source:
     - patches/0006-skip-t_filters_parallel.patch  # [osx and mpi == 'mpich']
 
 build:
+  # debug
+  skip: true  # [not win]
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
@@ -68,8 +70,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}  # [not win]
-    - cmake 
+    - {{ compiler("fortran") }}
+    - cmake
     - automake                   # [not win]
     - autoconf                   # [not win]
     - libtool                    # [not win]
@@ -92,7 +94,7 @@ test:
   requires:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}  # [not win]
+    - {{ compiler("fortran") }}
     - pkg-config                 # [not win]
     - cmake                      # [not win]
     - make                       # [not win]
