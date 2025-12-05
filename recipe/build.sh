@@ -108,7 +108,7 @@ done
             --with-pic \
             --host="${HOST}" \
             --build="${BUILD}" \
-	    --with-zlib="${PREFIX}" \
+            --with-zlib="${PREFIX}" \
             --with-szlib="${PREFIX}" \
             --with-pthread=yes  \
             ${HDF5_OPTIONS} \
