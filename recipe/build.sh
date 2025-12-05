@@ -93,13 +93,15 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]
   HDF5_OPTIONS="${HDF5_OPTIONS} --enable-tests=no"
 fi
 
-# Clean flags to avoid embedding transient build env paths (e.g., _build_env) into HDF5 config
-for var in CPPFLAGS CFLAGS CXXFLAGS FFLAGS FCFLAGS; do
-  eval "export $var=\$(echo \$$var | sed 's| -I${BUILD_PREFIX}/[^[:space:]]*/[^[:space:]]*||g')"
-done
-for var in LDFLAGS; do
-  eval "export $var=\$(echo \$$var | sed 's| -L${BUILD_PREFIX}/[^[:space:]]*/[^[:space:]]*||g')"
-done
+if [[ "${mpi}" == "mvapich" ]]; then
+  # Clean flags to avoid embedding transient build env paths into HDF5 config
+  for var in CPPFLAGS CFLAGS CXXFLAGS FFLAGS FCFLAGS; do
+    eval "export $var=\$(echo \$$var | sed 's| -I${BUILD_PREFIX}/[^[:space:]]*/[^[:space:]]*||g')"
+  done
+  for var in LDFLAGS; do
+    eval "export $var=\$(echo \$$var | sed 's| -L${BUILD_PREFIX}/[^[:space:]]*/[^[:space:]]*||g')"
+  done
+fi
 
 # regen config after patches to configure.ac
 ./autogen.sh
