@@ -9,9 +9,9 @@ channel_targets:
 cxx_compiler:
 - vs2022
 fortran_compiler:
-- flang
+- ifx
 fortran_compiler_version:
-- '5'
+- 2025.*
 hdf5:
 - 1.14.3
 impi_devel:
