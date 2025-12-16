@@ -1,5 +1,5 @@
 c_compiler:
-- vs2019
+- vs2022
 c_stdlib:
 - vs
 channel_sources:
@@ -7,11 +7,7 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- vs2019
-fortran_compiler:
-- ifx
-fortran_compiler_version:
-- 2025.*
+- vs2022
 hdf5:
 - 1.14.3
 impi_devel:
@@ -27,7 +23,7 @@ mpich:
 openmpi:
 - '5'
 openssl:
-- '3'
+- '3.5'
 target_platform:
 - win-64
 zlib:
