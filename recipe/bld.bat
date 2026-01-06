@@ -9,7 +9,7 @@ set HDF5_EXT_ZLIB=zlib.lib
 echo "FC=%FC%"
 :: Needed by IFX
 set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
-set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%;%INCLUDE%\mpi"
+set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
 set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
@@ -22,7 +22,7 @@ if "%mpi%"=="impi" (
   :: --- Only Fortran MPI variables added below ---
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_COMPILER:PATH=!_LIBRARY!/bin/mpiifx.bat"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_INCLUDE_PATH:PATH=%BUILD_PREFIX%\opt\compiler\include"
-  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_MODULE_DIR:PATH=%BUILD_PREFIX%\opt\compiler\include\intel64"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_MODULE_DIR:PATH=%LIBRARY_PREFIX%\include\mpi"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_WORKS:BOOL=ON"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_LIB_NAMES=IMPI"
   :: --- End Fortran MPI additions ---
