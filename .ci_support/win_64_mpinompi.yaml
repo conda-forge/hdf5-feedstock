@@ -15,7 +15,7 @@ fortran_compiler_version:
 hdf5:
 - 1.14.3
 impi_devel:
-- 2021.17.0
+- '2021.17'
 libaec:
 - '1'
 libcurl:
