@@ -22,7 +22,7 @@ if "%mpi%"=="impi" (
   :: --- Only Fortran MPI variables added below ---
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_COMPILER:PATH=!_LIBRARY!/bin/mpiifx.bat"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_INCLUDE_PATH:PATH=%BUILD_PREFIX%\opt\compiler\include"
-  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_MODULE_DIR:PATH=%LIBRARY_PREFIX%\include\mpi"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_MODULE_DIR:PATH=%BUILD_PREFIX%\opt\compiler\include\intel64"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_WORKS:BOOL=ON"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_LIB_NAMES=IMPI"
   :: --- End Fortran MPI additions ---
@@ -33,6 +33,9 @@ if "%mpi%"=="impi" (
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_SKIP_COMPILER_WRAPPER=ON"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_SKIP_GUESSING=ON"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_ENABLE_PARALLEL:BOOL=ON"
+
+  :: Add MPI module path to Fortran flags
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_Fortran_FLAGS:STRING=-I!_LIBRARY!/include/mpi"
 )
 
 echo "CMAKE_ARGS=!CMAKE_ARGS!"
