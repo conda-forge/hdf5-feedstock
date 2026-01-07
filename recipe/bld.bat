@@ -34,8 +34,8 @@ if "%mpi%"=="impi" (
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_SKIP_GUESSING=ON"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_ENABLE_PARALLEL:BOOL=ON"
 
-  :: Add MPI module path to Fortran flags
-  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_Fortran_FLAGS:STRING=-I!_LIBRARY!/include/mpi"
+  :: Add BOTH the MPI module path AND the H5_HAVE_PARALLEL define
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_Fortran_FLAGS:STRING=-I!_LIBRARY!/include/mpi -DH5_HAVE_PARALLEL"
 )
 
 echo "CMAKE_ARGS=!CMAKE_ARGS!"
