@@ -34,8 +34,11 @@ if "%mpi%"=="impi" (
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_SKIP_GUESSING=ON"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_ENABLE_PARALLEL:BOOL=ON"
 
-  :: Add BOTH the MPI module path AND the H5_HAVE_PARALLEL define
-  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_Fortran_FLAGS:STRING=-I!_LIBRARY!/include/mpi /DH5_HAVE_PARALLEL"
+  :: Force MPI F08 support detection - Intel MPI supports mpi_f08
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D H5_HAVE_MPI_F08:BOOL=ON"
+
+  :: Ensure the Fortran compiler finds MPI modules
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_Fortran_FLAGS:STRING=-I!_LIBRARY!/include/mpi"
 )
 
 echo "CMAKE_ARGS=!CMAKE_ARGS!"
