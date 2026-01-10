@@ -37,8 +37,8 @@ if "%mpi%"=="impi" (
   :: Force MPI F08 support detection - Intel MPI supports mpi_f08
   set "CMAKE_ARGS=!CMAKE_ARGS! -D H5_HAVE_MPI_F08:BOOL=ON"
 
-  :: Ensure the Fortran compiler finds MPI modules
-  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_Fortran_FLAGS:STRING=-I!_LIBRARY!/include/mpi"
+  :: Ensure the Fortran compiler finds MPI modules (names lower case and underscore to align with flang defaults)
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_Fortran_FLAGS:STRING=-I!_LIBRARY!/include/mpi /names:lowercase /assume:underscore /nologo"
 )
 
 echo "CMAKE_ARGS=!CMAKE_ARGS!"
