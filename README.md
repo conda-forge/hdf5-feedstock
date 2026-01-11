@@ -298,6 +298,7 @@ Feedstock Maintainers
 * [@gillins](https://github.com/gillins/)
 * [@groutr](https://github.com/groutr/)
 * [@hmaarrfk](https://github.com/hmaarrfk/)
+* [@j34ni](https://github.com/j34ni/)
 * [@jakirkham](https://github.com/jakirkham/)
 * [@marcelotrevisani](https://github.com/marcelotrevisani/)
 * [@ocefpaf](https://github.com/ocefpaf/)
