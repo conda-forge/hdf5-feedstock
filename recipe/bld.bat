@@ -57,6 +57,10 @@ if errorlevel 1 (
 ninja
 if errorlevel 1 exit 1
 
+:: Run tests.
+ctest
+if errorlevel 1 exit 1
+
 :: Install step.
 ninja install
 if errorlevel 1 exit 1
