@@ -6,3 +6,11 @@ mpi:
 # https://github.com/conda-forge/opencv-feedstock/issues/493
 MACOSX_SDK_VERSION:  # [osx]
   - 15.5             # [osx]
+
+fortran_compiler:   # [win]
+    - ifx           # [win]
+
+fortran_compiler_version:   # [win]
+    - '2025.*'              # [win]
+impi_devel:                 # [win]
+  - 2021.17                 # [win]
