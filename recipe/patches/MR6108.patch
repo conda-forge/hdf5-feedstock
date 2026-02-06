@@ -1,0 +1,2648 @@
+From 8f888f9749fdebc59cd45fd186040e7e6bda5a9e Mon Sep 17 00:00:00 2001
+From: Julien Schueller <schueller@phimeca.com>
+Date: Sat, 13 Dec 2025 18:16:32 +0100
+Subject: [PATCH 1/4] CMake: Fix cross-compilation support
+
+---
+ config/ConfigureChecks.cmake  |  4 +--
+ config/HDF5UseFortran.cmake   |  8 +++---
+ fortran/src/CMakeLists.txt    | 52 +++++++++++++----------------------
+ fortran/test/CMakeLists.txt   | 25 ++++++-----------
+ hl/fortran/src/CMakeLists.txt | 25 ++++++-----------
+ 5 files changed, 43 insertions(+), 71 deletions(-)
+
+diff --git a/config/ConfigureChecks.cmake b/config/ConfigureChecks.cmake
+index 15473cd1f82..2afc1ce614a 100644
+--- a/config/ConfigureChecks.cmake
++++ b/config/ConfigureChecks.cmake
+@@ -735,7 +735,7 @@ if (HDF5_BUILD_FORTRAN)
+   # Get the max decimal precision in C, checking both long double and
+   # __float128 (if available)
+   #-----------------------------------------------------------------------------
+-  if (NOT CMAKE_CROSSCOMPILING)
++  if (NOT CMAKE_CROSSCOMPILING OR (CMAKE_CROSSCOMPILING AND CMAKE_CROSSCOMPILING_EMULATOR))
+     #-----------------------------------------------------------------------------
+     # The provided CMake C macros don't provide a general compile/run function
+     # so this one is used.
+@@ -844,7 +844,7 @@ endif()
+ #-----------------------------------------------------------------------------
+ macro (H5ConversionTests TEST def msg)
+   if (NOT DEFINED ${TEST})
+-    if (NOT CMAKE_CROSSCOMPILING)
++    if (NOT CMAKE_CROSSCOMPILING OR (CMAKE_CROSSCOMPILING AND CMAKE_CROSSCOMPILING_EMULATOR))
+       # Build and run the test code if not cross-compiling
+       TRY_RUN (${TEST}_RUN   ${TEST}_COMPILE
+           ${CMAKE_BINARY_DIR}
+diff --git a/config/HDF5UseFortran.cmake b/config/HDF5UseFortran.cmake
+index 5c6a7517871..359ef2cbf79 100644
+--- a/config/HDF5UseFortran.cmake
++++ b/config/HDF5UseFortran.cmake
+@@ -158,7 +158,7 @@ endif ()
+ #-----------------------------------------------------------------------------
+ # Determine the available KINDs for REALs and INTEGERs
+ #-----------------------------------------------------------------------------
+-if (NOT CMAKE_CROSSCOMPILING)
++if (NOT CMAKE_CROSSCOMPILING OR (CMAKE_CROSSCOMPILING AND CMAKE_CROSSCOMPILING_EMULATOR))
+   if (${HAVE_ISO_FORTRAN_ENV})
+     READ_SOURCE ("PROGRAM FC08_AVAIL_KINDS" "END PROGRAM FC08_AVAIL_KINDS" SOURCE_CODE)
+   else ()
+@@ -297,7 +297,7 @@ endif ()
+ # **********
+ # INTEGERS
+ # **********
+-if (NOT CMAKE_CROSSCOMPILING)
++if (NOT CMAKE_CROSSCOMPILING OR (CMAKE_CROSSCOMPILING AND CMAKE_CROSSCOMPILING_EMULATOR))
+   string (REGEX REPLACE "," ";" VAR "${pac_validIntKinds}")
+ 
+   foreach (KIND ${VAR})
+@@ -343,7 +343,7 @@ message (VERBOSE "....FOUND SIZEOF for INTEGER KINDs ${PAC_FC_ALL_INTEGER_KINDS_
+ # **********
+ # REALS
+ # **********
+-if (NOT CMAKE_CROSSCOMPILING)
++if (NOT CMAKE_CROSSCOMPILING OR (CMAKE_CROSSCOMPILING AND CMAKE_CROSSCOMPILING_EMULATOR))
+   string (REGEX REPLACE "," ";" VAR "${pac_validRealKinds}")
+ 
+   #find the maximum kind of the real
+@@ -402,7 +402,7 @@ list (GET VAR ${_LEN} max_real_fortran_sizeof)
+ #-----------------------------------------------------------------------------
+ # Find sizeof of native kinds
+ #-----------------------------------------------------------------------------
+-if (NOT CMAKE_CROSSCOMPILING)
++if (NOT CMAKE_CROSSCOMPILING OR (CMAKE_CROSSCOMPILING AND CMAKE_CROSSCOMPILING_EMULATOR))
+   set (PROG_SRC3
+     "
+          PROGRAM main
+diff --git a/fortran/src/CMakeLists.txt b/fortran/src/CMakeLists.txt
+index 7a936d500d1..cf4049d7830 100644
+--- a/fortran/src/CMakeLists.txt
++++ b/fortran/src/CMakeLists.txt
+@@ -144,25 +144,18 @@ add_executable (H5match_types
+ target_include_directories (H5match_types PRIVATE "${HDF5_SRC_BINARY_DIR};${HDF5_SRC_INCLUDE_DIRS};${HDF5_F90_BINARY_DIR};$<$<BOOL:${HDF5_ENABLE_PARALLEL}>:${MPI_C_INCLUDE_DIRS}>")
+ # check if a pre-generated H5fortran_types.F90 file is present
+ if (NOT EXISTS "${HDF5_GENERATED_SOURCE_DIR}/H5fortran_types.F90")
+-  message (STATUS "No pre-generated H5fortran_types.F90 file found - generating one")
+-  # execute the H5match_types program
+-  if (CMAKE_CROSSCOMPILING)
+-    add_custom_command (TARGET H5match_types POST_BUILD
+-        BYPRODUCTS ${HDF5_F90_BINARY_DIR}/H5f90i_gen.h ${HDF5_F90_BINARY_DIR}/H5fortran_types.F90
+-        COMMAND    ${CMAKE_COMMAND}
+-        ARGS       -E env ${CROSSCOMPILING_PATH}
+-        COMMAND    $<TARGET_FILE:H5match_types>
+-        WORKING_DIRECTORY ${HDF5_F90_BINARY_DIR}
+-        COMMENT "Generating the H5fortran_types.F90 and H5f90i_gen.h files"
+-    )
++  if (CMAKE_CROSSCOMPILING AND NOT CMAKE_CROSSCOMPILING_EMULATOR)
++    message (FATAL_ERROR "No pre-generated H5fortran_types.F90 file found - cannot generate without cross-compiling emulator")
+   else ()
+-    add_custom_command (TARGET H5match_types POST_BUILD
+-        BYPRODUCTS ${HDF5_F90_BINARY_DIR}/H5f90i_gen.h ${HDF5_F90_BINARY_DIR}/H5fortran_types.F90
+-        COMMAND    $<TARGET_FILE:H5match_types>
+-        WORKING_DIRECTORY ${HDF5_F90_BINARY_DIR}
+-        COMMENT "Generating the H5fortran_types.F90 and H5f90i_gen.h files"
+-    )
++    message (STATUS "No pre-generated H5fortran_types.F90 file found - generating one")
+   endif ()
++  # execute the H5match_types program
++  add_custom_command (TARGET H5match_types POST_BUILD
++      BYPRODUCTS ${HDF5_F90_BINARY_DIR}/H5f90i_gen.h ${HDF5_F90_BINARY_DIR}/H5fortran_types.F90
++      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:H5match_types>
++      WORKING_DIRECTORY ${HDF5_F90_BINARY_DIR}
++      COMMENT "Generating the H5fortran_types.F90 and H5f90i_gen.h files"
++  )
+ else ()
+   message (STATUS "Using existing pre-generated H5fortran_types.F90 file")
+   add_custom_command (
+@@ -337,24 +330,17 @@ set (f90_F_GEN_SOURCES
+ )
+ # check if a pre-generated H5fortran_types.F90 file is present
+ if (NOT EXISTS "${HDF5_GENERATED_SOURCE_DIR}/H5_gen.F90")
+-  message (STATUS "No pre-generated H5_gen.F90 file found - generating one")
+-  if (CMAKE_CROSSCOMPILING)
+-    add_custom_command (TARGET H5_buildiface POST_BUILD
+-        BYPRODUCTS ${HDF5_F90_BINARY_DIR}/H5_gen.F90
+-        COMMAND    ${CMAKE_COMMAND}
+-        ARGS       -E env ${CROSSCOMPILING_PATH}
+-        COMMAND    $<TARGET_FILE:H5_buildiface>
+-        WORKING_DIRECTORY ${HDF5_F90_BINARY_DIR}
+-        COMMENT "Generating the H5_gen.F90 file"
+-    )
++  if (CMAKE_CROSSCOMPILING AND NOT CMAKE_CROSSCOMPILING_EMULATOR)
++    message (FATAL_ERROR "No pre-generated H5_gen.F90 file found - cannot generate without cross-compiling emulator")
+   else ()
+-    add_custom_command (TARGET H5_buildiface POST_BUILD
+-        BYPRODUCTS ${HDF5_F90_BINARY_DIR}/H5_gen.F90
+-        COMMAND    $<TARGET_FILE:H5_buildiface>
+-        WORKING_DIRECTORY ${HDF5_F90_BINARY_DIR}
+-        COMMENT "Generating the H5_gen.F90 file"
+-    )
++    message (STATUS "No pre-generated H5_gen.F90 file found - generating one")
+   endif ()
++  add_custom_command (TARGET H5_buildiface POST_BUILD
++      BYPRODUCTS ${HDF5_F90_BINARY_DIR}/H5_gen.F90
++      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:H5_buildiface>
++      WORKING_DIRECTORY ${HDF5_F90_BINARY_DIR}
++      COMMENT "Generating the H5_gen.F90 file"
++  )
+ else ()
+   message (STATUS "Using existing pre-generated H5_gen.F90 file")
+   add_custom_command (
+diff --git a/fortran/test/CMakeLists.txt b/fortran/test/CMakeLists.txt
+index 4e2e79d1f5e..47681163d13 100644
+--- a/fortran/test/CMakeLists.txt
++++ b/fortran/test/CMakeLists.txt
+@@ -103,24 +103,17 @@ if (HDF5_ENABLE_FORMATTERS)
+ endif ()
+ 
+ if (NOT EXISTS "${HDF5_GENERATED_SOURCE_DIR}/tf_gen.F90")
+-  message (STATUS "No pre-generated tf_gen.F90 file found - generating one")
+-  if (CMAKE_CROSSCOMPILING)
+-    add_custom_command (TARGET H5_test_buildiface POST_BUILD
+-        BYPRODUCTS ${HDF5_FORTRAN_TESTS_BINARY_DIR}/tf_gen.F90
+-        COMMAND    ${CMAKE_COMMAND}
+-        ARGS       -E env ${CROSSCOMPILING_PATH}
+-        COMMAND    $<TARGET_FILE:H5_test_buildiface>
+-        WORKING_DIRECTORY ${HDF5_FORTRAN_TESTS_BINARY_DIR}
+-        COMMENT "Generating the tf_gen.F90 static file"
+-    )
++  if (CMAKE_CROSSCOMPILING AND NOT CMAKE_CROSSCOMPILING_EMULATOR)
++    message (FATAL_ERROR "No pre-generated tf_gen.F90 file found - cannot generate without cross-compiling emulator")
+   else ()
+-    add_custom_command (TARGET H5_test_buildiface POST_BUILD
+-        BYPRODUCTS ${HDF5_FORTRAN_TESTS_BINARY_DIR}/tf_gen.F90
+-        COMMAND    $<TARGET_FILE:H5_test_buildiface>
+-        WORKING_DIRECTORY ${HDF5_FORTRAN_TESTS_BINARY_DIR}
+-        COMMENT "Generating the tf_gen.F90 static file"
+-    )
++    message (STATUS "No pre-generated tf_gen.F90 file found - generating one")
+   endif ()
++  add_custom_command (TARGET H5_test_buildiface POST_BUILD
++      BYPRODUCTS ${HDF5_FORTRAN_TESTS_BINARY_DIR}/tf_gen.F90
++      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:H5_test_buildiface>
++      WORKING_DIRECTORY ${HDF5_FORTRAN_TESTS_BINARY_DIR}
++      COMMENT "Generating the tf_gen.F90 static file"
++  )
+ else ()
+   message (STATUS "Using existing pre-generated tf_gen.F90 file")
+   add_custom_command (
+diff --git a/hl/fortran/src/CMakeLists.txt b/hl/fortran/src/CMakeLists.txt
+index 8acde782b5e..b1fd15749f5 100644
+--- a/hl/fortran/src/CMakeLists.txt
++++ b/hl/fortran/src/CMakeLists.txt
+@@ -123,24 +123,17 @@ set (HDF5_HL_F90_F_BASE_SOURCES
+ )
+ 
+ if (NOT EXISTS "${HDF5_GENERATED_SOURCE_DIR}/H5LTff_gen.F90")
+-  message (STATUS "No pre-generated H5LTff_gen.F90 H5TBff_gen.F90 file found - generating one")
+-  if (CMAKE_CROSSCOMPILING)
+-    add_custom_command (TARGET H5HL_buildiface POST_BUILD
+-        BYPRODUCTS ${HDF5_HL_F90_BINARY_DIR}/H5LTff_gen.F90 ${HDF5_HL_F90_BINARY_DIR}/H5TBff_gen.F90
+-        COMMAND    ${CMAKE_COMMAND}
+-        ARGS       -E env ${CROSSCOMPILING_PATH}
+-        COMMAND    $<TARGET_FILE:H5HL_buildiface>
+-        WORKING_DIRECTORY ${HDF5_HL_F90_BINARY_DIR}
+-        COMMENT "Generating the H5LTff_gen.F90, H5TBff_gen.F90 files"
+-    )
++  if (CMAKE_CROSSCOMPILING AND NOT CMAKE_CROSSCOMPILING_EMULATOR)
++    message (FATAL_ERROR "No pre-generated H5LTff_gen.F90 H5TBff_gen.F90 file found - cannot generate without cross-compiling emulator")
+   else ()
+-    add_custom_command (TARGET H5HL_buildiface POST_BUILD
+-        BYPRODUCTS ${HDF5_HL_F90_BINARY_DIR}/H5LTff_gen.F90 ${HDF5_HL_F90_BINARY_DIR}/H5TBff_gen.F90
+-        COMMAND    $<TARGET_FILE:H5HL_buildiface>
+-        WORKING_DIRECTORY ${HDF5_HL_F90_BINARY_DIR}
+-        COMMENT "Generating the H5LTff_gen.F90, H5TBff_gen.F90 files"
+-    )
++    message (STATUS "No pre-generated H5LTff_gen.F90 H5TBff_gen.F90 file found - generating one")
+   endif ()
++  add_custom_command (TARGET H5HL_buildiface POST_BUILD
++      BYPRODUCTS ${HDF5_HL_F90_BINARY_DIR}/H5LTff_gen.F90 ${HDF5_HL_F90_BINARY_DIR}/H5TBff_gen.F90
++      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:H5HL_buildiface>
++      WORKING_DIRECTORY ${HDF5_HL_F90_BINARY_DIR}
++      COMMENT "Generating the H5LTff_gen.F90, H5TBff_gen.F90 files"
++  )
+ else ()
+   message (STATUS "Using existing pre-generated H5LTff_gen.F90 H5TBff_gen.F90 file")
+   add_custom_command (
+
+From 2f693d6e0b20beb359ff5a5563e5fb5fd0ebe805 Mon Sep 17 00:00:00 2001
+From: Julien Schueller <schueller@phimeca.com>
+Date: Thu, 1 Jan 2026 14:24:49 +0100
+Subject: [PATCH 2/4] Add wine wrapper
+
+---
+ .github/workflows/cross-compile.yml | 1 +
+ config/toolchain/mingw64.cmake      | 2 --
+ config/toolchain/wine64.sh          | 7 +++++++
+ 3 files changed, 8 insertions(+), 2 deletions(-)
+ create mode 100755 config/toolchain/wine64.sh
+
+diff --git a/.github/workflows/cross-compile.yml b/.github/workflows/cross-compile.yml
+index 5d3f40d5575..eb26219e959 100644
+--- a/.github/workflows/cross-compile.yml
++++ b/.github/workflows/cross-compile.yml
+@@ -58,6 +58,7 @@ jobs:
+              -G Ninja \
+              --log-level=VERBOSE \
+              -DCMAKE_TOOLCHAIN_FILE:STRING=config/toolchain/mingw64.cmake \
++             -DCMAKE_CROSSCOMPILING_EMULATOR:PATH=$GITHUB_WORKSPACE/config/toolchain/wine64.sh \
+              -DCMAKE_BUILD_TYPE=${{ inputs.build_mode }} \
+              -DHDF5_ENABLE_DOXY_WARNINGS:BOOL=ON \
+              -DHDF5_BUILD_DOC:BOOL=ON \
+diff --git a/config/toolchain/mingw64.cmake b/config/toolchain/mingw64.cmake
+index 86c235908e0..5d159e75fcf 100644
+--- a/config/toolchain/mingw64.cmake
++++ b/config/toolchain/mingw64.cmake
+@@ -25,8 +25,6 @@ set (CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+ set (CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+ set (CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+ set (CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+-set (CMAKE_CROSSCOMPILING_EMULATOR wine64)
+-set (CROSSCOMPILING_PATH "WINEPATH=/usr/${TOOLCHAIN_PREFIX}/sys-root/mingw/bin/")
+ 
+ set (CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS On CACHE BOOL "Export windows symbols")
+ 
+diff --git a/config/toolchain/wine64.sh b/config/toolchain/wine64.sh
+new file mode 100755
+index 00000000000..7580e032177
+--- /dev/null
++++ b/config/toolchain/wine64.sh
+@@ -0,0 +1,7 @@
++#!/bin/sh
++
++set -e
++
++# assume gfortran-mingw-w64-x86-64-win32 is installed
++export WINEPATH=`dirname /usr/lib/gcc/x86_64-w64-mingw32/*-win32/libgfortran.dll.a`
++/usr/lib/wine/wine64 "$@"
+
+From b2cce60702c3795132c287dea37bf4c49daf3da1 Mon Sep 17 00:00:00 2001
+From: Julien Schueller <schueller@phimeca.com>
+Date: Thu, 1 Jan 2026 20:14:40 +0100
+Subject: [PATCH 3/4] CMake: Drop CROSSCOMPILING_PATH
+
+---
+ HDF5Examples/C/H5D/CMakeLists.txt            |  3 --
+ HDF5Examples/C/H5FLT/CMakeLists.txt          |  3 --
+ HDF5Examples/C/H5G/CMakeLists.txt            |  7 ---
+ HDF5Examples/C/H5T/CMakeLists.txt            |  3 --
+ HDF5Examples/C/H5VDS/CMakeLists.txt          |  2 -
+ HDF5Examples/C/HL/CMakeLists.txt             |  8 ----
+ HDF5Examples/C/TUTR/CMakeLists.txt           |  1 -
+ HDF5Examples/CXX/H5D/CMakeLists.txt          |  1 -
+ HDF5Examples/CXX/HL/CMakeLists.txt           |  1 -
+ HDF5Examples/CXX/TUTR/CMakeLists.txt         |  1 -
+ HDF5Examples/FORTRAN/H5D/CMakeLists.txt      |  4 --
+ HDF5Examples/FORTRAN/H5G/CMakeLists.txt      | 14 ------
+ HDF5Examples/FORTRAN/H5T/CMakeLists.txt      |  6 ---
+ HDF5Examples/FORTRAN/HL/CMakeLists.txt       |  5 --
+ HDF5Examples/FORTRAN/TUTR/CMakeLists.txt     |  1 -
+ HDF5Examples/config/toolchain/mingw64.cmake  |  2 -
+ c++/test/CMakeTests.cmake                    |  1 -
+ c++/test/CMakeVFDTests.cmake                 |  1 -
+ config/sanitizer/code-coverage.cmake         |  8 ----
+ fortran/test/CMakeTests.cmake                |  6 ---
+ hl/c++/test/CMakeTests.cmake                 |  1 -
+ hl/fortran/test/CMakeTests.cmake             |  1 -
+ hl/test/CMakeTests.cmake                     |  2 +-
+ hl/tools/h5watch/CMakeTests.cmake            |  5 --
+ test/CMakePassthroughVOLTests.cmake          | 10 ++--
+ test/CMakeTests.cmake                        | 48 +++++++++-----------
+ test/CMakeVFDTests.cmake                     | 12 ++---
+ testpar/CMakeVFDTests.cmake                  |  2 +-
+ tools/libtest/CMakeTests.cmake               |  3 --
+ tools/test/CMakeLists.txt                    |  1 -
+ tools/test/h5copy/CMakeTests.cmake           | 15 +-----
+ tools/test/h5diff/CMakeTests.cmake           |  6 +--
+ tools/test/h5dump/CMakeTests.cmake           | 11 +----
+ tools/test/h5dump/CMakeTestsPBITS.cmake      |  1 -
+ tools/test/h5dump/CMakeTestsVDS.cmake        |  6 +--
+ tools/test/h5dump/CMakeTestsXML.cmake        |  1 -
+ tools/test/h5dump/CMakeVFDTests.cmake        |  1 -
+ tools/test/h5format_convert/CMakeTests.cmake | 10 ----
+ tools/test/h5import/CMakeTests.cmake         | 10 ----
+ tools/test/h5jam/CMakeTests.cmake            | 21 ---------
+ tools/test/h5ls/CMakeTests.cmake             |  4 +-
+ tools/test/h5ls/CMakeTestsVDS.cmake          |  4 +-
+ tools/test/h5repack/CMakeTests.cmake         | 27 +----------
+ tools/test/h5repack/CMakeVFDTests.cmake      |  1 -
+ tools/test/h5stat/CMakeTests.cmake           |  5 +-
+ tools/test/misc/CMakeLists.txt               |  1 -
+ tools/test/misc/CMakeTestsClear.cmake        | 14 ------
+ tools/test/misc/CMakeTestsMkgrp.cmake        |  6 ---
+ tools/test/misc/CMakeTestsRepart.cmake       |  5 --
+ tools/test/perform/CMakeTests.cmake          |  7 ---
+ utils/tools/test/h5dwalk/CMakeTests.cmake    |  1 -
+ 51 files changed, 44 insertions(+), 276 deletions(-)
+
+diff --git a/HDF5Examples/C/H5D/CMakeLists.txt b/HDF5Examples/C/H5D/CMakeLists.txt
+index dddd4d23514..ee8b8638705 100644
+--- a/HDF5Examples/C/H5D/CMakeLists.txt
++++ b/HDF5Examples/C/H5D/CMakeLists.txt
+@@ -223,7 +223,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       add_test (NAME ${EXAMPLE_VARNAME}_${testname} COMMAND $<TARGET_FILE:${EXAMPLE_VARNAME}_${testname}>)
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+     else ()
+       add_test (
+@@ -240,7 +239,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (HDF5_PROVIDES_TOOLS)
+         add_test (
+@@ -257,7 +255,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname} PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_${testname}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+       endif ()
+     endif ()
+diff --git a/HDF5Examples/C/H5FLT/CMakeLists.txt b/HDF5Examples/C/H5FLT/CMakeLists.txt
+index fe186eee5a2..7b1bebec4e1 100644
+--- a/HDF5Examples/C/H5FLT/CMakeLists.txt
++++ b/HDF5Examples/C/H5FLT/CMakeLists.txt
+@@ -228,7 +228,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname}-ERR PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       add_test (
+           NAME ${EXAMPLE_VARNAME}_${testname}
+@@ -254,7 +253,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+     endif ()
+     set (last_test "${EXAMPLE_VARNAME}_${testname}")
+@@ -313,7 +311,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       endif ()
+       set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       set (last_test "${EXAMPLE_VARNAME}_H5DUMP-${testname}")
+     endif ()
+diff --git a/HDF5Examples/C/H5G/CMakeLists.txt b/HDF5Examples/C/H5G/CMakeLists.txt
+index e596286888b..a4a6cb17904 100644
+--- a/HDF5Examples/C/H5G/CMakeLists.txt
++++ b/HDF5Examples/C/H5G/CMakeLists.txt
+@@ -249,7 +249,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (HDF5_PROVIDES_TOOLS)
+         add_test (
+@@ -266,7 +265,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname} PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_${testname}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+     endif ()
+     endif ()
+@@ -304,7 +302,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname} PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_${testname}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+       endif ()
+     endif ()
+@@ -335,7 +332,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (HDF5_PROVIDES_TOOLS)
+         add_test (
+@@ -352,7 +348,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname}1 PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_${testname}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+         add_test (
+             NAME ${EXAMPLE_VARNAME}_H5DUMP-${testname}2
+@@ -368,7 +363,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname}2 PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_H5DUMP-${testname}1
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+       endif ()
+     endif ()
+@@ -397,7 +391,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+     endif ()
+   endmacro ()
+diff --git a/HDF5Examples/C/H5T/CMakeLists.txt b/HDF5Examples/C/H5T/CMakeLists.txt
+index 3b315d0bfef..99e59dd6956 100644
+--- a/HDF5Examples/C/H5T/CMakeLists.txt
++++ b/HDF5Examples/C/H5T/CMakeLists.txt
+@@ -370,7 +370,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (HDF5_PROVIDES_TOOLS)
+         add_test (
+@@ -387,7 +386,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname} PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_${testname}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+       endif ()
+     endif ()
+@@ -416,7 +414,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+     endif ()
+   endmacro ()
+diff --git a/HDF5Examples/C/H5VDS/CMakeLists.txt b/HDF5Examples/C/H5VDS/CMakeLists.txt
+index b433871e292..7790e87b194 100644
+--- a/HDF5Examples/C/H5VDS/CMakeLists.txt
++++ b/HDF5Examples/C/H5VDS/CMakeLists.txt
+@@ -144,7 +144,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (HDF5_PROVIDES_TOOLS)
+         add_test (
+@@ -161,7 +160,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname} PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_${testname}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+       endif ()
+     endif ()
+diff --git a/HDF5Examples/C/HL/CMakeLists.txt b/HDF5Examples/C/HL/CMakeLists.txt
+index d725e0edcfa..013204c235d 100644
+--- a/HDF5Examples/C/HL/CMakeLists.txt
++++ b/HDF5Examples/C/HL/CMakeLists.txt
+@@ -215,7 +215,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (HDF5_PROVIDES_TOOLS)
+         add_test (
+@@ -232,7 +231,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname} PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_${testname}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+       endif ()
+     endif ()
+@@ -261,7 +259,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (HDF5_PROVIDES_TOOLS)
+         add_test (
+@@ -279,7 +276,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-${testname} PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_${testname}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+       endif ()
+     endif ()
+@@ -302,12 +298,10 @@ if (H5EXAMPLE_BUILD_TESTING)
+     add_test (NAME ${EXAMPLE_VARNAME}_h5ex_lite1 COMMAND $<TARGET_FILE:${EXAMPLE_VARNAME}_h5ex_lite1>)
+     set_tests_properties (${EXAMPLE_VARNAME}_h5ex_lite1 PROPERTIES
+         DEPENDS ${EXAMPLE_VARNAME}_h5ex_lite-clearall
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     add_test (NAME ${EXAMPLE_VARNAME}_h5ex_lite2 COMMAND $<TARGET_FILE:${EXAMPLE_VARNAME}_h5ex_lite2>)
+     set_tests_properties (${EXAMPLE_VARNAME}_h5ex_lite2 PROPERTIES
+         DEPENDS ${EXAMPLE_VARNAME}_h5ex_lite1
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+   else ()
+     add_test (
+@@ -324,7 +318,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+     )
+     set_tests_properties (${EXAMPLE_VARNAME}_h5ex_lite1 PROPERTIES
+         DEPENDS ${EXAMPLE_VARNAME}_h5ex_lite-clearall
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     add_test (
+         NAME ${EXAMPLE_VARNAME}_h5ex_lite2
+@@ -340,7 +333,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+     )
+     set_tests_properties (${EXAMPLE_VARNAME}_h5ex_lite2 PROPERTIES
+         DEPENDS ${EXAMPLE_VARNAME}_h5ex_lite1
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+   endif ()
+ endif ()
+diff --git a/HDF5Examples/C/TUTR/CMakeLists.txt b/HDF5Examples/C/TUTR/CMakeLists.txt
+index 8e4f3da9015..d9bd51bbd86 100644
+--- a/HDF5Examples/C/TUTR/CMakeLists.txt
++++ b/HDF5Examples/C/TUTR/CMakeLists.txt
+@@ -101,7 +101,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+     endif ()
+     set_tests_properties (${EXAMPLE_VARNAME}_tutr_${testname} PROPERTIES
+         FIXTURES_REQUIRED clear_${EXAMPLE_VARNAME}_tutr
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if (last_test)
+       set_tests_properties (${EXAMPLE_VARNAME}_tutr_${testname} PROPERTIES DEPENDS ${last_test})
+diff --git a/HDF5Examples/CXX/H5D/CMakeLists.txt b/HDF5Examples/CXX/H5D/CMakeLists.txt
+index 143b056afaf..98f3255a35b 100644
+--- a/HDF5Examples/CXX/H5D/CMakeLists.txt
++++ b/HDF5Examples/CXX/H5D/CMakeLists.txt
+@@ -69,7 +69,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+     endif ()
+     set_tests_properties (${EXAMPLE_VARNAME}_cpp_ex_${testname} PROPERTIES
+         FIXTURES_REQUIRED clear_${EXAMPLE_VARNAME}_cpp_ex
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if (last_test)
+       set_tests_properties (${EXAMPLE_VARNAME}_cpp_ex_${testname} PROPERTIES DEPENDS ${last_test})
+diff --git a/HDF5Examples/CXX/HL/CMakeLists.txt b/HDF5Examples/CXX/HL/CMakeLists.txt
+index fa4566f85f9..947b5b0fb13 100644
+--- a/HDF5Examples/CXX/HL/CMakeLists.txt
++++ b/HDF5Examples/CXX/HL/CMakeLists.txt
+@@ -65,7 +65,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+     endif ()
+     set_tests_properties (${EXAMPLE_VARNAME}_cpp_ex_${testname} PROPERTIES
+         FIXTURES_REQUIRED clear_${EXAMPLE_VARNAME}_cpp_ex
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if (last_test)
+       set_tests_properties (${EXAMPLE_VARNAME}_cpp_ex_${testname} PROPERTIES DEPENDS ${last_test})
+diff --git a/HDF5Examples/CXX/TUTR/CMakeLists.txt b/HDF5Examples/CXX/TUTR/CMakeLists.txt
+index f2cd8277504..7e7fff4be7c 100644
+--- a/HDF5Examples/CXX/TUTR/CMakeLists.txt
++++ b/HDF5Examples/CXX/TUTR/CMakeLists.txt
+@@ -49,7 +49,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_cpp_ex_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_cpp_ex_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+     endif ()
+     if (last_test)
+diff --git a/HDF5Examples/FORTRAN/H5D/CMakeLists.txt b/HDF5Examples/FORTRAN/H5D/CMakeLists.txt
+index 79f22a2f154..f1f11795b29 100644
+--- a/HDF5Examples/FORTRAN/H5D/CMakeLists.txt
++++ b/HDF5Examples/FORTRAN/H5D/CMakeLists.txt
+@@ -263,9 +263,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+               -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
+               -P "${H5EXAMPLE_RESOURCES_DIR}/runTest.cmake"
+       )
+-      set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-      )
+       if (last_test)
+         set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES
+             DEPENDS ${last_test}
+@@ -287,7 +284,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-f90_${testname} PROPERTIES
+             DEPENDS ${last_test}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+         set (last_test "${EXAMPLE_VARNAME}_H5DUMP-f90_${testname}")
+       endif ()
+diff --git a/HDF5Examples/FORTRAN/H5G/CMakeLists.txt b/HDF5Examples/FORTRAN/H5G/CMakeLists.txt
+index d27a585b932..e74b530504b 100644
+--- a/HDF5Examples/FORTRAN/H5G/CMakeLists.txt
++++ b/HDF5Examples/FORTRAN/H5G/CMakeLists.txt
+@@ -198,7 +198,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname}-clean PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_f90_${testname}
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+     else ()
+       add_test (
+@@ -213,9 +212,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+               -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
+               -P "${H5EXAMPLE_RESOURCES_DIR}/runTest.cmake"
+       )
+-      set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-      )
+       if (last_test)
+         set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES DEPENDS ${last_test})
+       endif ()
+@@ -235,7 +231,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-f90_${testname} PROPERTIES
+             DEPENDS ${last_test}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+         set (last_test "${EXAMPLE_VARNAME}_H5DUMP-f90_${testname}")
+       endif ()
+@@ -269,9 +264,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+               -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
+               -P "${H5EXAMPLE_RESOURCES_DIR}/runTest.cmake"
+       )
+-      set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES}
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-      )
+       if (last_test)
+         set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES DEPENDS ${last_test})
+       endif ()
+@@ -291,7 +283,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-f90_${testname} PROPERTIES
+             DEPENDS ${last_test}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+         set (last_test "${EXAMPLE_VARNAME}_H5DUMP-f90_${testname}")
+       endif ()
+@@ -315,7 +306,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       add_test (NAME ${EXAMPLE_VARNAME}_f90_${testname} COMMAND $<TARGET_FILE:${EXAMPLE_VARNAME}_f90_${testname}>)
+       set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_f90_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       add_test (
+           NAME ${EXAMPLE_VARNAME}_f90_${testname}-clean
+@@ -352,7 +342,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       endif ()
+       set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_f90_${testname}-clearall
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (HDF5_PROVIDES_TOOLS)
+         add_test (
+@@ -369,7 +358,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-f90_${testname}1 PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_f90_${testname}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+         add_test (
+             NAME ${EXAMPLE_VARNAME}_H5DUMP-f90_${testname}2
+@@ -385,7 +373,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-f90_${testname}2 PROPERTIES
+             DEPENDS ${EXAMPLE_VARNAME}_H5DUMP-f90_${testname}1
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+       endif ()
+     endif ()
+@@ -414,7 +401,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+     endif ()
+     set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES
+         DEPENDS ${EXAMPLE_VARNAME}_f90_${testname}-clearall
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     add_test (
+         NAME ${EXAMPLE_VARNAME}_f90_${testname}-clean
+diff --git a/HDF5Examples/FORTRAN/H5T/CMakeLists.txt b/HDF5Examples/FORTRAN/H5T/CMakeLists.txt
+index cf0f86940a1..33785e9ed65 100644
+--- a/HDF5Examples/FORTRAN/H5T/CMakeLists.txt
++++ b/HDF5Examples/FORTRAN/H5T/CMakeLists.txt
+@@ -312,7 +312,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname}-clean PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_f90_${testname}
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+     else ()
+       add_test (
+@@ -327,9 +326,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+               -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
+               -P "${H5EXAMPLE_RESOURCES_DIR}/runTest.cmake"
+       )
+-      set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-      )
+       if (last_test)
+         set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES DEPENDS ${last_test})
+       endif ()
+@@ -349,7 +345,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-f90_${testname} PROPERTIES
+             DEPENDS ${last_test}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+         set (last_test "${EXAMPLE_VARNAME}_H5DUMP-f90_${testname}")
+       endif ()
+@@ -384,7 +379,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+     endif ()
+     set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES
+         DEPENDS ${EXAMPLE_VARNAME}_f90_${testname}-clearall
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     add_test (
+         NAME ${EXAMPLE_VARNAME}_f90_${testname}-clean
+diff --git a/HDF5Examples/FORTRAN/HL/CMakeLists.txt b/HDF5Examples/FORTRAN/HL/CMakeLists.txt
+index db4e2a8b44a..ae802b74d74 100644
+--- a/HDF5Examples/FORTRAN/HL/CMakeLists.txt
++++ b/HDF5Examples/FORTRAN/HL/CMakeLists.txt
+@@ -171,7 +171,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+       )
+       set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname}-clean PROPERTIES
+           DEPENDS ${EXAMPLE_VARNAME}_f90_${testname}
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+     else ()
+       add_test (
+@@ -186,9 +185,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+               -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
+               -P "${H5EXAMPLE_RESOURCES_DIR}/runTest.cmake"
+       )
+-      set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-      )
+       if (last_test)
+         set_tests_properties (${EXAMPLE_VARNAME}_f90_${testname} PROPERTIES DEPENDS ${last_test})
+       endif ()
+@@ -209,7 +205,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+         )
+         set_tests_properties (${EXAMPLE_VARNAME}_H5DUMP-f90_${testname} PROPERTIES
+             DEPENDS ${last_test}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+         set (last_test "${EXAMPLE_VARNAME}_H5DUMP-f90_${testname}")
+       endif ()
+diff --git a/HDF5Examples/FORTRAN/TUTR/CMakeLists.txt b/HDF5Examples/FORTRAN/TUTR/CMakeLists.txt
+index c2dfe541003..9c8aeb23ddb 100644
+--- a/HDF5Examples/FORTRAN/TUTR/CMakeLists.txt
++++ b/HDF5Examples/FORTRAN/TUTR/CMakeLists.txt
+@@ -106,7 +106,6 @@ if (H5EXAMPLE_BUILD_TESTING)
+     endif ()
+     set_tests_properties (${EXAMPLE_VARNAME}_f90_tutr_${testname} PROPERTIES
+         FIXTURES_REQUIRED clear_${EXAMPLE_VARNAME}_f90_tutr
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if (last_test)
+       set_tests_properties (${EXAMPLE_VARNAME}_f90_tutr_${testname} PROPERTIES DEPENDS ${last_test})
+diff --git a/HDF5Examples/config/toolchain/mingw64.cmake b/HDF5Examples/config/toolchain/mingw64.cmake
+index 24b173d7bbe..41ced7f797d 100644
+--- a/HDF5Examples/config/toolchain/mingw64.cmake
++++ b/HDF5Examples/config/toolchain/mingw64.cmake
+@@ -25,8 +25,6 @@ set (CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+ set (CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+ set (CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+ set (CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+-set (CMAKE_CROSSCOMPILING_EMULATOR wine64)
+-set (CROSSCOMPILING_PATH "WINEPATH=/usr/${TOOLCHAIN_PREFIX}/sys-root/mingw/bin/")
+ 
+ set (CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS On CACHE BOOL "Export windows symbols")
+ 
+diff --git a/c++/test/CMakeTests.cmake b/c++/test/CMakeTests.cmake
+index e1113248998..fb4ae683e32 100644
+--- a/c++/test/CMakeTests.cmake
++++ b/c++/test/CMakeTests.cmake
+@@ -33,7 +33,6 @@ else ()
+ endif ()
+ set_tests_properties (CPP_testhdf5 PROPERTIES
+     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ if ("CPP_testhdf5" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+   set_tests_properties (CPP_testhdf5 PROPERTIES DISABLED true)
+diff --git a/c++/test/CMakeVFDTests.cmake b/c++/test/CMakeVFDTests.cmake
+index 72010ae1e68..3d5cab68ca5 100644
+--- a/c++/test/CMakeVFDTests.cmake
++++ b/c++/test/CMakeVFDTests.cmake
+@@ -37,7 +37,6 @@ macro (ADD_VFD_TEST vfdname resultcode)
+     )
+     set_tests_properties (CPP_VFD-${vfdname}-cpp_testhdf5 PROPERTIES
+         TIMEOUT ${CTEST_SHORT_TIMEOUT}
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if ("CPP_VFD-${vfdname}-cpp_testhdf5" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+       set_tests_properties (CPP_VFD-${vfdname}-cpp_testhdf5 PROPERTIES DISABLED true)
+diff --git a/config/sanitizer/code-coverage.cmake b/config/sanitizer/code-coverage.cmake
+index 107d9f07a4f..eb677452395 100644
+--- a/config/sanitizer/code-coverage.cmake
++++ b/config/sanitizer/code-coverage.cmake
+@@ -334,8 +334,6 @@ function(target_code_coverage TARGET_NAME)
+         # this target serially.
+         add_custom_target (
+           ccov-run-${target_code_coverage_COVERAGE_TARGET_NAME}
+-          COMMAND  ${CMAKE_COMMAND}
+-          ARGS     -E env ${CROSSCOMPILING_PATH}
+           COMMAND
+             ${CMAKE_COMMAND} -E env
+             ${target_code_coverage_PRE_ARGS}
+@@ -417,8 +415,6 @@ function(target_code_coverage TARGET_NAME)
+         # Run the executable, generating coverage information
+         add_custom_target (
+           ccov-run-${target_code_coverage_COVERAGE_TARGET_NAME}
+-          COMMAND  ${CMAKE_COMMAND}
+-          ARGS     -E env ${CROSSCOMPILING_PATH}
+           COMMAND
+             ${target_code_coverage_PRE_ARGS}
+             $<TARGET_FILE:${TARGET_NAME}> ${target_code_coverage_ARGS}
+@@ -447,8 +443,6 @@ function(target_code_coverage TARGET_NAME)
+             ccov-capture-${target_code_coverage_COVERAGE_TARGET_NAME}
+             COMMAND ${CMAKE_COMMAND} -E remove -f ${COVERAGE_INFO}
+             COMMAND ${LCOV_PATH} --directory ${CMAKE_BINARY_DIR} --zerocounters
+-            COMMAND ${CMAKE_COMMAND}
+-            ARGS    -E env ${CROSSCOMPILING_PATH}
+             COMMAND
+               ${target_code_coverage_PRE_ARGS}
+               $<TARGET_FILE:${TARGET_NAME}> ${target_code_coverage_ARGS}
+@@ -463,8 +457,6 @@ function(target_code_coverage TARGET_NAME)
+             ccov-capture-${target_code_coverage_COVERAGE_TARGET_NAME}
+             COMMAND ${CMAKE_COMMAND} -E rm -f ${COVERAGE_INFO}
+             COMMAND ${LCOV_PATH} --directory ${CMAKE_BINARY_DIR} --zerocounters
+-            COMMAND ${CMAKE_COMMAND}
+-            ARGS    -E env ${CROSSCOMPILING_PATH}
+             COMMAND
+               ${target_code_coverage_PRE_ARGS}
+               $<TARGET_FILE:${TARGET_NAME}> ${target_code_coverage_ARGS}
+diff --git a/fortran/test/CMakeTests.cmake b/fortran/test/CMakeTests.cmake
+index fe837cb7181..b5bf72bcec8 100644
+--- a/fortran/test/CMakeTests.cmake
++++ b/fortran/test/CMakeTests.cmake
+@@ -92,7 +92,6 @@ endif ()
+ #set_tests_properties (FORTRAN_testhdf5_fortran PROPERTIES PASS_REGULAR_EXPRESSION "[ ]*0 error.s")
+ set_tests_properties (FORTRAN_testhdf5_fortran PROPERTIES
+     FIXTURES_REQUIRED clear_testhdf5_fortran
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ if ("FORTRAN_testhdf5_fortran" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+   set_tests_properties (FORTRAN_testhdf5_fortran PROPERTIES DISABLED true)
+@@ -119,7 +118,6 @@ endif ()
+ set_tests_properties (FORTRAN_testhdf5_fortran_1_8 PROPERTIES
+     DEPENDS FORTRAN_testhdf5_fortran
+     FIXTURES_REQUIRED clear_testhdf5_fortran
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ if ("FORTRAN_testhdf5_fortran_1_8" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+   set_tests_properties (FORTRAN_testhdf5_fortran_1_8 PROPERTIES DISABLED true)
+@@ -146,7 +144,6 @@ endif ()
+ set_tests_properties (FORTRAN_fortranlib_test_F03 PROPERTIES
+     DEPENDS FORTRAN_testhdf5_fortran_1_8
+     FIXTURES_REQUIRED clear_testhdf5_fortran
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ if ("FORTRAN_fortranlib_test_F03" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+   set_tests_properties (FORTRAN_fortranlib_test_F03 PROPERTIES DISABLED true)
+@@ -171,7 +168,6 @@ else ()
+ endif ()
+ set_tests_properties (FORTRAN_vol_connector PROPERTIES
+     FIXTURES_REQUIRED clear_testhdf5_fortran
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ if ("FORTRAN_vol_connector" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+   set_tests_properties (FORTRAN_vol_connector PROPERTIES DISABLED true)
+@@ -188,7 +184,6 @@ add_test (
+ )
+ set_tests_properties (FORTRAN_fflush1 PROPERTIES
+     DEPENDS FORTRAN_flush1-clear-objects
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ if ("FORTRAN_fflush1" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+   set_tests_properties (FORTRAN_fflush1 PROPERTIES DISABLED true)
+@@ -200,7 +195,6 @@ add_test (
+     COMMAND $<TARGET_FILE:fflush2>
+ )
+ set_tests_properties (FORTRAN_fflush2 PROPERTIES
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     DEPENDS FORTRAN_fflush1
+ )
+ if ("FORTRAN_fflush2" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/hl/c++/test/CMakeTests.cmake b/hl/c++/test/CMakeTests.cmake
+index eab6cead7a6..8eec601939d 100644
+--- a/hl/c++/test/CMakeTests.cmake
++++ b/hl/c++/test/CMakeTests.cmake
+@@ -44,7 +44,6 @@ else ()
+ endif ()
+ set_tests_properties (HL_CPP_ptableTest PROPERTIES
+     DEPENDS HL_CPP_ptableTest-clear-objects
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ if ("HL_CPP_ptableTest" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+   set_tests_properties (HL_CPP_ptableTest PROPERTIES DISABLED true)
+diff --git a/hl/fortran/test/CMakeTests.cmake b/hl/fortran/test/CMakeTests.cmake
+index 717433c0228..9097991778e 100644
+--- a/hl/fortran/test/CMakeTests.cmake
++++ b/hl/fortran/test/CMakeTests.cmake
+@@ -67,7 +67,6 @@ macro (ADD_H5_FORTRAN_TEST file)
+   set_tests_properties (HL_FORTRAN_f90_${file} PROPERTIES
+       FIXTURES_REQUIRED clear_HL_FORTRAN_test
+       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+   )
+   if ("HL_FORTRAN_f90_${file}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+     set_tests_properties (HL_FORTRAN_f90_${file} PROPERTIES DISABLED true)
+diff --git a/hl/test/CMakeTests.cmake b/hl/test/CMakeTests.cmake
+index 563eb8dfc85..366b2041ced 100644
+--- a/hl/test/CMakeTests.cmake
++++ b/hl/test/CMakeTests.cmake
+@@ -133,7 +133,7 @@ macro (HL_ADD_TEST hl_name)
+   endif ()
+   set_tests_properties (${current_test_name} PROPERTIES
+       FIXTURES_REQUIRED clear_test_hl
+-      ENVIRONMENT "srcdir=${HDF5_HL_TEST_BINARY_DIR};${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "srcdir=${HDF5_HL_TEST_BINARY_DIR}"
+       WORKING_DIRECTORY ${HDF5_HL_TEST_BINARY_DIR}
+   )
+   if ("HL_${hl_name}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/hl/tools/h5watch/CMakeTests.cmake b/hl/tools/h5watch/CMakeTests.cmake
+index c74c82bbf35..b2eeb504651 100644
+--- a/hl/tools/h5watch/CMakeTests.cmake
++++ b/hl/tools/h5watch/CMakeTests.cmake
+@@ -84,7 +84,6 @@ add_custom_target (H5WATCH_files ALL COMMENT "Copying files needed by H5WATCH te
+       set_tests_properties (H5WATCH_ARGS-h5watch-${resultfile} PROPERTIES
+           DEPENDS ${last_test}
+           FIXTURES_REQUIRED gen_test_watch
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if ("H5WATCH_ARGS-h5watch-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+         set_tests_properties (H5WATCH_ARGS-h5watch-${resultfile} PROPERTIES DISABLED true)
+@@ -111,7 +110,6 @@ add_custom_target (H5WATCH_files ALL COMMENT "Copying files needed by H5WATCH te
+       set_tests_properties (H5WATCH_ARGS-h5watch-${resultfile} PROPERTIES
+           DEPENDS ${last_test}
+           FIXTURES_REQUIRED gen_test_watch
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if ("H5WATCH_ARGS-h5watch-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+         set_tests_properties (H5WATCH_ARGS-h5watch-${resultfile} PROPERTIES DISABLED true)
+@@ -136,7 +134,6 @@ add_custom_target (H5WATCH_files ALL COMMENT "Copying files needed by H5WATCH te
+       set_tests_properties (H5WATCH-${resultfile} PROPERTIES
+           DEPENDS ${last_test}
+           FIXTURES_REQUIRED gen_test_watch
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if ("H5WATCH-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+         set_tests_properties (H5WATCH-${resultfile} PROPERTIES DISABLED true)
+@@ -159,7 +156,6 @@ add_test (
+ )
+ set_tests_properties (H5WATCH-SWMR_INCOMPAT PROPERTIES
+     FIXTURES_SETUP swmr_vfd_check_compat
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ 
+ # Remove any output file left over from previous test run
+@@ -202,7 +198,6 @@ add_test (NAME H5WATCH-h5watchgentest COMMAND $<TARGET_FILE:h5watchgentest>)
+ set_tests_properties (H5WATCH-h5watchgentest PROPERTIES
+     WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+     DEPENDS H5WATCH-clearall-objects
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ set_tests_properties (H5WATCH-h5watchgentest PROPERTIES FIXTURES_SETUP gen_test_watch)
+ set_tests_properties (H5WATCH-h5watchgentest PROPERTIES FIXTURES_REQUIRED swmr_vfd_check_compat)
+diff --git a/test/CMakePassthroughVOLTests.cmake b/test/CMakePassthroughVOLTests.cmake
+index c39db173bd7..0392004b3d1 100644
+--- a/test/CMakePassthroughVOLTests.cmake
++++ b/test/CMakePassthroughVOLTests.cmake
+@@ -103,7 +103,7 @@ add_custom_target (HDF5_VOLTEST_LIB_files ALL COMMENT "Copying files needed by H
+                   -P "${HDF_RESOURCES_DIR}/volTest.cmake"
+           )
+           set_tests_properties (VOL-${volname}-${voltest} PROPERTIES
+-              ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${volname};${CROSSCOMPILING_PATH}"
++              ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${volname}"
+               WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/${volname}
+           )
+           if ("VOL-${volname}-${voltest}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -127,7 +127,7 @@ add_custom_target (HDF5_VOLTEST_LIB_files ALL COMMENT "Copying files needed by H
+                 -P "${HDF_RESOURCES_DIR}/volTest.cmake"
+         )
+         set_tests_properties (VOL-${volname}-${voltest} PROPERTIES
+-            ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${volname};${CROSSCOMPILING_PATH}"
++            ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${volname}"
+             WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/${volname}
+         )
+         if ("VOL-${volname}-${voltest}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -146,7 +146,7 @@ add_custom_target (HDF5_VOLTEST_LIB_files ALL COMMENT "Copying files needed by H
+               -P "${HDF_RESOURCES_DIR}/volTest.cmake"
+       )
+       set_tests_properties (VOL-${volname}-${voltest} PROPERTIES
+-          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${volname};${CROSSCOMPILING_PATH}"
++          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${volname}"
+           WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/${volname}
+       )
+       if ("VOL-${volname}-${voltest}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -164,7 +164,7 @@ add_custom_target (HDF5_VOLTEST_LIB_files ALL COMMENT "Copying files needed by H
+               -D "TEST_VOL:STRING=${volinfo}"
+               -D "TEST_EXPECT=${resultcode}"
+               -D "TEST_OUTPUT=${volname}-${voltest}.out"
+-              -D "TEST_FOLDER=${PROJECT_BINARY_DIR}/${volname};${CROSSCOMPILING_PATH}"
++              -D "TEST_FOLDER=${PROJECT_BINARY_DIR}/${volname}"
+               -P "${HDF_RESOURCES_DIR}/volTest.cmake"
+       )
+       set_tests_properties (VOL-${volname}-${voltest} PROPERTIES
+@@ -216,7 +216,7 @@ add_custom_target (HDF5_VOLTEST_LIB_files ALL COMMENT "Copying files needed by H
+       )
+       set_tests_properties (VOL-${volname}-fheap PROPERTIES
+           TIMEOUT ${CTEST_VERY_LONG_TIMEOUT}
+-          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${volname};${CROSSCOMPILING_PATH}"
++          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${volname}"
+           WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/${volname}
+       )
+       if ("VOL-${volname}-fheap" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/test/CMakeTests.cmake b/test/CMakeTests.cmake
+index 8025d73b99c..e954e137b0c 100644
+--- a/test/CMakeTests.cmake
++++ b/test/CMakeTests.cmake
+@@ -226,7 +226,7 @@ set_tests_properties (H5TEST-testhdf5-clean-objects PROPERTIES FIXTURES_CLEANUP
+ add_test (NAME H5TEST-testhdf5-base COMMAND $<TARGET_FILE:testhdf5> -x file -x select)
+ set_tests_properties (H5TEST-testhdf5-base PROPERTIES
+     FIXTURES_REQUIRED clear_testhdf5
+-    ENVIRONMENT "HDF5_ALARM_SECONDS=3600;srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++    ENVIRONMENT "HDF5_ALARM_SECONDS=3600;srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+ )
+ if ("H5TEST-testhdf5-base" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -235,7 +235,7 @@ endif ()
+ add_test (NAME H5TEST-testhdf5-file COMMAND $<TARGET_FILE:testhdf5> -o file)
+ set_tests_properties (H5TEST-testhdf5-file PROPERTIES
+     FIXTURES_REQUIRED clear_testhdf5
+-    ENVIRONMENT "HDF5_ALARM_SECONDS=3600;srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++    ENVIRONMENT "HDF5_ALARM_SECONDS=3600;srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+ )
+ if ("H5TEST-testhdf5-file" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -244,7 +244,7 @@ endif ()
+ add_test (NAME H5TEST-testhdf5-select COMMAND $<TARGET_FILE:testhdf5> -o select)
+ set_tests_properties (H5TEST-testhdf5-select PROPERTIES
+     FIXTURES_REQUIRED clear_testhdf5
+-    ENVIRONMENT "HDF5_ALARM_SECONDS=3600;srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++    ENVIRONMENT "HDF5_ALARM_SECONDS=3600;srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+ )
+ if ("H5TEST-testhdf5-select" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -362,7 +362,7 @@ foreach (h5_test ${H5_EXPRESS_TESTS})
+       add_test (NAME H5TESTXPR-${h5_test} COMMAND $<TARGET_FILE:${h5_test}>)
+       set_tests_properties (H5TESTXPR-${h5_test} PROPERTIES
+           FIXTURES_REQUIRED clear_H5TEST
+-          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+           WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+       )
+     else ()
+@@ -379,7 +379,7 @@ foreach (h5_test ${H5_EXPRESS_TESTS})
+       )
+       set_tests_properties (H5TESTXPR-${h5_test} PROPERTIES
+           FIXTURES_REQUIRED clear_H5TEST
+-          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+           WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+       )
+     endif ()
+@@ -394,7 +394,7 @@ foreach (h5_test ${H5_TESTS})
+       add_test (NAME H5TEST-${h5_test} COMMAND $<TARGET_FILE:${h5_test}>)
+       set_tests_properties (H5TEST-${h5_test} PROPERTIES
+           FIXTURES_REQUIRED clear_H5TEST
+-          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+           WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+       )
+     else ()
+@@ -417,7 +417,7 @@ foreach (h5_test ${H5_TESTS})
+       endif ()
+       set_tests_properties (H5TEST-${h5_test} PROPERTIES
+           FIXTURES_REQUIRED clear_H5TEST
+-          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+           WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+       )
+     endif ()
+@@ -464,7 +464,7 @@ if (NOT CYGWIN)
+   endif ()
+   set_tests_properties (H5TEST-cache PROPERTIES
+       FIXTURES_REQUIRED clear_cache
+-      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+       WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+   )
+   set_tests_properties (H5TEST-cache PROPERTIES TIMEOUT ${CTEST_VERY_LONG_TIMEOUT})
+@@ -490,7 +490,7 @@ if (TEST_CACHE_IMAGE)
+   add_test (NAME H5TEST-cache_image COMMAND $<TARGET_FILE:cache_image>)
+   set_tests_properties (H5TEST-cache_image PROPERTIES
+       FIXTURES_REQUIRED clear_cache_image
+-      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+       WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+   )
+   if ("H5TEST-cache_image" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -539,7 +539,7 @@ else ()
+ endif ()
+ set_tests_properties (H5TEST-external_env PROPERTIES
+     FIXTURES_REQUIRED clear_external_env
+-    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+ )
+ if ("H5TEST-external_env" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -573,7 +573,7 @@ else ()
+ endif ()
+ set_tests_properties (H5TEST-vds_env PROPERTIES
+     FIXTURES_REQUIRED clear_vds_env
+-    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+ )
+ if ("H5TEST-vds_env" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -616,7 +616,7 @@ else ()
+ endif ()
+ set_tests_properties (H5TEST-flush1 PROPERTIES
+     FIXTURES_REQUIRED clear_flush
+-    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+ )
+ if ("H5TEST-flush1" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -638,7 +638,6 @@ endif ()
+ set_tests_properties (H5TEST-flush2 PROPERTIES
+     FIXTURES_REQUIRED clear_flush
+     DEPENDS H5TEST-flush1
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ if ("H5TEST-flush2" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+   set_tests_properties (H5TEST-flush2 PROPERTIES DISABLED true)
+@@ -648,7 +647,6 @@ endif ()
+ add_test (NAME H5TEST-tcheck_version-major COMMAND $<TARGET_FILE:tcheck_version> "-tM")
+ set_tests_properties (H5TEST-tcheck_version-major PROPERTIES
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     WILL_FAIL "true"
+ )
+ if ("H5TEST-tcheck_version-major" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -659,7 +657,6 @@ endif ()
+ add_test (NAME H5TEST-tcheck_version-minor COMMAND $<TARGET_FILE:tcheck_version> "-tm")
+ set_tests_properties (H5TEST-tcheck_version-minor PROPERTIES
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     WILL_FAIL "true"
+ )
+ if ("H5TEST-tcheck_version-minor" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -669,7 +666,6 @@ endif ()
+ add_test (NAME H5TEST-tcheck_version-release COMMAND $<TARGET_FILE:tcheck_version> "-tr")
+ set_tests_properties (H5TEST-tcheck_version-release PROPERTIES
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ ) 
+ if ("H5TEST-tcheck_version-release" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+   set_tests_properties (H5TEST-tcheck_version-release PROPERTIES DISABLED true)
+@@ -750,7 +746,7 @@ if (HDF5_ENABLE_ROS3_VFD_DOCKER_PROXY)
+     endif ()
+     set_tests_properties (H5TEST_S3TESTS-${h5_test} PROPERTIES
+         FIXTURES_REQUIRED s3_proxy
+-        ENVIRONMENT "${h5test_s3tests_env};${CROSSCOMPILING_PATH}"
++        ENVIRONMENT "${h5test_s3tests_env}"
+         WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+     )
+     if ("H5TEST_S3TESTS-${h5_test}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -830,7 +826,7 @@ set_tests_properties (H5TEST-del_many_dense_attrs-clean-objects PROPERTIES FIXTU
+ add_test (NAME H5TEST-del_many_dense_attrs COMMAND $<TARGET_FILE:del_many_dense_attrs>)
+ set_tests_properties (H5TEST-del_many_dense_attrs PROPERTIES
+     FIXTURES_REQUIRED clear_del_many_dense_attrs
+-    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+ )
+ if ("H5TEST-del_many_dense_attrs" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -851,7 +847,7 @@ if (HDF5_ENABLE_DEPRECATED_SYMBOLS AND NOT MINGW)
+       -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+   )
+   set_tests_properties (H5TEST-err_compat PROPERTIES
+-      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+       WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+   )
+ else ()
+@@ -867,7 +863,7 @@ else ()
+       -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+   )
+   set_tests_properties (H5TEST-err_compat PROPERTIES
+-      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST"
+       WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+   )
+ endif ()
+@@ -889,7 +885,7 @@ if (HDF5_DEFAULT_API_VERSION MATCHES "v16" OR MINGW)
+       -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+   )
+   set_tests_properties (H5TEST-error_test PROPERTIES
+-      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;HDF5_PLUGIN_PRELOAD=::;${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;HDF5_PLUGIN_PRELOAD=::"
+       WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+   )
+ else ()
+@@ -905,7 +901,7 @@ else ()
+       -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+   )
+   set_tests_properties (H5TEST-error_test PROPERTIES
+-      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;HDF5_PLUGIN_PRELOAD=::;${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;HDF5_PLUGIN_PRELOAD=::"
+       WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+   )
+   add_test (
+@@ -957,7 +953,7 @@ else ()
+ endif ()
+ set_tests_properties (H5TEST-links_env PROPERTIES
+     FIXTURES_REQUIRED clear_links_env
+-    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;HDF5_EXT_PREFIX=.:tmp_links_env;${CROSSCOMPILING_PATH}"
++    ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST;HDF5_EXT_PREFIX=.:tmp_links_env"
+     WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST
+ )
+ if ("H5TEST-links_env" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -995,7 +991,7 @@ if (BUILD_SHARED_LIBS)
+ 
+   add_test (NAME H5PLUGIN-filter_plugin COMMAND $<TARGET_FILE:filter_plugin>)
+   set_tests_properties (H5PLUGIN-filter_plugin PROPERTIES
+-      ENVIRONMENT "HDF5_PLUGIN_PATH=${CMAKE_BINARY_DIR}/filter_plugin_dir1${CMAKE_SEP}${CMAKE_BINARY_DIR}/filter_plugin_dir2${CMAKE_SEP};HDF5_VOL_CONNECTOR=;srcdir=${HDF5_TEST_BINARY_DIR};${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "HDF5_PLUGIN_PATH=${CMAKE_BINARY_DIR}/filter_plugin_dir1${CMAKE_SEP}${CMAKE_BINARY_DIR}/filter_plugin_dir2${CMAKE_SEP};HDF5_VOL_CONNECTOR=;srcdir=${HDF5_TEST_BINARY_DIR}"
+       WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}
+   )
+   if ("H5PLUGIN-filter_plugin" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -1052,7 +1048,7 @@ if (ENABLE_EXTENDED_TESTS)
+     )
+     set_tests_properties (H5TEST-testflushrefresh PROPERTIES
+         FIXTURES_REQUIRED clear_testflushrefresh
+-        ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST/flushrefresh_test;${CROSSCOMPILING_PATH}"
++        ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/H5TEST/flushrefresh_test"
+         WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/H5TEST/flushrefresh_test
+     )
+     if ("H5TEST-testflushrefresh" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -1093,7 +1089,7 @@ if (BUILD_SHARED_LIBS)
+ 
+   add_test (NAME H5PLUGIN-vol_plugin COMMAND $<TARGET_FILE:vol_plugin>)
+   set_tests_properties (H5PLUGIN-vol_plugin PROPERTIES
+-      ENVIRONMENT "HDF5_PLUGIN_PATH=${CMAKE_BINARY_DIR}/null_vol_plugin_dir;srcdir=${HDF5_TEST_BINARY_DIR};HDF5_VOL_CONNECTOR=;${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "HDF5_PLUGIN_PATH=${CMAKE_BINARY_DIR}/null_vol_plugin_dir;srcdir=${HDF5_TEST_BINARY_DIR};HDF5_VOL_CONNECTOR="
+       WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}
+   )
+   if ("H5PLUGIN-vol_plugin" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/test/CMakeVFDTests.cmake b/test/CMakeVFDTests.cmake
+index 0fe0840fa02..42bc71c4e3c 100644
+--- a/test/CMakeVFDTests.cmake
++++ b/test/CMakeVFDTests.cmake
+@@ -124,7 +124,7 @@ add_custom_target (HDF5_VFDTEST_LIB_files ALL COMMENT "Copying files needed by H
+                   -P "${HDF_RESOURCES_DIR}/vfdTest.cmake"
+           )
+           set_tests_properties (VFD-${vfdname}-${vfdtest} PROPERTIES
+-              ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname};${CROSSCOMPILING_PATH}"
++              ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname}"
+               WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/${vfdname}
+           )
+           if ("VFD-${vfdname}-${vfdtest}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -148,7 +148,7 @@ add_custom_target (HDF5_VFDTEST_LIB_files ALL COMMENT "Copying files needed by H
+                 -P "${HDF_RESOURCES_DIR}/vfdTest.cmake"
+         )
+         set_tests_properties (VFD-${vfdname}-${vfdtest} PROPERTIES
+-            ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname};${CROSSCOMPILING_PATH}"
++            ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname}"
+             WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/${vfdname}
+         )
+         if ("VFD-${vfdname}-${vfdtest}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -167,7 +167,7 @@ add_custom_target (HDF5_VFDTEST_LIB_files ALL COMMENT "Copying files needed by H
+               -P "${HDF_RESOURCES_DIR}/vfdTest.cmake"
+       )
+       set_tests_properties (VFD-${vfdname}-${vfdtest} PROPERTIES
+-          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname};${CROSSCOMPILING_PATH}"
++          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname}"
+           WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/${vfdname}
+       )
+       if ("VFD-${vfdname}-${vfdtest}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -189,7 +189,7 @@ add_custom_target (HDF5_VFDTEST_LIB_files ALL COMMENT "Copying files needed by H
+               -P "${HDF_RESOURCES_DIR}/vfdTest.cmake"
+       )
+       set_tests_properties (VFD-${vfdname}-${vfdtest} PROPERTIES
+-          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname};${CROSSCOMPILING_PATH}"
++          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname}"
+           WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/${vfdname}
+       )
+       if ("VFD-${vfdname}-${vfdtest}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -245,7 +245,7 @@ add_custom_target (HDF5_VFDTEST_LIB_files ALL COMMENT "Copying files needed by H
+       )
+       set_tests_properties (VFD-${vfdname}-fheap PROPERTIES
+           TIMEOUT ${CTEST_VERY_LONG_TIMEOUT}
+-          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname};${CROSSCOMPILING_PATH}"
++          ENVIRONMENT "srcdir=${HDF5_TEST_BINARY_DIR}/${vfdname}"
+           WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}/${vfdname}
+       )
+       if ("VFD-${vfdname}-fheap" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -273,7 +273,7 @@ add_custom_target (HDF5_VFDTEST_LIB_files ALL COMMENT "Copying files needed by H
+ 
+     add_test (NAME H5PLUGIN-vfd_plugin COMMAND $<TARGET_FILE:vfd_plugin>)
+     set_tests_properties (H5PLUGIN-vfd_plugin PROPERTIES
+-        ENVIRONMENT "HDF5_PLUGIN_PATH=${CMAKE_BINARY_DIR}/null_vfd_plugin_dir;srcdir=${HDF5_TEST_BINARY_DIR};${CROSSCOMPILING_PATH}"
++        ENVIRONMENT "HDF5_PLUGIN_PATH=${CMAKE_BINARY_DIR}/null_vfd_plugin_dir;srcdir=${HDF5_TEST_BINARY_DIR}"
+         WORKING_DIRECTORY ${HDF5_TEST_BINARY_DIR}
+     )
+     if ("H5PLUGIN-vfd_plugin" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/testpar/CMakeVFDTests.cmake b/testpar/CMakeVFDTests.cmake
+index 9dc111b0df5..3f2d215bdde 100644
+--- a/testpar/CMakeVFDTests.cmake
++++ b/testpar/CMakeVFDTests.cmake
+@@ -43,7 +43,7 @@ macro (ADD_VFD_TEST vfdname resultcode)
+                 -P "${HDF_RESOURCES_DIR}/vfdTest.cmake"
+         )
+         set_tests_properties (MPI_TEST_VFD-${vfdname}-${h5_test} PROPERTIES
+-            ENVIRONMENT "srcdir=${HDF5_TEST_PAR_BINARY_DIR}/${vfdname};${CROSSCOMPILING_PATH}"
++            ENVIRONMENT "srcdir=${HDF5_TEST_PAR_BINARY_DIR}/${vfdname}"
+             WORKING_DIRECTORY ${HDF5_TEST_PAR_BINARY_DIR}/${vfdname}
+         )
+         if ("MPI_TEST_VFD-${vfdname}-${h5_test}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/tools/libtest/CMakeTests.cmake b/tools/libtest/CMakeTests.cmake
+index 37850f6fe74..26ddc3b5a8d 100644
+--- a/tools/libtest/CMakeTests.cmake
++++ b/tools/libtest/CMakeTests.cmake
+@@ -25,9 +25,6 @@
+ 
+   macro (ADD_H5_TEST resultfile resultcode)
+     add_test (NAME H5LIBTEST-${resultfile} COMMAND $<TARGET_FILE:h5tools_test_utils> ${ARGN})
+-    set_tests_properties (H5LIBTEST-${resultfile} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-    )
+     if (NOT "${resultcode}" STREQUAL "0")
+       set_tests_properties (H5LIBTEST-${resultfile} PROPERTIES WILL_FAIL "true")
+     endif ()
+diff --git a/tools/test/CMakeLists.txt b/tools/test/CMakeLists.txt
+index e630a32b665..5d9077a7a75 100644
+--- a/tools/test/CMakeLists.txt
++++ b/tools/test/CMakeLists.txt
+@@ -85,7 +85,6 @@ if (HDF5_ENABLE_FORMATTERS)
+ endif ()
+ 
+ #add_test (NAME H5GEN-h5gentest COMMAND $<TARGET_FILE:h5gentest>)
+-#set_target_properties (H5GEN-h5gentest PROPERTIES ENVIRONMENT "${CROSSCOMPILING_PATH}")
+ 
+ #-- Add the h5diff tests
+ add_subdirectory (h5diff)
+diff --git a/tools/test/h5copy/CMakeTests.cmake b/tools/test/h5copy/CMakeTests.cmake
+index 89738eedd77..5958b4d837b 100644
+--- a/tools/test/h5copy/CMakeTests.cmake
++++ b/tools/test/h5copy/CMakeTests.cmake
+@@ -64,7 +64,7 @@ foreach (external_vol_tgt ${HDF5_EXTERNAL_VOL_TARGETS})
+   add_test(NAME ${external_vol_tgt}-h5copygentest COMMAND $<TARGET_FILE:h5gentest> --h5copy)
+ 
+   set_tests_properties (${external_vol_tgt}-h5copygentest PROPERTIES
+-      ENVIRONMENT "${vol_env};${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "${vol_env}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/${ext_vol_dir_name}/testfiles"
+       FIXTURES_SETUP ${external_vol_tgt}-files
+   )
+@@ -198,7 +198,6 @@ macro (ADD_H5_TEST testname)
+     set_tests_properties (${vol_prefix}H5COPY-${testname}-clear-objects PROPERTIES
+         # h5delete will return an error code if targeted file does not exist - accept any result
+         PASS_REGULAR_EXPRESSION "^$|"
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if (NOT "${vol}" STREQUAL "native")
+       set_tests_properties (${vol_prefix}H5COPY-${testname}-clear-objects PROPERTIES
+@@ -219,7 +218,6 @@ macro (ADD_H5_TEST testname)
+       )
+       set_tests_properties (${vol_prefix}H5COPY-${testname}-prefill PROPERTIES
+           DEPENDS ${vol_prefix}H5COPY-${testname}-clear-objects
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (NOT "${vol}" STREQUAL "native")
+         set_tests_properties (${vol_prefix}H5COPY-${testname}-prefill PROPERTIES
+@@ -263,7 +261,6 @@ macro (ADD_H5_TEST testname)
+     endif ()
+     set_tests_properties (${vol_prefix}H5COPY-${testname} PROPERTIES DEPENDS
+         "${vol_prefix}H5COPY-${testname}-clear-objects;${prefill_dep}"
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if (NOT "${vol}" STREQUAL "native")
+       set_tests_properties (${vol_prefix}H5COPY-${testname} PROPERTIES
+@@ -284,7 +281,6 @@ macro (ADD_H5_TEST testname)
+       )
+       set_tests_properties (${vol_prefix}H5COPY-${testname}-DIFF PROPERTIES
+           DEPENDS ${vol_prefix}H5COPY-${testname}
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (NOT "${vol}" STREQUAL "native")
+         set_tests_properties (${vol_prefix}H5COPY-${testname}-DIFF PROPERTIES
+@@ -309,7 +305,6 @@ macro (ADD_H5_TEST testname)
+     set_tests_properties (${vol_prefix}H5COPY-${testname}-clean-objects PROPERTIES
+         # h5delete will return an error code if targeted file does not exist - accept any result
+         PASS_REGULAR_EXPRESSION "^$|"
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if (NOT "${vol}" STREQUAL "native")
+       set_tests_properties (${vol_prefix}H5COPY-${testname}-clean-objects PROPERTIES
+@@ -368,7 +363,6 @@ macro (ADD_H5_UD_TEST testname resultcode infile sparam srcname dparam dstname c
+       set_tests_properties (${vol_prefix}H5COPY_UD-${testname}-clear-objects PROPERTIES
+           # h5delete will return an error code if targeted file does not exist - accept any result
+           PASS_REGULAR_EXPRESSION "^$|"
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (NOT "${vol}" STREQUAL "native")
+         set_tests_properties (${vol_prefix}H5COPY_UD-${testname}-clear-objects PROPERTIES
+@@ -402,7 +396,6 @@ macro (ADD_H5_UD_TEST testname resultcode infile sparam srcname dparam dstname c
+       )
+       set_tests_properties (${vol_prefix}H5COPY_UD-${testname} PROPERTIES
+           DEPENDS ${vol_prefix}H5COPY_UD-${testname}-clear-objects
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (NOT "${vol}" STREQUAL "native")
+         set_tests_properties (${vol_prefix}H5COPY_UD-${testname} PROPERTIES
+@@ -431,7 +424,6 @@ macro (ADD_H5_UD_TEST testname resultcode infile sparam srcname dparam dstname c
+       )
+       set_tests_properties (${vol_prefix}H5COPY_UD-${testname}-DIFF PROPERTIES
+           DEPENDS ${vol_prefix}H5COPY_UD-${testname}
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+ 
+       if (NOT "${vol}" STREQUAL "native")
+@@ -511,7 +503,6 @@ macro (ADD_H5_UD_ERR_TEST testname resultcode infile sparam srcname dparam dstna
+       set_tests_properties (${vol_prefix}H5COPY_UD_ERR-${testname}-clear-objects PROPERTIES
+           # h5delete will return an error code if targeted file does not exist - accept any result
+           PASS_REGULAR_EXPRESSION "^$|"
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (NOT "${vol}" STREQUAL "native")
+         set_tests_properties (${vol_prefix}H5COPY_UD_ERR-${testname}-clear-objects PROPERTIES
+@@ -548,7 +539,6 @@ macro (ADD_H5_UD_ERR_TEST testname resultcode infile sparam srcname dparam dstna
+       )
+       set_tests_properties (${vol_prefix}H5COPY_UD_ERR-${testname} PROPERTIES
+           DEPENDS ${vol_prefix}H5COPY_UD_ERR-${testname}-clear-objects
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (NOT "${vol}" STREQUAL "native")
+         set_tests_properties (${vol_prefix}H5COPY_UD_ERR-${testname} PROPERTIES
+@@ -577,7 +567,6 @@ macro (ADD_H5_UD_ERR_TEST testname resultcode infile sparam srcname dparam dstna
+       )
+       set_tests_properties (${vol_prefix}H5COPY_UD_ERR-${testname}-DIFF PROPERTIES
+           DEPENDS ${vol_prefix}H5COPY_UD_ERR-${testname}
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if (NOT "${vol}" STREQUAL "native")
+         set_tests_properties (${vol_prefix}H5COPY_UD_ERR-${testname}-DIFF PROPERTIES
+@@ -597,7 +586,6 @@ macro (ADD_H5_UD_ERR_TEST testname resultcode infile sparam srcname dparam dstna
+       set_tests_properties (${vol_prefix}H5COPY_UD_ERR-${testname}-clean-objects PROPERTIES
+           # h5delete will return an error code if targeted file does not exist - accept any result
+           PASS_REGULAR_EXPRESSION "^$|"
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       set_tests_properties (${vol_prefix}H5COPY_UD_ERR-${testname}-clean-objects PROPERTIES
+           DEPENDS ${vol_prefix}H5COPY_UD_ERR-${testname}-DIFF
+@@ -657,7 +645,6 @@ macro (ADD_SIMPLE_TEST resultfile resultcode)
+     endif ()
+     set_tests_properties (${vol_prefix}H5COPY-${resultfile} PROPERTIES
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if (NOT "${vol}" STREQUAL "native")
+       set_tests_properties (${vol_prefix}H5COPY-${resultfile} PROPERTIES
+diff --git a/tools/test/h5diff/CMakeTests.cmake b/tools/test/h5diff/CMakeTests.cmake
+index 35a0e55f603..c90658006c4 100644
+--- a/tools/test/h5diff/CMakeTests.cmake
++++ b/tools/test/h5diff/CMakeTests.cmake
+@@ -388,7 +388,7 @@ foreach (external_vol_tgt ${HDF5_EXTERNAL_VOL_TARGETS})
+   # Generate test files
+   add_test (NAME ${external_vol_tgt}-h5diffgentest COMMAND $<TARGET_FILE:h5gentest> -h5diff)
+   set_tests_properties (${external_vol_tgt}-h5diffgentest PROPERTIES
+-      ENVIRONMENT "${vol_env};${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "${vol_env}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/${ext_vol_dir_name}/testfiles"
+       FIXTURES_SETUP ${ext_vol_dir_name}-files
+   )
+@@ -580,7 +580,6 @@ macro (ADD_SH5_TEST testname)
+     endif ()
+     set_tests_properties (${vol_prefix}H5DIFF-${testname} PROPERTIES
+         WORKING_DIRECTORY "${workdir}"
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if (NOT "${vol}" STREQUAL "native")
+       set_tests_properties (${vol_prefix}H5DIFF-${testname} PROPERTIES
+@@ -716,9 +715,6 @@ macro (ADD_H5_UD_TEST testname resultcode resultfile)
+             -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_OUTPUT_DIRECTORY}"
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+-    set_tests_properties (${vol_prefix}H5DIFF_UD-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-    )
+     if ("${vol_prefix}H5DIFF_UD-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+       set_tests_properties (${vol_prefix}H5DIFF_UD-${testname} PROPERTIES DISABLED true)
+     endif ()
+diff --git a/tools/test/h5dump/CMakeTests.cmake b/tools/test/h5dump/CMakeTests.cmake
+index 911972ffd35..ea1aa6657f8 100644
+--- a/tools/test/h5dump/CMakeTests.cmake
++++ b/tools/test/h5dump/CMakeTests.cmake
+@@ -512,7 +512,6 @@ macro (ADD_HELP_TEST testname resultcode)
+   endif ()
+   set_tests_properties (H5DUMP-${testname} PROPERTIES
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/std"
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+   )
+   if ("H5DUMP-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+     set_tests_properties (H5DUMP-${testname} PROPERTIES DISABLED true)
+@@ -707,7 +706,7 @@ macro (ADD_H5_TEST testname)
+     if (${vol_idx} EQUAL 0)
+       set (vol "native")
+       set (vol_prefix "")
+-      set (vol_env "${CROSSCOMPILING_PATH}")
++      set (vol_env "")
+       set (workdir "${PROJECT_BINARY_DIR}/testfiles/std")
+     else ()
+       # An external VOL connector
+@@ -754,7 +753,6 @@ macro (ADD_H5_TEST testname)
+       if (${ARG_RESULT_CODE})
+         set_tests_properties (${vol_prefix}H5DUMP-${ctest_testname}
+             PROPERTIES WILL_FAIL "true"
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+       endif ()
+     else ()
+@@ -807,7 +805,6 @@ macro (ADD_H5_TEST testname)
+ 
+       set_tests_properties (${vol_prefix}H5DUMP-${ctest_testname}-output-cmp PROPERTIES
+           DEPENDS H5DUMP-${ctest_testname}
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           WORKING_DIRECTORY "${workdir}"
+       )
+ 
+@@ -866,7 +863,6 @@ macro (ADD_H5_TEST_IMPORT conffile resultfile testfile resultcode)
+     )
+     set_tests_properties (H5DUMP-IMPORT-${resultfile} PROPERTIES
+         DEPENDS H5DUMP-IMPORT-${resultfile}-clear-objects
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/std"
+     )
+     if ("H5DUMP-IMPORT-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -875,7 +871,6 @@ macro (ADD_H5_TEST_IMPORT conffile resultfile testfile resultcode)
+     add_test (NAME H5DUMP-IMPORT-h5import-${resultfile} COMMAND $<TARGET_FILE:h5import> ${resultfile}.bin -c ${conffile}.out -o ${resultfile}.h5)
+     set_tests_properties (H5DUMP-IMPORT-h5import-${resultfile} PROPERTIES
+         DEPENDS H5DUMP-IMPORT-${resultfile}
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/std"
+     )
+     if ("H5DUMP-IMPORT-h5import-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -884,7 +879,6 @@ macro (ADD_H5_TEST_IMPORT conffile resultfile testfile resultcode)
+     add_test (NAME H5DUMP-IMPORT-h5diff-${resultfile} COMMAND $<TARGET_FILE:h5diff> ${testfile} ${resultfile}.h5 /integer /integer)
+     set_tests_properties (H5DUMP-IMPORT-h5diff-${resultfile} PROPERTIES
+         DEPENDS H5DUMP-IMPORT-h5import-${resultfile}
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/std"
+     )
+     if ("H5DUMP-IMPORT-h5diff-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -920,7 +914,6 @@ macro (ADD_H5_UD_TEST testname resultcode resultfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5DUMP_UD-${testname}-${resultfile} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/std"
+     )
+     if ("H5DUMP_UD-${testname}-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -956,7 +949,7 @@ macro (ADD_H5_S3TEST resultfile resultcode credtype urlscheme urlpath)
+   endif ()
+   set_tests_properties (H5DUMP_S3TEST-${resultfile}_${urlscheme}_${credtype} PROPERTIES
+       FIXTURES_REQUIRED h5dump_s3_proxy
+-      ENVIRONMENT "${h5dump_s3tests_env};${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "${h5dump_s3tests_env}"
+       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/S3TEST
+   )
+   if ("H5DUMP_S3TEST-${resultfile}_${urlscheme}_${credtype}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/tools/test/h5dump/CMakeTestsPBITS.cmake b/tools/test/h5dump/CMakeTestsPBITS.cmake
+index 90ee5633adb..1a5e52847f2 100644
+--- a/tools/test/h5dump/CMakeTestsPBITS.cmake
++++ b/tools/test/h5dump/CMakeTestsPBITS.cmake
+@@ -132,7 +132,6 @@ macro (ADD_H5_PBITS_TEST resultfile resultcode result_errcheck)
+     endif ()
+   endif ()
+   set_tests_properties (H5DUMP-${resultfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/pbits"
+   )
+   if ("H5DUMP-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/tools/test/h5dump/CMakeTestsVDS.cmake b/tools/test/h5dump/CMakeTestsVDS.cmake
+index 9f5066130c4..a0e528f72f9 100644
+--- a/tools/test/h5dump/CMakeTestsVDS.cmake
++++ b/tools/test/h5dump/CMakeTestsVDS.cmake
+@@ -122,7 +122,6 @@ macro (ADD_H5_VDS_TEST resultfile resultcode)
+     )
+   endif ()
+   set_tests_properties (H5DUMP-${resultfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/vds"
+   )
+   if ("H5DUMP-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -135,7 +134,7 @@ macro (ADD_H5_VDS_PREFIX_TEST resultfile resultcode)
+   if (HDF5_ENABLE_USING_MEMCHECKER)
+     add_test (NAME H5DUMP_PREFIX-${resultfile} COMMAND $<TARGET_FILE:h5dump> ${ARGN})
+     set_tests_properties (H5DUMP_PREFIX-${resultfile} PROPERTIES
+-        ENVIRONMENT "HDF5_VDS_PREFIX=${PROJECT_BINARY_DIR}/testfiles/vds/;${CROSSCOMPILING_PATH}"
++        ENVIRONMENT "HDF5_VDS_PREFIX=${PROJECT_BINARY_DIR}/testfiles/vds/"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/vds/prefix"
+     )
+     if (${resultcode})
+@@ -158,7 +157,6 @@ macro (ADD_H5_VDS_PREFIX_TEST resultfile resultcode)
+             -D "TEST_ENV_VALUE=${PROJECT_BINARY_DIR}/testfiles/vds/"
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+-    set_tests_properties (H5DUMP_PREFIX-${resultfile} PROPERTIES ENVIRONMENT "${CROSSCOMPILING_PATH}")
+   endif ()
+   if ("H5DUMP_PREFIX-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+     set_tests_properties (H5DUMP_PREFIX-${resultfile} PROPERTIES DISABLED true)
+@@ -170,7 +168,6 @@ macro (ADD_H5_VDS_LAYOUT resultfile resultcode)
+   if (HDF5_ENABLE_USING_MEMCHECKER)
+     add_test (NAME H5DUMP-${resultfile} COMMAND $<TARGET_FILE:h5dump> -p ${ARGN})
+     set_tests_properties (H5DUMP-${resultfile} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/vds"
+     )
+     if (${resultcode})
+@@ -191,7 +188,6 @@ macro (ADD_H5_VDS_LAYOUT resultfile resultcode)
+             -D "TEST_REFERENCE=${resultfile}.ddl"
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+-    set_tests_properties (H5DUMP-${resultfile} PROPERTIES ENVIRONMENT "${CROSSCOMPILING_PATH}")
+   endif ()
+   if ("H5DUMP-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+     set_tests_properties (H5DUMP-${resultfile} PROPERTIES DISABLED true)
+diff --git a/tools/test/h5dump/CMakeTestsXML.cmake b/tools/test/h5dump/CMakeTestsXML.cmake
+index 0a0d8a6e618..a891ca86b8d 100644
+--- a/tools/test/h5dump/CMakeTestsXML.cmake
++++ b/tools/test/h5dump/CMakeTestsXML.cmake
+@@ -207,7 +207,6 @@ macro (ADD_XML_H5_TEST resultfile resultcode)
+     )
+   endif ()
+   set_tests_properties (H5DUMP_XML-${resultfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/xml"
+   )
+   if ("H5DUMP_XML-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/tools/test/h5dump/CMakeVFDTests.cmake b/tools/test/h5dump/CMakeVFDTests.cmake
+index 4e41fcd0ed9..800c640aee5 100644
+--- a/tools/test/h5dump/CMakeVFDTests.cmake
++++ b/tools/test/h5dump/CMakeVFDTests.cmake
+@@ -92,7 +92,6 @@ macro (ADD_VFD_H5DUMP_TEST vfdname resultfile resultcode)
+     )
+     set_tests_properties (H5DUMP_VFD-${vfdname}-${resultfile}-h5dump PROPERTIES
+         TIMEOUT ${CTEST_SHORT_TIMEOUT}
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if ("H5DUMP_VFD-${vfdname}-${resultfile}-h5dump" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+       set_tests_properties (H5DUMP_VFD-${vfdname}-${resultfile}-h5dump PROPERTIES DISABLED true)
+diff --git a/tools/test/h5format_convert/CMakeTests.cmake b/tools/test/h5format_convert/CMakeTests.cmake
+index caf349fd92e..fe69eb19461 100644
+--- a/tools/test/h5format_convert/CMakeTests.cmake
++++ b/tools/test/h5format_convert/CMakeTests.cmake
+@@ -122,7 +122,6 @@ macro (ADD_H5_OUTPUT testname resultfile resultcode testfile)
+               -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+       )
+       set_tests_properties (H5FC-${testname}-${testfile} PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           DEPENDS H5FC-${testname}-${testfile}-tmpfile
+       )
+       if ("H5FC-${testname}-${testfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -142,7 +141,6 @@ macro (ADD_H5_OUTPUT testname resultfile resultcode testfile)
+               -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+       )
+       set_tests_properties (H5FC-${testname}-${testfile}-NA PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           DEPENDS H5FC-${testname}-${testfile}-tmpfile
+       )
+       if ("H5FC-${testname}-${testfile}-NA" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -185,7 +183,6 @@ macro (ADD_H5_NOERR_OUTPUT testname resultfile resultcode testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5FC-${testname}-${testfile} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5FC-${testname}-${testfile}-tmpfile
+     )
+     if ("H5FC-${testname}-${testfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -228,7 +225,6 @@ macro (ADD_H5_MASK_OUTPUT testname resultfile resultcode result_errcheck testfil
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5FC-${testname}-${testfile} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5FC-${testname}-${testfile}-tmpfile
+     )
+     if ("H5FC-${testname}-${testfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -283,7 +279,6 @@ macro (ADD_H5_TEST testname resultcode testfile)
+     )
+     set_tests_properties (H5FC-${testname} PROPERTIES
+         DEPENDS "H5FC-${testname}-tmpfile"
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         FIXTURES_REQUIRED clear_H5FC-${testname}
+     )
+     if ("H5FC-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -301,7 +296,6 @@ macro (ADD_H5_CHECK_IDX dependtest testname)
+     )
+     set_tests_properties (H5FC_CHECK_IDX-${dependtest}-${testname} PROPERTIES
+         DEPENDS "H5FC-${dependtest}"
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         FIXTURES_REQUIRED clear_H5FC-${dependtest}
+     )
+     if ("H5FC_CHECK_IDX-${dependtest}-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -337,7 +331,6 @@ macro (ADD_H5_TEST_CHECK_IDX testname resultcode testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5FC_TEST_CHECK_IDX-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5FC_TEST_CHECK_IDX-${testname}-tmpfile"
+     )
+     if ("H5FC_TEST_CHECK_IDX-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -348,7 +341,6 @@ macro (ADD_H5_TEST_CHECK_IDX testname resultcode testfile)
+         COMMAND $<TARGET_FILE:h5fc_chk_idx> ./testfiles/${testname}-tmp.h5 ${ARGN}
+     )
+     set_tests_properties (H5FC_TEST_CHECK_IDX-${testname}-check PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5FC_TEST_CHECK_IDX-${testname}"
+     )
+     if ("H5FC_TEST_CHECK_IDX-${testname}-check" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -392,7 +384,6 @@ macro (ADD_H5_H5DUMP_CHECK testname)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5FC_H5DUMP_CHECK-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5FC_H5DUMP_CHECK-${testname}-tmpfile"
+     )
+     if ("H5FC_H5DUMP_CHECK-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -410,7 +401,6 @@ macro (ADD_H5_H5DUMP_CHECK testname)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5FC_H5DUMP_CHECK-${testname}-dump PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5FC_H5DUMP_CHECK-${testname}"
+     )
+     if ("H5FC_H5DUMP_CHECK-${testname}-dump" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/tools/test/h5import/CMakeTests.cmake b/tools/test/h5import/CMakeTests.cmake
+index e2edeeeacf6..cc86c68a13f 100644
+--- a/tools/test/h5import/CMakeTests.cmake
++++ b/tools/test/h5import/CMakeTests.cmake
+@@ -115,7 +115,6 @@ macro (ADD_H5_TEST testname importfile conffile testfile)
+ 
+   add_test (NAME H5IMPORT-${testname} COMMAND $<TARGET_FILE:h5import> ${importfile} -c ${conffile} -o ${testfile})
+   set_tests_properties (H5IMPORT-${testname} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       DEPENDS H5IMPORT-${testname}-clear-objects
+       FIXTURES_REQUIRED set_h5importtest
+   )
+@@ -138,7 +137,6 @@ macro (ADD_H5_TEST testname importfile conffile testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5IMPORT-${testname}-H5DMP PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5IMPORT-${testname}
+         FIXTURES_REQUIRED set_h5importtest
+     )
+@@ -158,7 +156,6 @@ macro (ADD_H5_TEST testname importfile conffile testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5IMPORT-${testname}-H5DMP_CMP PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5IMPORT-${testname}-H5DMP
+         FIXTURES_REQUIRED set_h5importtest
+     )
+@@ -222,7 +219,6 @@ macro (ADD_H5_DUMPTEST testname datasetname testfile)
+       )
+     endif ()
+     set_tests_properties (H5IMPORT-DUMP-${testname}-H5DMP PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5IMPORT-DUMP-${testname}-clear-objects"
+         FIXTURES_REQUIRED set_h5importtest
+     )
+@@ -242,7 +238,6 @@ macro (ADD_H5_DUMPTEST testname datasetname testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5IMPORT-DUMP-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5IMPORT-DUMP-${testname}-H5DMP"
+         FIXTURES_REQUIRED set_h5importtest
+     )
+@@ -263,7 +258,6 @@ macro (ADD_H5_DUMPTEST testname datasetname testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5IMPORT-DUMP-${testname}-H5DFF PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5IMPORT-DUMP-${testname}"
+         FIXTURES_REQUIRED set_h5importtest
+     )
+@@ -312,7 +306,6 @@ macro (ADD_H5_DUMPSUBTEST testname testfile datasetname)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5IMPORT_SUB-DUMP-${testname}-H5DMP PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5IMPORT_SUB-DUMP-${testname}-clear-objects"
+         FIXTURES_REQUIRED set_h5importtest
+     )
+@@ -332,7 +325,6 @@ macro (ADD_H5_DUMPSUBTEST testname testfile datasetname)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5IMPORT_SUB-DUMP-${testname}-H5IMP PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5IMPORT_SUB-DUMP-${testname}-H5DMP"
+         FIXTURES_REQUIRED set_h5importtest
+     )
+@@ -351,7 +343,6 @@ macro (ADD_H5_DUMPSUBTEST testname testfile datasetname)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5IMPORT_SUB-DUMP-${testname}-CMP PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS "H5IMPORT_SUB-DUMP-${testname}-H5IMP"
+         FIXTURES_REQUIRED set_h5importtest
+     )
+@@ -501,7 +492,6 @@ add_test (
+ 
+ add_test (NAME H5IMPORT-h5importtest COMMAND $<TARGET_FILE:h5importtest>)
+ set_tests_properties (H5IMPORT-h5importtest PROPERTIES
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     FIXTURES_SETUP set_h5importtest
+     DEPENDS H5IMPORT-h5importtest-clear-objects
+ )
+diff --git a/tools/test/h5jam/CMakeTests.cmake b/tools/test/h5jam/CMakeTests.cmake
+index 4bd72edf36d..30c928bd4a1 100644
+--- a/tools/test/h5jam/CMakeTests.cmake
++++ b/tools/test/h5jam/CMakeTests.cmake
+@@ -73,9 +73,6 @@ macro (TEST_H5JAM_OUTPUT expectfile resultcode)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+   endif ()
+-  set_tests_properties (H5JAM-${expectfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-  )
+   if ("H5JAM-${expectfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+     set_tests_properties (H5JAM-${expectfile} PROPERTIES DISABLED true)
+   endif ()
+@@ -105,9 +102,6 @@ macro (TEST_H5UNJAM_OUTPUT expectfile resultcode)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+   endif ()
+-  set_tests_properties (H5JAM-UNJAM-${expectfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-  )
+   if ("H5JAM-UNJAM-${expectfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+     set_tests_properties (H5JAM-UNJAM-${expectfile} PROPERTIES DISABLED true)
+   endif ()
+@@ -133,7 +127,6 @@ macro (CHECKFILE testname testdepends expected actual)
+     endif ()
+     set_tests_properties (H5JAM-${testname}-CHECKFILE-H5DMP PROPERTIES
+         DEPENDS ${testdepends}
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     add_test (
+         NAME H5JAM-${testname}-CHECKFILE-H5DMP_CMP
+@@ -152,7 +145,6 @@ macro (CHECKFILE testname testdepends expected actual)
+     endif ()
+     set_tests_properties (H5JAM-${testname}-CHECKFILE-H5DMP_CMP PROPERTIES
+         DEPENDS H5JAM-${testname}-CHECKFILE-H5DMP
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+   endif ()
+ endmacro ()
+@@ -182,7 +174,6 @@ macro (UNJAMTEST testname setfile infile ufile chkfile outfile)
+       add_test (NAME H5JAM-${testname}-UNJAM COMMAND $<TARGET_FILE:h5unjam> -i ${infile} -u ${ufile} -o ${outfile})
+       set_tests_properties (H5JAM-${testname}-UNJAM PROPERTIES
+           DEPENDS H5JAM-${testname}-UNJAM_D-clear-objects
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       set (compare_test ${ufile})
+     else ()
+@@ -200,14 +191,12 @@ macro (UNJAMTEST testname setfile infile ufile chkfile outfile)
+         )
+         set_tests_properties (H5JAM-${testname}-UNJAM PROPERTIES
+             DEPENDS H5JAM-${testname}-UNJAM-clear-objects
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+         set (compare_test "${outfile}.ufile.txt")
+       else ()
+         add_test (NAME H5JAM-${testname}-UNJAM COMMAND $<TARGET_FILE:h5unjam> -i ${infile} -o ${outfile})
+         set_tests_properties (H5JAM-${testname}-UNJAM PROPERTIES
+             DEPENDS H5JAM-${testname}-UNJAM-clear-objects
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         )
+         set (compare_test "")
+       endif ()
+@@ -239,7 +228,6 @@ macro (UNJAMTEST testname setfile infile ufile chkfile outfile)
+       )
+       set_tests_properties (H5JAM-${testname}-UNJAM-CHECK_UB_1 PROPERTIES
+           DEPENDS H5JAM-${testname}-UNJAM-CHECK_UB_1-clear-objects
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+       if ("H5JAM-${testname}-UNJAM-CHECK_UB_1" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+         set_tests_properties (H5JAM-${testname}-UNJAM-CHECK_UB_1 PROPERTIES DISABLED true)
+@@ -259,9 +247,6 @@ macro (UNJAMTEST testname setfile infile ufile chkfile outfile)
+             -D "TEST_OFILE=NULL"
+             -P "${HDF_RESOURCES_DIR}/userblockTest.cmake"
+     )
+-    set_tests_properties (H5JAM-${testname}-UNJAM-CHECK_NOUB PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-    )
+     if (${compare_test})
+       set_tests_properties (H5JAM-${testname}-UNJAM-CHECK_NOUB PROPERTIES DEPENDS H5JAM-${testname}-UNJAM-CHECK_UB_1)
+     else ()
+@@ -283,9 +268,6 @@ macro (JAMTEST testname jamfile infile chkfile outfile)
+     )
+   endif ()
+   add_test (NAME H5JAM-${testname} COMMAND $<TARGET_FILE:h5jam> -u testfiles/${jamfile} -i testfiles/${infile} -o ${outfile} ${ARGN})
+-  set_tests_properties (H5JAM-${testname} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+-  )
+   if ("H5JAM-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+     set_tests_properties (H5JAM-${testname} PROPERTIES DISABLED true)
+   endif ()
+@@ -320,7 +302,6 @@ macro (JAMTEST testname jamfile infile chkfile outfile)
+     )
+     set_tests_properties (H5JAM-${testname}-CHECK_UB_1 PROPERTIES
+         DEPENDS H5JAM-${testname}-CHECK_UB_1-clear-objects
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if ("H5JAM-${testname}-CHECK_UB_1" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+       set_tests_properties (H5JAM-${testname}-CHECK_UB_1 PROPERTIES DISABLED true)
+@@ -354,7 +335,6 @@ macro (JAMTEST_NONE testname jamfile infile setfile chkfile)
+     add_test (NAME H5JAM-${testname}_NONE COMMAND $<TARGET_FILE:h5jam> -u testfiles/${jamfile} -i ${chkfile} ${ARGN})
+     set_tests_properties (H5JAM-${testname}_NONE PROPERTIES
+         DEPENDS H5JAM-${testname}_NONE_COPY
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if ("H5JAM-${testname}_NONE" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+       set_tests_properties (H5JAM-${testname}_NONE PROPERTIES DISABLED true)
+@@ -389,7 +369,6 @@ macro (JAMTEST_NONE testname jamfile infile setfile chkfile)
+     )
+     set_tests_properties (H5JAM-${testname}_NONE-CHECK_UB_1 PROPERTIES
+         DEPENDS H5JAM-${testname}_NONE-CHECK_UB_1-clear-objects
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+     if ("H5JAM-${testname}_NONE-CHECK_UB_1" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+       set_tests_properties (H5JAM-${testname}_NONE-CHECK_UB_1 PROPERTIES DISABLED true)
+diff --git a/tools/test/h5ls/CMakeTests.cmake b/tools/test/h5ls/CMakeTests.cmake
+index 71ee059dc69..b2720577c9c 100644
+--- a/tools/test/h5ls/CMakeTests.cmake
++++ b/tools/test/h5ls/CMakeTests.cmake
+@@ -314,7 +314,6 @@ macro (ADD_H5_TEST testname)
+     endif ()
+ 
+     set_tests_properties (${vol_prefix}H5LS-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${vol_workdir}"
+     )
+ 
+@@ -353,7 +352,6 @@ macro (ADD_H5_UD_TEST testname resultcode resultfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5LS_UD-${testname}-${resultfile} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+     )
+     if ("H5LS_UD-${testname}-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -386,7 +384,7 @@ macro (ADD_H5_S3TEST resultfile resultcode credtype urlscheme urlpath)
+   endif ()
+   set_tests_properties (H5LS_S3TEST-${resultfile}_${urlscheme}_${credtype} PROPERTIES
+       FIXTURES_REQUIRED h5ls_s3_proxy
+-      ENVIRONMENT "${h5ls_s3tests_env};${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "${h5ls_s3tests_env}"
+       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/S3TEST
+   )
+   if ("H5LS_S3TEST-${resultfile}_${urlscheme}_${credtype}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/tools/test/h5ls/CMakeTestsVDS.cmake b/tools/test/h5ls/CMakeTestsVDS.cmake
+index d149889642c..3d7c30967e3 100644
+--- a/tools/test/h5ls/CMakeTestsVDS.cmake
++++ b/tools/test/h5ls/CMakeTestsVDS.cmake
+@@ -102,7 +102,6 @@ macro (ADD_H5_VDS_TEST resultfile resultcode)
+     )
+   endif ()
+   set_tests_properties (H5LS-${resultfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/vds"
+   )
+   if ("H5LS-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -115,7 +114,7 @@ macro (ADD_H5_VDS_PREFIX_TEST resultfile resultcode)
+   if (HDF5_ENABLE_USING_MEMCHECKER)
+     add_test (NAME H5LS_PREFIX-${resultfile} COMMAND $<TARGET_FILE:h5ls> ${ARGN})
+     set_tests_properties (H5LS_PREFIX-${resultfile} PROPERTIES
+-        ENVIRONMENT "HDF5_VDS_PREFIX=\${ORIGIN};${CROSSCOMPILING_PATH}"
++        ENVIRONMENT "HDF5_VDS_PREFIX=\${ORIGIN}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+     )
+     if ("${resultcode}" STREQUAL "1")
+@@ -137,7 +136,6 @@ macro (ADD_H5_VDS_PREFIX_TEST resultfile resultcode)
+     )
+   endif ()
+     set_tests_properties (H5LS_PREFIX-${resultfile} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+     )
+   if ("H5LS_PREFIX-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/tools/test/h5repack/CMakeTests.cmake b/tools/test/h5repack/CMakeTests.cmake
+index d19e6633275..044ef36ae18 100644
+--- a/tools/test/h5repack/CMakeTests.cmake
++++ b/tools/test/h5repack/CMakeTests.cmake
+@@ -311,7 +311,6 @@ macro (ADD_HELP_TEST testname resultcode)
+     )
+   endif ()
+   set_tests_properties (H5REPACK-h5repack-${testname} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+   )
+   if ("H5REPACK-h5repack-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -516,7 +515,7 @@ macro (ADD_H5_TEST testname)
+     # First, populate VOL info to be passed to tests
+     if (${vol_idx} EQUAL 0)
+       set (vol "native")
+-      set (vol_env "${CROSSCOMPILING_PATH}")
++      set (vol_env "")
+       set (vol_prefix "")
+       # Avoid names of the form XXX_BINARY_DIR due to collision risk
+       set (BINARY_DIR_VOL "${PROJECT_BINARY_DIR}")
+@@ -648,7 +647,6 @@ macro (ADD_H5_TEST testname)
+         )
+         set_tests_properties (${DIFF_TESTNAME} PROPERTIES
+             DEPENDS ${REPACK_TESTNAME}
+-            ENVIRONMENT "${CROSSCOMPILING_PATH}"
+             WORKING_DIRECTORY "${BINARY_DIR_VOL}"
+         )
+         if ("${DIFF_TESTNAME}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -808,7 +806,6 @@ macro (ADD_H5_VERIFY_VDS testname testtype resultcode testfile testdset testfilt
+           COMMAND $<TARGET_FILE:h5repack> ${ARGN} ${PROJECT_BINARY_DIR}/testfiles/${testfile} ${PROJECT_BINARY_DIR}/testfiles/out-${testname}.${testfile}
+       )
+       set_tests_properties (H5REPACK_VERIFY_LAYOUT_VDS-${testname} PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+           DEPENDS H5REPACK_VERIFY_LAYOUT_VDS-${testname}-clear-objects
+       )
+@@ -827,7 +824,6 @@ macro (ADD_H5_VERIFY_VDS testname testtype resultcode testfile testdset testfilt
+               -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+       )
+       set_tests_properties (H5REPACK_VERIFY_LAYOUT_VDS-${testname}_DMP PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+           DEPENDS H5REPACK_VERIFY_LAYOUT_VDS-${testname}
+       )
+@@ -857,7 +853,6 @@ macro (ADD_H5_VERIFY_SUPERBLOCK testname testfile lowbound highbound superblock)
+         COMMAND $<TARGET_FILE:h5repack> -j;${lowbound};-k;${highbound} ${PROJECT_BINARY_DIR}/testfiles/${testfile} ${PROJECT_BINARY_DIR}/testfiles/out-${testname}.${testfile}
+     )
+     set_tests_properties (H5REPACK_VERIFY_SUPERBLOCK-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5REPACK_VERIFY_SUPERBLOCK-${testname}-clear-objects
+     )
+     if ("H5REPACK_VERIFY_SUPERBLOCK-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -878,7 +873,6 @@ macro (ADD_H5_VERIFY_SUPERBLOCK testname testfile lowbound highbound superblock)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5REPACK_VERIFY_SUPERBLOCK-${testname}_DMP PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5REPACK_VERIFY_SUPERBLOCK-${testname}
+     )
+     if ("H5REPACK_VERIFY_SUPERBLOCK-${testname}_DMP" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -904,7 +898,6 @@ macro (ADD_H5_VERIFY_INVALIDBOUNDS testname resultcode lowbound highbound)
+         COMMAND $<TARGET_FILE:h5repack> -j;${lowbound};-k;${highbound} ${PROJECT_BINARY_DIR}/testfiles/${testfile} ${PROJECT_BINARY_DIR}/testfiles/out-${testname}.${testfile}
+     )
+     set_tests_properties (ADD_H5_VERIFY_INVALIDBOUNDS-h5repack-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS ADD_H5_VERIFY_INVALIDBOUNDS-h5repack-${testname}-clear-objects
+         WILL_FAIL "true"
+     )
+@@ -931,7 +924,6 @@ macro (ADD_H5_VERIFY_USERBLOCK testname userblocksize testfile)
+         COMMAND $<TARGET_FILE:h5repack> --enable-error-stack ${ARGN} ${PROJECT_BINARY_DIR}/testfiles/${testfile} ${PROJECT_BINARY_DIR}/testfiles/out-${testname}.${testfile}
+     )
+     set_tests_properties (H5REPACK_VERIFY_USERBLOCK-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5REPACK_VERIFY_USERBLOCK-${testname}-clear-objects
+     )
+     if ("H5REPACK_VERIFY_USERBLOCK-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -952,7 +944,6 @@ macro (ADD_H5_VERIFY_USERBLOCK testname userblocksize testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5REPACK_VERIFY_USERBLOCK-${testname}_DMP PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5REPACK_VERIFY_USERBLOCK-${testname}
+     )
+     if ("H5REPACK_VERIFY_USERBLOCK-${testname}_DMP" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -981,7 +972,6 @@ macro (ADD_H5_TEST_META testname testfile)
+         COMMAND $<TARGET_FILE:h5repack> ${PROJECT_BINARY_DIR}/testfiles/${testfile} ${PROJECT_BINARY_DIR}/testfiles/out-${testname}_N.${testname}.h5
+     )
+     set_tests_properties (H5REPACK_META-${testname}_N PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5REPACK_META-${testname}-clear-objects
+     )
+     if ("H5REPACK_META-${testname}_N" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -999,7 +989,6 @@ macro (ADD_H5_TEST_META testname testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5REPACK_META-${testname}_N_DFF PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5REPACK_META-${testname}_N
+     )
+     if ("H5REPACK_META-${testname}_N_DFF" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -1010,7 +999,6 @@ macro (ADD_H5_TEST_META testname testfile)
+         COMMAND $<TARGET_FILE:h5repack> ${ARGN} ${PROJECT_BINARY_DIR}/testfiles/${testfile} ${PROJECT_BINARY_DIR}/testfiles/out-${testname}_M.${testname}.h5
+     )
+     set_tests_properties (H5REPACK_META-${testname}_M PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5REPACK_META-${testname}_N_DFF
+     )
+     if ("H5REPACK_META-${testname}_M" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -1028,7 +1016,6 @@ macro (ADD_H5_TEST_META testname testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5REPACK_META-${testname}_M_DFF PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5REPACK_META-${testname}_M
+     )
+     if ("H5REPACK_META-${testname}_M_DFF" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -1082,7 +1069,6 @@ macro (ADD_H5_UD_TEST testname resultcode resultfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5REPACK_UD-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5REPACK_UD-${testname}-clear-objects
+     )
+     if ("H5REPACK_UD-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -1104,7 +1090,6 @@ macro (ADD_H5_UD_TEST testname resultcode resultfile)
+               -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+       )
+       set_tests_properties (H5REPACK_UD-${testname}-h5dump PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           DEPENDS H5REPACK_UD-${testname}
+       )
+       if ("H5REPACK_UD-${testname}-h5dump" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -1168,7 +1153,6 @@ macro (ADD_H5_EXTERNAL_TEST testname testtype testfile)
+           COMMAND $<TARGET_FILE:h5diff> --enable-error-stack ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}.h5 ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}_ex.h5
+       )
+       set_tests_properties (H5REPACK_EXTERNAL-${testname}_DFF1 PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+           DEPENDS H5REPACK_EXTERNAL-${testname}_CPY
+       )
+@@ -1181,7 +1165,6 @@ macro (ADD_H5_EXTERNAL_TEST testname testtype testfile)
+           COMMAND $<TARGET_FILE:h5repack> --enable-error-stack ${ARGN} ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}_ex.h5 ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}_rp.h5
+       )
+       set_tests_properties (H5REPACK_EXTERNAL-${testname} PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+           DEPENDS H5REPACK_EXTERNAL-${testname}_DFF1
+       )
+@@ -1194,7 +1177,6 @@ macro (ADD_H5_EXTERNAL_TEST testname testtype testfile)
+           COMMAND $<TARGET_FILE:h5diff> --enable-error-stack ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}_rp.h5 ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}.h5
+       )
+       set_tests_properties (H5REPACK_EXTERNAL-${testname}_DFF2 PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+           DEPENDS H5REPACK_EXTERNAL-${testname}
+       )
+@@ -1206,7 +1188,6 @@ macro (ADD_H5_EXTERNAL_TEST testname testtype testfile)
+           COMMAND $<TARGET_FILE:h5diff> --enable-error-stack ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}_rp.h5 ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}_ex.h5
+       )
+       set_tests_properties (H5REPACK_EXTERNAL-${testname}_DFF3 PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+           DEPENDS H5REPACK_EXTERNAL-${testname}_DFF2
+       )
+@@ -1231,7 +1212,6 @@ macro (ADD_H5_EXTERNAL_TEST testname testtype testfile)
+           COMMAND $<TARGET_FILE:h5diff> --enable-error-stack ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}_rp.h5 ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}.h5
+       )
+       set_tests_properties (H5REPACK_EXTERNAL-${testname}_DFF4 PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+           DEPENDS H5REPACK_EXTERNAL-${testname}_DATA_RMV
+       )
+@@ -1244,7 +1224,6 @@ macro (ADD_H5_EXTERNAL_TEST testname testtype testfile)
+           COMMAND $<TARGET_FILE:h5diff> --enable-error-stack ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}_rp.h5 ${PROJECT_BINARY_DIR}/testfiles/h5repack_${testfile}_ex.h5
+       )
+       set_tests_properties (H5REPACK_EXTERNAL-${testname}_DFF_FAIL PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+           DEPENDS H5REPACK_EXTERNAL-${testname}_DFF4
+           WILL_FAIL "true"
+@@ -1319,14 +1298,12 @@ else ()
+ endif ()
+ set_tests_properties (H5REPACK-testh5repack_detect_szip PROPERTIES
+     DEPENDS H5REPACK-h5repack-${testname}
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ set (last_test "H5REPACK-testh5repack_detect_szip")
+ 
+ #  add_test (NAME H5REPACK-h5repacktest COMMAND $<TARGET_FILE:h5repacktest>)
+ #  set_tests_properties (H5REPACK-h5repacktest PROPERTIES
+ #    DEPENDS H5REPACK-testh5repack_detect_szip
+-#    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ #  )
+ #  set (last_test "H5REPACK-h5repacktest")
+ #
+@@ -1777,7 +1754,6 @@ add_test (
+ )
+ set_tests_properties (H5REPACK-HDFFV-10590 PROPERTIES
+     WILL_FAIL "true"
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ 
+ # test CVE-2018-14460 fix
+@@ -1787,7 +1763,6 @@ add_test (
+ )
+ set_tests_properties (H5REPACK-HDFFV-11223 PROPERTIES
+     WILL_FAIL "true"
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+ )
+ 
+ # tests for metadata block size option ('-M')
+diff --git a/tools/test/h5repack/CMakeVFDTests.cmake b/tools/test/h5repack/CMakeVFDTests.cmake
+index 1815ef0521d..44a32b80d93 100644
+--- a/tools/test/h5repack/CMakeVFDTests.cmake
++++ b/tools/test/h5repack/CMakeVFDTests.cmake
+@@ -79,7 +79,6 @@ macro (ADD_VFD_TEST vfdname resultcode)
+               -P "${HDF_RESOURCES_DIR}/vfdTest.cmake"
+       )
+       set_tests_properties (H5REPACK_VFD-${vfdname}-h5repacktest PROPERTIES
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+           DEPENDS H5REPACK_VFD-${vfdname}-h5repacktest-clear-objects
+           TIMEOUT ${CTEST_SHORT_TIMEOUT}
+       )
+diff --git a/tools/test/h5stat/CMakeTests.cmake b/tools/test/h5stat/CMakeTests.cmake
+index 3f81d03b165..3719f7d5e4b 100644
+--- a/tools/test/h5stat/CMakeTests.cmake
++++ b/tools/test/h5stat/CMakeTests.cmake
+@@ -109,7 +109,6 @@ macro (ADD_H5_TEST resultfile resultcode)
+     )
+   endif ()
+   set_tests_properties (H5STAT-${resultfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
+   )
+   if ("H5STAT-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -140,7 +139,6 @@ macro (ADD_H5_ERR_TEST resultfile resultcode errtext)
+     )
+   endif ()
+   set_tests_properties (H5STAT-${resultfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
+   )
+   if ("H5STAT-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -171,7 +169,6 @@ macro (ADD_H5_CMP_TEST resultfile resultcode errtext)
+     )
+   endif ()
+   set_tests_properties (H5STAT-${resultfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
+   )
+   if ("H5STAT-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -203,7 +200,7 @@ macro (ADD_H5_S3TEST resultfile resultcode credtype urlscheme urlpath)
+   endif ()
+   set_tests_properties (H5STAT_S3TEST-${resultfile}_${urlscheme}_${credtype} PROPERTIES
+       FIXTURES_REQUIRED h5stat_s3_proxy
+-      ENVIRONMENT "${h5stat_s3tests_env};${CROSSCOMPILING_PATH}"
++      ENVIRONMENT "${h5stat_s3tests_env}"
+       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/S3TEST
+   )
+   if ("H5STAT_S3TEST-${resultfile}_${urlscheme}_${credtype}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/tools/test/misc/CMakeLists.txt b/tools/test/misc/CMakeLists.txt
+index 754bd9ce6cc..59eaa6abd72 100644
+--- a/tools/test/misc/CMakeLists.txt
++++ b/tools/test/misc/CMakeLists.txt
+@@ -20,7 +20,6 @@ else ()
+ endif ()
+ set_target_properties (h5clear_gentest PROPERTIES FOLDER tools)
+ #add_test (NAME H5CLEAR-h5clear_gentest COMMAND $<TARGET_FILE:h5clear_gentest>)
+-#set_target_properties (h5clear_gentest ENVIRONMENT "${CROSSCOMPILING_PATH}")
+ 
+ #-----------------------------------------------------------------------------
+ # Add Target to clang-format
+diff --git a/tools/test/misc/CMakeTestsClear.cmake b/tools/test/misc/CMakeTestsClear.cmake
+index f278c28e28d..ec8d862e4a7 100644
+--- a/tools/test/misc/CMakeTestsClear.cmake
++++ b/tools/test/misc/CMakeTestsClear.cmake
+@@ -94,7 +94,6 @@ macro (ADD_H5_CMP testname resultfile resultcode)
+             -D "TEST_REFERENCE=${resultfile}.ddl"
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+-    set_tests_properties (H5CLEAR_CMP-${testname} PROPERTIES ENVIRONMENT "${CROSSCOMPILING_PATH}")
+     if ("H5CLEAR_CMP-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+       set_tests_properties (H5CLEAR_CMP-${testname} PROPERTIES DISABLED true)
+     endif ()
+@@ -120,7 +119,6 @@ macro (ADD_H5_ERR_CMP testname resultfile resultcode result_errcheck)
+             -D "TEST_SKIP_COMPARE=true"
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+-    set_tests_properties (H5CLEAR_CMP-${testname} PROPERTIES ENVIRONMENT "${CROSSCOMPILING_PATH}")
+     if ("H5CLEAR_CMP-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+       set_tests_properties (H5CLEAR_CMP-${testname} PROPERTIES DISABLED true)
+     endif ()
+@@ -157,7 +155,6 @@ macro (ADD_H5_CMP_WITH_COPY testname resultcode resultfile testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5CLEAR_CMP-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5CLEAR_CMP-copy_${testname}
+     )
+     if ("H5CLEAR_CMP-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -193,7 +190,6 @@ macro (ADD_H5_ERR_CMP_WITH_COPY testname resultcode resultfile testfile)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5CLEAR_CMP-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5CLEAR_CMP-copy_${testname}
+     )
+     if ("H5CLEAR_CMP-${testname}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -209,7 +205,6 @@ macro (ADD_H5_RETTEST testname resultcode)
+         COMMAND $<TARGET_FILE:h5clear> ${ARGN}
+     )
+     set_tests_properties (H5CLEAR_RET-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+         WILL_FAIL "${resultcode}"
+     )
+@@ -245,7 +240,6 @@ macro (ADD_H5_FILESIZE_TEST testname resultcode resultfile incr_size)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5CLEAR_FILESIZE_CMP-${testname}_before_size PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5CLEAR_FILESIZE_TEST-copy_${testname}
+     )
+     if ("H5CLEAR_FILESIZE_CMP-${testname}_before_size" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -263,7 +257,6 @@ macro (ADD_H5_FILESIZE_TEST testname resultcode resultfile incr_size)
+         )
+     endif ()
+     set_tests_properties (H5CLEAR_FILESIZE_INCR-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+         WILL_FAIL "${resultcode}"
+         DEPENDS H5CLEAR_FILESIZE_CMP-${testname}_before_size
+@@ -283,7 +276,6 @@ macro (ADD_H5_FILESIZE_TEST testname resultcode resultfile incr_size)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5CLEAR_FILESIZE_CMP-${testname}_after_size PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5CLEAR_FILESIZE_INCR-${testname}
+     )
+     if ("H5CLEAR_FILESIZE_CMP-${testname}_after_size" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -321,7 +313,6 @@ macro (ADD_H5_FILESIZE_FAIL_TEST testname resultcode resultfile incr_size)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5CLEAR_FILESIZE_FAIL_CMP-${testname}_before_size PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5CLEAR_FILESIZE_FAIL_TEST-copy_${testname}
+     )
+     if ("H5CLEAR_FILESIZE_FAIL_CMP-${testname}_before_size" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -339,7 +330,6 @@ macro (ADD_H5_FILESIZE_FAIL_TEST testname resultcode resultfile incr_size)
+         )
+     endif ()
+     set_tests_properties (H5CLEAR_FILESIZE_FAIL_INCR-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+         DEPENDS H5CLEAR_FILESIZE_FAIL_CMP-${testname}_before_size
+     )
+@@ -358,7 +348,6 @@ macro (ADD_H5_FILESIZE_FAIL_TEST testname resultcode resultfile incr_size)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5CLEAR_FILESIZE_FAIL_CMP-${testname}_after_size PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5CLEAR_FILESIZE_FAIL_INCR-${testname}
+     )
+     if ("H5CLEAR_FILESIZE_FAIL_CMP-${testname}_after_size" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -382,7 +371,6 @@ macro (ADD_H5_TEST testname testfile resultcode)
+         COMMAND $<TARGET_FILE:clear_open_chk> ${testfile}.h5
+     )
+     set_tests_properties (H5CLEAR-clr_open_chk-${testname}_${resultcode} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WILL_FAIL "${resultcode}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+         DEPENDS H5CLEAR-clr_open_chk-copy_${testname}.h5
+@@ -397,7 +385,6 @@ macro (ADD_H5_TEST testname testfile resultcode)
+         COMMAND $<TARGET_FILE:h5clear> -s ${testfile}.h5
+     )
+     set_tests_properties (H5CLEAR-h5clr-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5CLEAR-clr_open_chk-${testname}_${resultcode}
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+     )
+@@ -409,7 +396,6 @@ macro (ADD_H5_TEST testname testfile resultcode)
+         COMMAND $<TARGET_FILE:clear_open_chk> ${testfile}.h5
+     )
+     set_tests_properties (H5CLEAR-clr_open_chk-${testname} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5CLEAR-h5clr-${testname}
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+     )
+diff --git a/tools/test/misc/CMakeTestsMkgrp.cmake b/tools/test/misc/CMakeTestsMkgrp.cmake
+index 0153106ee2c..01168e60d2e 100644
+--- a/tools/test/misc/CMakeTestsMkgrp.cmake
++++ b/tools/test/misc/CMakeTestsMkgrp.cmake
+@@ -142,7 +142,6 @@ macro (ADD_H5_TEST testname)
+           WORKING_DIRECTORY "${vol_workdir}"
+           # h5delete will return an error code if targeted file does not exist - accept any result
+           PASS_REGULAR_EXPRESSION "^$|"
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+ 
+       if (NOT "${vol}" STREQUAL "native")
+@@ -166,7 +165,6 @@ macro (ADD_H5_TEST testname)
+     if (NOT HDF5_ENABLE_USING_MEMCHECKER)
+       set_tests_properties (${vol_prefix}H5MKGRP-${testname} PROPERTIES
+           DEPENDS ${vol_prefix}H5MKGRP-${testname}-clear-objects
+-          ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       )
+     endif()
+ 
+@@ -192,7 +190,6 @@ macro (ADD_H5_TEST testname)
+ 
+     set_tests_properties (${vol_prefix}H5MKGRP-${testname}-h5ls PROPERTIES
+         DEPENDS ${vol_prefix}H5MKGRP-${testname}
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+ 
+     if (NOT "${vol}" STREQUAL "native")
+@@ -208,7 +205,6 @@ macro (ADD_H5_TEST testname)
+ 
+     set_tests_properties ("${vol_prefix}H5MKGRP-${testname}" PROPERTIES
+         WORKING_DIRECTORY "${vol_workdir}"
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     )
+   endforeach () # per-VOL loop
+ endmacro ()
+@@ -217,7 +213,6 @@ macro (ADD_H5_CMP resultfile resultcode)
+   if (HDF5_ENABLE_USING_MEMCHECKER)
+     add_test (NAME H5MKGRP_CMP-${resultfile} COMMAND $<TARGET_FILE:h5mkgrp> ${ARGN})
+     set_tests_properties (H5MKGRP_CMP-${resultfile} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+     )
+   else ()
+@@ -240,7 +235,6 @@ macro (ADD_H5_CMP resultfile resultcode)
+             -P "${HDF_RESOURCES_DIR}/runTest.cmake"
+     )
+     set_tests_properties (H5MKGRP_CMP-${resultfile} PROPERTIES
+-        ENVIRONMENT "${CROSSCOMPILING_PATH}"
+         DEPENDS H5MKGRP_CMP-${resultfile}-clear-objects
+     )
+     if ("H5MKGRP_CMP-${resultfile}" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+diff --git a/tools/test/misc/CMakeTestsRepart.cmake b/tools/test/misc/CMakeTestsRepart.cmake
+index ca19b9f8f81..1abb2cbdb18 100644
+--- a/tools/test/misc/CMakeTestsRepart.cmake
++++ b/tools/test/misc/CMakeTestsRepart.cmake
+@@ -85,7 +85,6 @@ add_test (
+     COMMAND $<TARGET_FILE:h5repart> -m 20000 family_file%05d.h5 fst_family%05d.h5
+ )
+ set_tests_properties (H5REPART-h5repart_20K PROPERTIES
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     FIXTURES_REQUIRED clear_testrepart
+ )
+ if ("H5REPART-h5repart_20K" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -98,7 +97,6 @@ add_test (
+     COMMAND $<TARGET_FILE:h5repart> -m 5k family_file%05d.h5 scd_family%05d.h5
+ )
+ set_tests_properties (H5REPART-h5repart_5K PROPERTIES
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     FIXTURES_REQUIRED clear_testrepart
+ )
+ if ("H5REPART-h5repart_5K" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -111,7 +109,6 @@ add_test (
+     COMMAND $<TARGET_FILE:h5repart> -m 20000 -family_to_single family_file%05d.h5 family_to_single.h5
+ )
+ set_tests_properties (H5REPART-h5repart_single PROPERTIES
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     FIXTURES_REQUIRED clear_testrepart
+ )
+ if ("H5REPART-h5repart_single" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -124,7 +121,6 @@ add_test (
+     COMMAND $<TARGET_FILE:h5repart> -m 20000 -family_to_sec2 family_file%05d.h5 family_to_sec2.h5
+ )
+ set_tests_properties (H5REPART-h5repart_sec2 PROPERTIES
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     FIXTURES_REQUIRED clear_testrepart
+ )
+ if ("H5REPART-h5repart_sec2" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -137,7 +133,6 @@ add_test (
+     COMMAND $<TARGET_FILE:h5repart_test>
+ )
+ set_tests_properties (H5REPART-h5repart_test PROPERTIES
+-    ENVIRONMENT "${CROSSCOMPILING_PATH}"
+     DEPENDS "H5REPART-h5repart_20K;H5REPART-h5repart_5K;H5REPART-h5repart_single;H5REPART-h5repart_sec2"
+     FIXTURES_REQUIRED clear_testrepart
+ )
+diff --git a/tools/test/perform/CMakeTests.cmake b/tools/test/perform/CMakeTests.cmake
+index 1bb61878d1c..79f0c87dc43 100644
+--- a/tools/test/perform/CMakeTests.cmake
++++ b/tools/test/perform/CMakeTests.cmake
+@@ -65,7 +65,6 @@ if (HDF5_TEST_SERIAL)
+     )
+   endif ()
+   set_tests_properties (PERFORM_h5perf_serial PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       TIMEOUT ${CTEST_VERY_LONG_TIMEOUT}
+       FIXTURES_REQUIRED clear_perform
+   )
+@@ -88,7 +87,6 @@ if (HDF5_TEST_SERIAL)
+     )
+   endif ()
+   set_tests_properties (PERFORM_chunk PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       FIXTURES_REQUIRED clear_perform
+   )
+   if ("PERFORM_chunk" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -110,7 +108,6 @@ if (HDF5_TEST_SERIAL)
+     )
+   endif ()
+   set_tests_properties (PERFORM_iopipe PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       FIXTURES_REQUIRED clear_perform
+   )
+   if ("PERFORM_iopipe" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -132,7 +129,6 @@ if (HDF5_TEST_SERIAL)
+     )
+   endif ()
+   set_tests_properties (PERFORM_overhead PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       FIXTURES_REQUIRED clear_perform
+   )
+   if ("PERFORM_overhead" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -154,7 +150,6 @@ if (HDF5_TEST_SERIAL)
+     )
+   endif ()
+   set_tests_properties (PERFORM_perf_meta PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       FIXTURES_REQUIRED clear_perform
+   )
+   if ("PERFORM_perf_meta" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -176,7 +171,6 @@ if (HDF5_TEST_SERIAL)
+     )
+   endif ()
+   set_tests_properties (PERFORM_zip_perf_help PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       FIXTURES_REQUIRED clear_perform
+   )
+   if ("PERFORM_zip_perf_help" MATCHES "${HDF5_DISABLE_TESTS_REGEX}")
+@@ -198,7 +192,6 @@ if (HDF5_TEST_SERIAL)
+     )
+   endif ()
+   set_tests_properties (PERFORM_zip_perf PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       DEPENDS "PERFORM_zip_perf_help"
+       FIXTURES_REQUIRED clear_perform
+   )
+diff --git a/utils/tools/test/h5dwalk/CMakeTests.cmake b/utils/tools/test/h5dwalk/CMakeTests.cmake
+index 2f3303d8123..f9de2f9a9aa 100644
+--- a/utils/tools/test/h5dwalk/CMakeTests.cmake
++++ b/utils/tools/test/h5dwalk/CMakeTests.cmake
+@@ -48,7 +48,6 @@ macro (ADD_H5_TEST resultfile resultcode)
+     )
+   endif ()
+   set_tests_properties (H5DWALK-${resultfile} PROPERTIES
+-      ENVIRONMENT "${CROSSCOMPILING_PATH}"
+       WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles"
+   )
+ endmacro ()
+
+From 98bffb3a9d24c0fc9cf8ddc2d77d712f9eba9939 Mon Sep 17 00:00:00 2001
+From: Julien Schueller <schueller@phimeca.com>
+Date: Sat, 7 Feb 2026 09:03:36 +0100
+Subject: [PATCH 4/4] CMake: Set fortran kind info in cache
+
+---
+ config/HDF5UseFortran.cmake | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/config/HDF5UseFortran.cmake b/config/HDF5UseFortran.cmake
+index 359ef2cbf79..4e5e5419312 100644
+--- a/config/HDF5UseFortran.cmake
++++ b/config/HDF5UseFortran.cmake
+@@ -201,21 +201,21 @@ if (NOT CMAKE_CROSSCOMPILING OR (CMAKE_CROSSCOMPILING AND CMAKE_CROSSCOMPILING_E
+   endif ()
+   set (${HDF_PREFIX}_PAC_FC_MAX_REAL_PRECISION ${pac_fc_max_real_precision} CACHE INTERNAL "Maximum decimal precision for REALs in Fortran")
+ 
+-  set (PAC_FC_ALL_INTEGER_KINDS "\{${pac_validIntKinds}\}")
+-  set (PAC_FC_ALL_REAL_KINDS "\{${pac_validRealKinds}\}")
++  set (PAC_FC_ALL_INTEGER_KINDS "\{${pac_validIntKinds}\}" CACHE INTERNAL "Find available INTEGER KINDs for Fortran")
++  set (PAC_FC_ALL_REAL_KINDS "\{${pac_validRealKinds}\}" CACHE INTERNAL "Find available REAL KINDs for Fortran")
+ 
+   list (GET PROG_OUTPUT 3 NUM_IKIND)
+   list (GET PROG_OUTPUT 4 NUM_RKIND)
+ 
+-  set (PAC_FORTRAN_NUM_INTEGER_KINDS "${NUM_IKIND}")
+-  set (PAC_FORTRAN_NUM_REAL_KINDS "${NUM_RKIND}")
++  set (PAC_FORTRAN_NUM_INTEGER_KINDS "${NUM_IKIND}" CACHE INTERNAL "Number of valid integer kinds for Fortran")
++  set (PAC_FORTRAN_NUM_REAL_KINDS "${NUM_RKIND}" CACHE INTERNAL "Number of valid real kinds for Fortran")
+ 
+   set (${HDF_PREFIX}_H5CONFIG_F_NUM_IKIND "INTEGER, PARAMETER :: num_ikinds = ${NUM_IKIND}")
+   set (${HDF_PREFIX}_H5CONFIG_F_IKIND "INTEGER, DIMENSION(1:num_ikinds) :: ikind = (/${pac_validIntKinds}/)")
+ 
+   if (${HAVE_ISO_FORTRAN_ENV})
+     list (GET PROG_OUTPUT 5 NUM_LKIND)
+-    set (PAC_FORTRAN_NUM_LOGICAL_KINDS "${NUM_LKIND}")
++    set (PAC_FORTRAN_NUM_LOGICAL_KINDS "${NUM_LKIND}" CACHE INTERNAL "Find available LOGICAL KINDs for Fortran")
+ 
+     list (GET PROG_OUTPUT 6 pac_validLogicalKinds)
+     # If the list is empty then something went wrong.
+@@ -223,7 +223,7 @@ if (NOT CMAKE_CROSSCOMPILING OR (CMAKE_CROSSCOMPILING AND CMAKE_CROSSCOMPILING_E
+       message (FATAL_ERROR "Failed to find available LOGICAL KINDs for Fortran")
+     endif ()
+ 
+-    set (PAC_FC_ALL_LOGICAL_KINDS "\{${pac_validLogicalKinds}\}")
++    set (PAC_FC_ALL_LOGICAL_KINDS "\{${pac_validLogicalKinds}\}" CACHE INTERNAL "LOGICAL KINDS FOUND for Fortran")
+     message (STATUS "....LOGICAL KINDS FOUND ${PAC_FC_ALL_LOGICAL_KINDS}")
+   endif ()
+ else ()
