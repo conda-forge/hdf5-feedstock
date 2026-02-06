@@ -7,6 +7,12 @@ cd build
 :: Set environment variables.
 set HDF5_EXT_ZLIB=zlib.lib
 
+:: Needed by IFX
+echo "FC=%FC%"
+set "LIB=%BUILD_PREFIX%\Library\lib;%LIB%"
+set "INCLUDE=%BUILD_PREFIX%\opt\compiler\include\intel64;%INCLUDE%"
+set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_BUILD_FORTRAN:BOOL=ON"
+set FFLAGS=%FFLAGS% /names:lowercase /assume:underscore /nologo
 
 set "CXXFLAGS=%CXXFLAGS% -LTCG"
 if "%mpi%"=="impi" (
@@ -14,6 +20,7 @@ if "%mpi%"=="impi" (
   set _LIBRARY=%LIBRARY_PREFIX:\=/%
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_ADDITIONAL_INCLUDE_DIRS:PATH=!_LIBRARY!/include"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_CXX_ADDITIONAL_INCLUDE_DIRS:PATH=!_LIBRARY!/include"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_FC_ADDITIONAL_INCLUDE_DIRS:PATH=!_LIBRARY!/include"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_C_LIB_NAMES=IMPI"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_CXX_LIB_NAMES=IMPI"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_IMPI_LIBRARY:PATH=!_LIBRARY!/lib/impi.lib"
@@ -21,6 +28,22 @@ if "%mpi%"=="impi" (
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_SKIP_COMPILER_WRAPPER=ON"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_SKIP_GUESSING=ON"
   set "CMAKE_ARGS=!CMAKE_ARGS! -D HDF5_ENABLE_PARALLEL:BOOL=ON"
+
+  :: --- Only Fortran MPI variables added below ---
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_COMPILER:PATH=!_LIBRARY!/bin/mpiifx.bat"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_INCLUDE_PATH:PATH=%BUILD_PREFIX%\opt\compiler\include"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_MODULE_DIR:PATH=%BUILD_PREFIX%\opt\compiler\include\intel64"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_WORKS:BOOL=ON"
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D MPI_Fortran_LIB_NAMES=IMPI"
+
+  :: Force MPI F08 support detection - Intel MPI supports mpi_f08
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D H5_HAVE_MPI_F08:BOOL=ON"
+
+  :: Ensure the Fortran compiler finds MPI modules (names lower case and underscore to align with flang defaults)
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_Fortran_FLAGS:STRING=-I!_LIBRARY!/include/mpi %FFLAGS%"
+) else (
+  :: Fortran names lower case and underscore to align with flang defaults
+  set "CMAKE_ARGS=!CMAKE_ARGS! -D CMAKE_Fortran_FLAGS:STRING=%FFLAGS%"
 )
 
 echo "CMAKE_ARGS=!CMAKE_ARGS!"
