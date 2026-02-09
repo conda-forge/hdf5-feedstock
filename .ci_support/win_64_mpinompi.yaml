@@ -1,3 +1,15 @@
+aws_c_auth:
+- 0.9.3
+aws_c_common:
+- 0.12.6
+aws_c_http:
+- 0.10.7
+aws_c_io:
+- 0.23.3
+aws_c_s3:
+- 0.11.3
+aws_c_sdkutils:
+- 0.2.4
 c_compiler:
 - vs2022
 c_stdlib:
