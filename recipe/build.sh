@@ -101,7 +101,5 @@ sed -i.bak '/^Libs\.private/d' ${PREFIX}/lib/pkgconfig/hdf5.pc
 rm -f ${PREFIX}/lib/pkgconfig/hdf5.pc.bak
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR:-}" != "" ]]; then
-  # disable union of failing tests in different arch/mpi flavors
-  ctest --test-dir build --output-on-failure --schedule-random -j${CPU_COUNT} --timeout 1000 \
-    -E "H5TEST-external_env|H5TEST-vds_env|H5TEST-flush2|H5MKGRP|H5LS|H5REPACK-deflate_file-h5diff|H5COPY-h5copy_misc1|MPI_TEST_H5DIFF|MPI_TEST_t_2Gio|MPI_TEST_t_bigio|H5SHELL-test_swmr|H5TEST-set_extent|MPI_TEST_testphdf5|MPI_TEST_t_cache|MPI_TEST_t_pmulti_dset|MPI_TEST_t_select_io_dset|MPI_TEST_t_shapesame|MPI_TEST_t_filters_parallel|MPI_TEST_t_vfd"
+  ctest --test-dir build --output-on-failure --schedule-random -j${CPU_COUNT} --timeout 1000 || cat build/Testing/Temporary/LastTestsFailed.log
 fi
