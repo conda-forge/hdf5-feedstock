@@ -101,5 +101,5 @@ sed -i.bak '/^Libs\.private/d' ${PREFIX}/lib/pkgconfig/hdf5.pc
 rm -f ${PREFIX}/lib/pkgconfig/hdf5.pc.bak
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR:-}" != "" ]]; then
-  ctest --test-dir build --output-on-failure --schedule-random -j${CPU_COUNT} --timeout 1000 || cat build/Testing/Temporary/LastTestsFailed.log
+  ctest --verbose --test-dir build --output-on-failure --schedule-random -j${CPU_COUNT} --timeout 1000 || cat build/Testing/Temporary/LastTestsFailed.log
 fi
