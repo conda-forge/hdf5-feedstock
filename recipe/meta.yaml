@@ -1,4 +1,4 @@
-{% set version = "2.0.0" %}
+{% set version = "2.1.0" %}
 {% set maj_min_patch_ver = "_".join(version.split(".")) %}
 {% set maj_min_ver = "_".join(version.split(".")[:2]) %}
 {% set build = 0 %}
@@ -38,11 +38,11 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/HDFGroup/hdf5/archive/hdf5_{{ version }}/hdf5-{{ version }}.tar.gz
-  sha256: ea5d2b7f1343d9da9e43546f389a8fc2698597fdd710f2843a605742e54edaa2
-  patches:
-    # Fix cross-compilation
-    - patches/MR6108.patch
+  url: https://github.com/HDFGroup/hdf5/releases/download/{{ version }}/hdf5-{{ version }}.tar.gz
+  sha256: ce7f5515a95d588b8606c3fb50643f8b88ac52ffbbde9c63bb1edca6a256e964
+  # patches:
+  #   # Fix cross-compilation
+  #   - patches/MR6108.patch
 
 build:
   number: {{ build }}
@@ -158,7 +158,8 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\{{ each_hdf5_lib }}.dll exit 1  # [win]
     {% endfor %}
     # Check ros3 driver
-    - AWS_REGION=us-east-2 h5dump --filedriver=ros3 "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'  # [unix]
+    - AWS_REGION=us-east-1 h5dump --filedriver=ros3 "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'  # [unix]
+    - AWS_REGION=us-east-1 h5dump s3://hdfgroup/data/hdf5demo/tall.h5 | grep '^HDF5'  # [unix]
     # Jan 2023 -- hmaarrfk. Tests will fail on windows without --s3-cred specified
     # https://github.com/HDFGroup/hdf5/issues/2406
     #- h5dump --filedriver=ros3 --s3-cred="(,,)" "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | findstr "^HDF5"  # [win]
@@ -170,7 +171,7 @@ about:
   license_file: LICENSE
   summary: HDF5 is a data model, library, and file format for storing and managing data
   dev_url: https://github.com/HDFGroup/hdf5
-  doc_url: https://portal.hdfgroup.org/display/HDF5/HDF5
+  doc_url: https://support.hdfgroup.org/documentation/hdf5/latest/
 
 extra:
   recipe-maintainers:
