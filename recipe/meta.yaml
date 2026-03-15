@@ -40,6 +40,12 @@ package:
 source:
   url: https://github.com/HDFGroup/hdf5/releases/download/{{ version }}/hdf5-{{ version }}.tar.gz
   sha256: ce7f5515a95d588b8606c3fb50643f8b88ac52ffbbde9c63bb1edca6a256e964
+  patches:
+    # hmaarrfk - 2026/03/15 - remove in version 2.1.1 or later
+    # Upstream devs asked to wait for a release to include this patch
+    # https://github.com/conda-forge/hdf5-feedstock/pull/281#issuecomment-4026792144
+    # But we can readily backport a 2 line fix
+    - 6267-Fix-HL-Fortran-soversion-interface-variable-typo.patch
 
 build:
   number: {{ build }}
