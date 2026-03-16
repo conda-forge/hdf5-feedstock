@@ -173,7 +173,7 @@ about:
   license_file: LICENSE
   summary: HDF5 is a data model, library, and file format for storing and managing data
   dev_url: https://github.com/HDFGroup/hdf5
-  doc_url: https://portal.hdfgroup.org/display/HDF5/HDF5
+  doc_url: https://support.hdfgroup.org/documentation/hdf5/latest/
 
 extra:
   recipe-maintainers:
