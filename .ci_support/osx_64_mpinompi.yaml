@@ -3,11 +3,11 @@ MACOSX_DEPLOYMENT_TARGET:
 MACOSX_SDK_VERSION:
 - '15.5'
 aws_c_auth:
-- 0.9.6
+- 0.10.1
 aws_c_common:
 - 0.12.6
 aws_c_http:
-- 0.10.10
+- 0.10.11
 aws_c_io:
 - 0.26.1
 aws_c_s3:
@@ -45,7 +45,7 @@ macos_machine:
 mpi:
 - nompi
 mpich:
-- '4'
+- '5'
 openmpi:
 - '5'
 openssl:

@@ -11,7 +11,7 @@ Summary: HDF5 is a data model, library, and file format for storing and managing
 
 Development: https://github.com/HDFGroup/hdf5
 
-Documentation: https://portal.hdfgroup.org/display/HDF5/HDF5
+Documentation: https://support.hdfgroup.org/documentation/hdf5/latest/
 
 Current build status
 ====================
