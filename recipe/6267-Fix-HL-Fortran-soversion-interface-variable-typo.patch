@@ -1,0 +1,28 @@
+From bf2c70a3d2a428be67a2273e0acdc97c622c0aab Mon Sep 17 00:00:00 2001
+From: Rui Chen <rui@chenrui.dev>
+Date: Tue, 3 Mar 2026 21:28:31 -0500
+Subject: [PATCH] config: fix HL Fortran soversion variable typo
+
+Signed-off-by: Rui Chen <rui@chenrui.dev>
+---
+ config/lt_vers.am | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/config/lt_vers.am b/config/lt_vers.am
+index 6cb502efb1e..4045efa6f68 100644
+--- a/config/lt_vers.am
++++ b/config/lt_vers.am
+@@ -50,7 +50,7 @@ LT_HL_CXX_VERS_INTERFACE = 320
+ LT_HL_CXX_VERS_AGE = 0
+ LT_HL_CXX_VERS_REVISION = 1
+ 
+-LT_HL_F_VERS_INTERFACE1 = 320
++LT_HL_F_VERS_INTERFACE = 320
+ LT_HL_F_VERS_AGE = 0
+ LT_HL_F_VERS_REVISION = 1
+ 
+@@ -61,4 +61,3 @@ LT_JAVA_VERS_REVISION = 0
+ LT_TOOLS_VERS_INTERFACE = 320
+ LT_TOOLS_VERS_AGE = 0
+ LT_TOOLS_VERS_REVISION = 1
+-

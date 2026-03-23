@@ -1,24 +1,56 @@
 #!/bin/bash
 set -ex
 
-export LIBRARY_PATH="${PREFIX}/lib"
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]]; then
+  # using default values for conversion tests:
+  # H5_LDOUBLE_TO_LONG_SPECIAL=FALSE
+  # H5_LONG_TO_LDOUBLE_SPECIAL=FALSE
+  # H5_LDOUBLE_TO_LLONG_ACCURATE=TRUE
+  # H5_LLONG_TO_LDOUBLE_CORRECT=TRUE
+  # H5_DISABLE_SOME_LDOUBLE_CONV=TRUE
 
-# Get an updated config.sub and config.guess
-cp $BUILD_PREFIX/share/libtool/build-aux/config.* ./bin
+  # using fortran types defaults except for float types
+  # MR6108 sets them in cache so pass them directly via cmake args
+  CMAKE_FORTRAN_ARGS="-DPAC_FC_ALL_REAL_KINDS={4,8} -DPAC_FC_ALL_REAL_KINDS_SIZEOF={4,8} -DPAC_FORTRAN_NUM_REAL_KINDS=2"
+  CMAKE_FORTRAN_ARGS="${CMAKE_FORTRAN_ARGS} -DPAC_FC_MAX_REAL_PRECISION=15 -DPAC_C_MAX_REAL_PRECISION=17"
+  # here are the default integer settings:
+  # PAC_FC_ALL_INTEGER_KINDS={1,2,4,8,16}, PAC_FORTRAN_NUM_INTEGER_KINDS=5
 
-# hdf5 autogen.sh doesn't find libtool on mac correctly
-export HDF5_LIBTOOL=$BUILD_PREFIX/bin/libtool
+  # must be the same when generating sources though native builds
+  CMAKE_ARGS="${CMAKE_ARGS} ${CMAKE_FORTRAN_ARGS}"
+fi
 
-HDF5_OPTIONS=
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && "${CROSSCOMPILING_EMULATOR:-}" == "" ]]; then
+  # here we cannot run target binaries
+  CMAKE_ARGS="${CMAKE_ARGS} -DBUILD_TESTING=OFF"
+
+  # native build to generate binaries for source generation
+  CC=$CC_FOR_BUILD CXX=$CXX_FOR_BUILD FC=$FC_FOR_BUILD \
+  CFLAGS= CXXFLAGS= FFLAGS= CPPFLAGS= LDFLAGS=${LDFLAGS//$PREFIX/$BUILD_PREFIX} \
+  OMPI_CC= OMPI_CXX= OMPI_FC= \
+  cmake ${CMAKE_FORTRAN_ARGS} -LAH -G "Ninja" \
+    -DHDF5_BUILD_FORTRAN=ON \
+    -DCMAKE_PREFIX_PATH=$BUILD_PREFIX \
+    -B build_native .
+  cmake --build build_native --target H5match_types H5_buildiface H5HL_buildiface
+
+  # copy generated sources into a "pregen" dir
+  mkdir -p /tmp/pregen
+  cp -v ./build_native/fortran/H5fortran_types.F90 /tmp/pregen
+  cp -v ./build_native/fortran/H5_gen.F90 /tmp/pregen
+  cp -v ./build_native/fortran/H5f90i_gen.h /tmp/pregen
+  cp -v ./build_native/hl/fortran/H5LTff_gen.F90 /tmp/pregen
+  cp -v ./build_native/hl/fortran/H5TBff_gen.F90 /tmp/pregen
+  CMAKE_ARGS="${CMAKE_ARGS} -DHDF5_USE_PREGEN=ON -DHDF5_USE_PREGEN_DIR=/tmp/pregen"
+fi
 
 if [[ "$target_platform" == linux-* ]]; then
-    # Direct Virtual File System (O_DIRECT)
-    # is only valid for linux
-    HDF5_OPTIONS="${HDF5_OPTIONS} --enable-direct-vfd"
+    # Direct Virtual File System (O_DIRECT) is only valid for linux
+    CMAKE_ARGS="${CMAKE_ARGS} -DHDF5_ENABLE_DIRECT_VFD=ON"
 fi
 
 if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
-  export HDF5_OPTIONS="${HDF5_OPTIONS} --enable-parallel"
+  CMAKE_ARGS="${CMAKE_ARGS} -DHDF5_ENABLE_PARALLEL=ON -DMPIEXEC_MAX_NUMPROCS=${CPU_COUNT}"
 
   export CC=$PREFIX/bin/mpicc
   export CXX=$PREFIX/bin/mpic++
@@ -41,133 +73,33 @@ if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
     export CXX_FOR_BUILD=$PREFIX/bin/mpic++
     export FC_FOR_BUILD=$PREFIX/bin/mpifort
   fi
-
-  if [[ "$target_platform" == linux-* ]]; then
-    # --as-needed appears to cause problems with fortran compiler detection
-    # due to missing libquadmath
-    # unclear why required libs are stripped but still linked
-    export FFLAGS="${FFLAGS:-} -Wl,--no-as-needed -Wl,--disable-new-dtags"
-    export LDFLAGS="${LDFLAGS} -Wl,--no-as-needed -Wl,--disable-new-dtags"
-  fi
-else
-  export CC=$(basename ${CC})
-  export CXX=$(basename ${CXX})
-  export F95=$(basename ${F95})
-  export FC=$(basename ${FC})
 fi
 
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 && $target_platform == "osx-arm64" ]]; then
-  export ac_cv_sizeof_long_double=8
-  export hdf5_cv_ldouble_to_long_special=no
-  export hdf5_cv_long_to_ldouble_special=no
-  export hdf5_cv_ldouble_to_llong_accurate=yes
-  export hdf5_cv_llong_to_ldouble_correct=yes
-  export hdf5_cv_disable_some_ldouble_conv=no
-  export hdf5_cv_system_scope_threads=yes
-  export hdf5_cv_printf_ll="l"
-  export PAC_FC_MAX_REAL_PRECISION=15
-  export PAC_C_MAX_REAL_PRECISION=17
-  export PAC_FC_ALL_INTEGER_KINDS="{1,2,4,8,16}"
-  export PAC_FC_ALL_REAL_KINDS="{4,8}"
-  export H5CONFIG_F_NUM_RKIND="INTEGER, PARAMETER :: num_rkinds = 2"
-  export H5CONFIG_F_NUM_IKIND="INTEGER, PARAMETER :: num_ikinds = 5"
-  export H5CONFIG_F_RKIND="INTEGER, DIMENSION(1:num_rkinds) :: rkind = (/4,8/)"
-  export H5CONFIG_F_IKIND="INTEGER, DIMENSION(1:num_ikinds) :: ikind = (/1,2,4,8,16/)"
-  export PAC_FORTRAN_NATIVE_INTEGER_SIZEOF="                    4"
-  export PAC_FORTRAN_NATIVE_INTEGER_KIND="           4"
-  export PAC_FORTRAN_NATIVE_REAL_SIZEOF="                    4"
-  export PAC_FORTRAN_NATIVE_REAL_KIND="           4"
-  export PAC_FORTRAN_NATIVE_DOUBLE_SIZEOF="                    8"
-  export PAC_FORTRAN_NATIVE_DOUBLE_KIND="           8"
-  export PAC_FORTRAN_NUM_INTEGER_KINDS="5"
-  export PAC_FC_ALL_REAL_KINDS_SIZEOF="{4,8}"
-  export PAC_FC_ALL_INTEGER_KINDS_SIZEOF="{1,2,4,8,16}"
-  # Do we need this below?
-  export hdf5_cv_szlib_can_encode=yes
+cmake ${CMAKE_ARGS} -LAH -G "Ninja" \
+  -DHDF5_ENABLE_ZLIB_SUPPORT=ON \
+  -DHDF5_ENABLE_SZIP_SUPPORT=ON \
+  -DHDF5_BUILD_CPP_LIB=ON \
+  -DHDF5_BUILD_HL_LIB=ON \
+  -DHDF5_BUILD_FORTRAN=ON \
+  -DHDF5_BUILD_EXAMPLES=OFF \
+  -DHDF5_H5CC_C_COMPILER=`basename ${CC}` \
+  -DHDF5_H5CC_CXX_COMPILER=`basename ${CXX}` \
+  -DHDF5_H5CC_Fortran_COMPILER=`basename ${FC}` \
+  -DH5_DEFAULT_PLUGINDIR="${PREFIX}/lib/hdf5/plugin" \
+  -DHDF5_ENABLE_THREADSAFE=ON \
+  -DHDF5_ALLOW_UNSUPPORTED=ON \
+  -DHDF5_ENABLE_USING_MEMCHECKER=ON \
+  -DHDF5_ENABLE_ROS3_VFD=ON \
+  -DHDF5_ENABLE_NONSTANDARD_FEATURES=OFF \
+  -DBUILD_STATIC_LIBS=OFF \
+  -B build .
+cmake --build build --target install --parallel ${CPU_COUNT}
 
-  HDF5_OPTIONS="${HDF5_OPTIONS} --enable-tests=no"
-fi
+# Remove Libs.private from hdf5.pc
+# See https://github.com/conda-forge/hdf5-feedstock/issues/238
+sed -i.bak '/^Libs\.private/d' ${PREFIX}/lib/pkgconfig/hdf5.pc
+rm -f ${PREFIX}/lib/pkgconfig/hdf5.pc.bak
 
-# regen config after patches to configure.ac
-./autogen.sh
-
-./configure --prefix="${PREFIX}" \
-            --with-pic \
-            --host="${HOST}" \
-            --build="${BUILD}" \
-            --with-zlib="${PREFIX}" \
-            --with-szlib="${PREFIX}" \
-            --with-pthread=yes  \
-            ${HDF5_OPTIONS} \
-            --enable-cxx \
-            --enable-fortran \
-            --with-default-plugindir="${PREFIX}/lib/hdf5/plugin" \
-            --enable-threadsafe \
-            --enable-build-mode=production \
-            --enable-unsupported \
-            --enable-hlgiftools=yes \
-            --enable-using-memchecker \
-            --enable-static=no \
-            --enable-ros3-vfd \
-            || (cat config.log; false)
-
-# allow oversubscribing with openmpi in make check
-export OMPI_MCA_rmaps_base_oversubscribe=yes
-# also allow oversubscribing with mvapich
-export MVP_ENABLE_AFFINITY=0
-
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
-  # parentheses ( make this a sub-shell, so env and cwd changes don't persist
-  # and we can safely unset env vars temporarily
-  (
-    # Make a native build of the hdetect and H5make_libsettings executables
-    mkdir -p native-build/bin
-    pushd native-build/bin
-
-    # MACOSX_DEPLOYMENT_TARGET is for the target_platform and not for build_platform
-    unset MACOSX_DEPLOYMENT_TARGET
-    # openmpi sets up env for cross-compilation by default
-    # clear it all so it's back to native builds
-    export OPAL_PREFIX=$BUILD_PREFIX
-    unset ${!OMPI_@}
-
-    $CC_FOR_BUILD ${SRC_DIR}/fortran/src/H5match_types.c -I ${SRC_DIR}/src/ -o H5match_types
-    $FC_FOR_BUILD ${SRC_DIR}/fortran/src/H5_buildiface.F90 -I ${SRC_DIR}/fortran/src/ -L $BUILD_PREFIX/lib -o H5_buildiface
-    $FC_FOR_BUILD ${SRC_DIR}/hl/fortran/src/H5HL_buildiface.F90 -I ${SRC_DIR}/hl/fortran/src -I ${SRC_DIR}/fortran/src -L $BUILD_PREFIX/lib -o H5HL_buildiface
-  )
-  export PATH=`pwd`/native-build/bin:$PATH
-fi
-
-make -j "${CPU_COUNT}" ${VERBOSE_AT}
-
-make install V=1
-
-if [[ ${mpi} == "mpich" || (${mpi} == "openmpi" && "$(uname)" == "Darwin") ]]; then
-  # ph5diff hangs on darwin with openmpi, skip the test
-  # ph5diff also crashes on mpich 4.1
-  echo <<EOF > tools/test/h5diff/testph5diff.sh
-#!/bin/sh
-exit 0
-EOF
-fi
-
-# at least mac + mpich is timing out with the default 20 minutes
-# in t_filters_parallel
-# increase to 60 minutes
-export HDF5_ALARM_SECONDS=3600
-
-if [[ ${mpi} == "mvapich" ]]; then
-  # Setting environment variables to allow oversubscription
-  export MV2_ENABLE_AFFINITY=0
-  # Run tests excluding specific ones using ctest
-  ctest -E "(t_bigio|t_pmulti_dset|t_filters_parallel|t_cache_image)"
-else
-  # Run parallel tests for other platforms, but exclude specific platforms
-  if [[ ("$target_platform" != "linux-ppc64le") && \
-        ("$target_platform" != "linux-aarch64") && \
-        ("$target_platform" != "osx-arm64") ]]; then
-    # https://github.com/h5py/h5py/issues/817
-    # https://forum.hdfgroup.org/t/hdf5-1-10-long-double-conversions-tests-failed-in-ppc64le/4077
-    make check RUNPARALLEL="mpiexec -n 2"
-  fi
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR:-}" != "" ]]; then
+  ctest --test-dir build --output-on-failure --schedule-random -j${CPU_COUNT} --timeout 1000 || cat build/Testing/Temporary/LastTestsFailed.log
 fi
