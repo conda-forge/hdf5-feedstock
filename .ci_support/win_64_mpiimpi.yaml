@@ -23,7 +23,7 @@ libcurl:
 mpi:
 - impi
 mpich:
-- '5'
+- '4'
 openmpi:
 - '5'
 openssl:
