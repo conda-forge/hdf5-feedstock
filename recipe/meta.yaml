@@ -92,7 +92,7 @@ test:
   requires:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler("fortran") }}
+    - {{ compiler('fortran') }}
     - pkg-config                 # [not win]
     - cmake                      # [not win]
     - make                       # [not win]
