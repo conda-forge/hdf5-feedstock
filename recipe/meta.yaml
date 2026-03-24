@@ -61,6 +61,10 @@ build:
     - {{ pin_subpackage('hdf5', max_pin='x.x.x') }} {{ build_pin }}
   ignore_run_exports:
     - libacl
+  script_env:
+    # mpich + libfabric default provider seems to hang on macOS CI sometimes
+    # and be super slow on others
+    - FI_PROVIDER=tcp  # [unix]
 
 requirements:
   build:
@@ -105,9 +109,6 @@ test:
   files:
     - test
   commands:
-    # mpich + libfabric default provider seems to hang on macOS CI sometimes
-    # and be super slow on others
-    - export FI_PROVIDER=tcp  # [unix]
     # Verify UNIX CLI tools.
     {% if mpi == 'nompi' %}
     {% set h5_compilers = [
