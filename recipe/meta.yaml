@@ -105,6 +105,8 @@ test:
   files:
     - test
   commands:
+    # mpich + libfabric default provider seems to hang on macOS CI sometimes
+    - export FI_PROVIDER=tcp  # [osx]
     # Verify UNIX CLI tools.
     {% if mpi == 'nompi' %}
     {% set h5_compilers = [
