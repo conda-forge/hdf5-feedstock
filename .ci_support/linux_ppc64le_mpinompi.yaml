@@ -1,11 +1,11 @@
 aws_c_auth:
-- 0.9.6
+- 0.10.1
 aws_c_common:
 - 0.12.6
 aws_c_http:
-- 0.10.10
+- 0.10.12
 aws_c_io:
-- 0.26.1
+- 0.26.3
 aws_c_s3:
 - 0.11.5
 aws_c_sdkutils:
