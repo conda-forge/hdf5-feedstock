@@ -45,7 +45,7 @@ macos_machine:
 mpi:
 - openmpi
 mpich:
-- '4'
+- '5'
 openmpi:
 - '5'
 openssl:
