@@ -47,6 +47,9 @@ source:
     # But we can readily backport a 2 line fix
     - 6267-Fix-HL-Fortran-soversion-interface-variable-typo.patch
 
+    # https://github.com/HDFGroup/hdf5/pull/6324
+    - 6324-fix-data-alignment-requirements-check-in-diect-io-vfd.diff
+
 build:
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
