@@ -60,7 +60,7 @@ build:
   script_env:
     # this avoids hangs and delays with mpich on CI
     - FI_PROVIDER=tcp  # [unix]
-  skip: true  # [not linux_64]
+  skip: true  # [not linux64]
 
 requirements:
   build:
