@@ -14,7 +14,7 @@ index 7d77b2d64e2..85cba87957e 100644
  
  ## Configuration
 diff --git a/src/H5FDdirect.c b/src/H5FDdirect.c
-index f8e5fb5bf8e..f5e612ec580 100644
+index f8e5fb5bf8e..eef97333d9d 100644
 --- a/src/H5FDdirect.c
 +++ b/src/H5FDdirect.c
 @@ -40,10 +40,11 @@ hid_t H5FD_DIRECT_id_g = H5I_INVALID_HID;
@@ -127,7 +127,7 @@ index f8e5fb5bf8e..f5e612ec580 100644
  
      /* Set return value */
      ret_value = (H5FD_t *)file;
-@@ -535,11 +495,126 @@ H5FD__direct_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxad
+@@ -535,11 +495,129 @@ H5FD__direct_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxad
      if (ret_value == NULL) {
          if (fd >= 0)
              HDclose(fd);
@@ -156,7 +156,7 @@ index f8e5fb5bf8e..f5e612ec580 100644
 +{
 +    HDoff_t orig_file_size = 0;
 +    ssize_t io_bytes       = 0;
-+    bool    changed_size   = 0;
++    bool    changed_size   = false;
 +    void   *buf            = NULL;
 +    herr_t  ret_value      = SUCCEED;
 +
@@ -187,15 +187,16 @@ index f8e5fb5bf8e..f5e612ec580 100644
 +                HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position");
 +        }
 +
++        /* Attempt what should be an unaligned write. If this fails and anything
++         * other than EINVAL is returned, make no assumptions about alignment
++         * requirements (default is to always ensure alignment). If it succeeds,
++         * assume alignment isn't required.
++         */
 +        io_bytes = HDwrite(file->fd, (void *)((uint8_t *)buf + 1), file->fa.fbsize - 1);
 +        if (io_bytes >= 0)
 +            file->fa.must_align_writes = false;
 +        else if (EINVAL == errno) {
 +            HDoff_t align_offset = 0;
-+
-+            /* If anything other than EINVAL was returned, make no assumptions
-+             * about alignment requirements
-+             */
 +
 +            /* Seek to aligned offset past end of file if necessary */
 +            if ((size_t)orig_file_size % file->fa.mboundary != 0)
@@ -218,14 +219,16 @@ index f8e5fb5bf8e..f5e612ec580 100644
 +    if (HDlseek(file->fd, 1, SEEK_SET) < 0)
 +        HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position");
 +
-+    /* Make no assumptions about alignment requirements when bytes_read == 0 */
++    /* Attempt what should be an unaligned read. If this fails and anything
++     * other than EINVAL is returned, make no assumptions about alignment
++     * requirements (default is to always ensure alignment). If it succeeds,
++     * assume alignment isn't required. Make no assumptions about alignment
++     * requirements when io_bytes == 0.
++     */
 +    io_bytes = HDread(file->fd, (void *)((uint8_t *)buf + 1), file->fa.fbsize - 1);
 +    if (io_bytes > 0)
 +        file->fa.must_align_reads = false;
 +    else if (io_bytes < 0 && EINVAL == errno) {
-+        /* If anything other than EINVAL was returned, make no assumptions
-+         * about alignment requirements
-+         */
 +        if (HDlseek(file->fd, 0, SEEK_SET) < 0)
 +            HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position");
 +
@@ -254,7 +257,7 @@ index f8e5fb5bf8e..f5e612ec580 100644
  /*-------------------------------------------------------------------------
   * Function:  H5FD__direct_close
   *
-@@ -777,6 +852,7 @@ H5FD__direct_read(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_U
+@@ -777,6 +855,7 @@ H5FD__direct_read(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_U
      haddr_t        read_size;        /* Size to read into copy buffer */
      size_t         copy_size = size; /* Size remaining to read when using copy buffer */
      size_t         copy_offset;      /* Offset into copy buffer of the requested data */
@@ -262,7 +265,7 @@ index f8e5fb5bf8e..f5e612ec580 100644
  
      FUNC_ENTER_PACKAGE
  
-@@ -792,7 +868,7 @@ H5FD__direct_read(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_U
+@@ -792,7 +871,7 @@ H5FD__direct_read(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_U
      /* If the system doesn't require data to be aligned, read the data in
       * the same way as sec2 driver.
       */
@@ -271,7 +274,7 @@ index f8e5fb5bf8e..f5e612ec580 100644
  
      /* Get the memory boundary for alignment, file system block size, and maximal
       * copy buffer size.
-@@ -805,7 +881,8 @@ H5FD__direct_read(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_U
+@@ -805,7 +884,8 @@ H5FD__direct_read(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_U
       * read it directly from the file.  If not, read a bigger
       * and aligned data first, then copy the data into memory buffer.
       */
@@ -281,7 +284,7 @@ index f8e5fb5bf8e..f5e612ec580 100644
          /* Seek to the correct location */
          if ((addr != file->pos || OP_READ != file->op) && HDlseek(file->fd, (HDoff_t)addr, SEEK_SET) < 0)
              HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position");
-@@ -957,6 +1034,7 @@ H5FD__direct_write(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_
+@@ -957,6 +1037,7 @@ H5FD__direct_write(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_
      haddr_t        read_size;        /* Size to read into copy buffer */
      size_t         copy_size = size; /* Size remaining to write when using copy buffer */
      size_t         copy_offset;      /* Offset into copy buffer of the data to write */
@@ -289,7 +292,7 @@ index f8e5fb5bf8e..f5e612ec580 100644
  
      FUNC_ENTER_PACKAGE
  
-@@ -972,7 +1050,7 @@ H5FD__direct_write(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_
+@@ -972,7 +1053,7 @@ H5FD__direct_write(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_
      /* If the system doesn't require data to be aligned, read the data in
       * the same way as sec2 driver.
       */
@@ -298,7 +301,7 @@ index f8e5fb5bf8e..f5e612ec580 100644
  
      /* Get the memory boundary for alignment, file system block size, and maximal
       * copy buffer size.
-@@ -985,7 +1063,8 @@ H5FD__direct_write(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_
+@@ -985,7 +1066,8 @@ H5FD__direct_write(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_
       * write it directly to the file.  If not, read a bigger and aligned data
       * first, update buffer with user data, then write the data out.
       */
@@ -308,7 +311,7 @@ index f8e5fb5bf8e..f5e612ec580 100644
          /* Seek to the correct location */
          if ((addr != file->pos || OP_WRITE != file->op) && HDlseek(file->fd, (HDoff_t)addr, SEEK_SET) < 0)
              HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position");
-@@ -1200,7 +1279,7 @@ H5FD__direct_truncate(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, bool H5_ATTR_
+@@ -1200,7 +1282,7 @@ H5FD__direct_truncate(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, bool H5_ATTR_
          file->pos = HADDR_UNDEF;
          file->op  = OP_UNKNOWN;
      }
@@ -317,3 +320,4 @@ index f8e5fb5bf8e..f5e612ec580 100644
          /*Even though eof is equal to eoa, file is still truncated because Direct I/O
           *write introduces some extra data for alignment.
           */
+
