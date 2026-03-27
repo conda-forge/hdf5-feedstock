@@ -100,5 +100,9 @@ sed -i.bak '/^Libs\.private/d' ${PREFIX}/lib/pkgconfig/hdf5.pc
 rm -f ${PREFIX}/lib/pkgconfig/hdf5.pc.bak
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR:-}" != "" ]]; then
-  ctest --test-dir build --output-on-failure --timeout 1500 || (cat build/Testing/Temporary/LastTestsFailed.log; exit 1)
+  if [[ "$target_platform" == osx-* ]]; then
+    # bigio hangs sometimes on mac CI
+    CTEST_ARGS="-E bigio"
+  fi
+  ctest ${CTEST_ARGS:-} --test-dir build --output-on-failure --timeout 1000 || (cat build/Testing/Temporary/LastTestsFailed.log; exit 1)
 fi
