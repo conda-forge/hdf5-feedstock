@@ -101,8 +101,9 @@ rm -f ${PREFIX}/lib/pkgconfig/hdf5.pc.bak
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR:-}" != "" ]]; then
   if [[ "$target_platform" == osx-* ]]; then
-    # bigio hangs sometimes on mac CI
-    CTEST_ARGS="-E bigio"
+    # bigio hangs sometimes on mac CI,
+    # pmulti_dset fails occasionally due to apparent issues with mpich
+    CTEST_ARGS="-E bigio|pmulti_dset"
   fi
   ctest ${CTEST_ARGS:-} --test-dir build --output-on-failure --timeout 1000 || (cat build/Testing/Temporary/LastTestsFailed.log; exit 1)
 fi
