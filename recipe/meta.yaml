@@ -1,7 +1,7 @@
 {% set version = "2.1.0" %}
 {% set maj_min_patch_ver = "_".join(version.split(".")) %}
 {% set maj_min_ver = "_".join(version.split(".")[:2]) %}
-{% set build = 2 %}
+{% set build = 3 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -47,6 +47,9 @@ source:
     # But we can readily backport a 2 line fix
     - 6267-Fix-HL-Fortran-soversion-interface-variable-typo.patch
 
+    # https://github.com/HDFGroup/hdf5/pull/6324
+    - 6324-fix-data-alignment-requirements-check-in-diect-io-vfd.diff
+
 build:
   number: {{ build }}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
@@ -54,6 +57,9 @@ build:
     - {{ pin_subpackage('hdf5', max_pin='x') }} {{ build_pin }}
   ignore_run_exports:
     - libacl
+  script_env:
+    # this avoids hangs and delays with mpich on CI
+    - FI_PROVIDER=tcp  # [unix]
 
 requirements:
   build:

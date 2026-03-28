@@ -88,7 +88,6 @@ cmake ${CMAKE_ARGS} -LAH -G "Ninja" \
   -DH5_DEFAULT_PLUGINDIR="${PREFIX}/lib/hdf5/plugin" \
   -DHDF5_ENABLE_THREADSAFE=ON \
   -DHDF5_ALLOW_UNSUPPORTED=ON \
-  -DHDF5_ENABLE_USING_MEMCHECKER=ON \
   -DHDF5_ENABLE_ROS3_VFD=ON \
   -DHDF5_ENABLE_NONSTANDARD_FEATURES=OFF \
   -DBUILD_STATIC_LIBS=OFF \
@@ -101,5 +100,10 @@ sed -i.bak '/^Libs\.private/d' ${PREFIX}/lib/pkgconfig/hdf5.pc
 rm -f ${PREFIX}/lib/pkgconfig/hdf5.pc.bak
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR:-}" != "" ]]; then
-  ctest --test-dir build --output-on-failure --schedule-random -j${CPU_COUNT} --timeout 1000 || cat build/Testing/Temporary/LastTestsFailed.log
+  if [[ "$target_platform" == osx-* ]]; then
+    # bigio hangs sometimes on mac CI,
+    # pmulti_dset fails occasionally due to apparent issues with mpich
+    CTEST_ARGS="-E bigio|pmulti_dset"
+  fi
+  ctest ${CTEST_ARGS:-} --test-dir build --output-on-failure --timeout 1000 || (cat build/Testing/Temporary/LastTestsFailed.log; exit 1)
 fi
