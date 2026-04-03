@@ -1,0 +1,22 @@
+diff --git a/config/install/hdf5-config.cmake.in b/config/install/hdf5-config.cmake.in
+index bb9a8d60f0..3b24a040e3 100644
+--- a/config/install/hdf5-config.cmake.in
++++ b/config/install/hdf5-config.cmake.in
+@@ -124,7 +124,7 @@ else ()
+   endif ()
+ endif ()
+ 
+-if (${HDF5_PACKAGE_NAME}_PROVIDES_ZLIB_SUPPORT)
++if (${HDF5_PACKAGE_NAME}_PROVIDES_ZLIB_SUPPORT AND ${HDF5_PACKAGE_NAME}_PROVIDES_STATIC_LIBS)
+   if (NOT @ZLIB_USE_EXTERNAL@)
+     if (@HDF5_MODULE_MODE_ZLIB@)
+       # Expect that the default shared library is expected with FindZLIB.cmake
+@@ -135,7 +135,7 @@ if (${HDF5_PACKAGE_NAME}_PROVIDES_ZLIB_SUPPORT)
+   endif ()
+ endif ()
+ 
+-if (${HDF5_PACKAGE_NAME}_PROVIDES_SZIP_SUPPORT)
++if (${HDF5_PACKAGE_NAME}_PROVIDES_SZIP_SUPPORT AND ${HDF5_PACKAGE_NAME}_PROVIDES_STATIC_LIBS)
+   if (NOT @SZIP_USE_EXTERNAL@)
+     find_dependency (@LIBAEC_PACKAGE_NAME@ OPTIONAL_COMPONENTS @LIBAEC_SEARCH_TYPE@)
+   endif ()
