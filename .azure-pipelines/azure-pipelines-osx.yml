@@ -12,26 +12,32 @@ jobs:
         CONFIG: osx_64_mpimpich
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15
+        store_build_artifacts: false
       osx_64_mpinompi:
         CONFIG: osx_64_mpinompi
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15
+        store_build_artifacts: false
       osx_64_mpiopenmpi:
         CONFIG: osx_64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15
+        store_build_artifacts: false
       osx_arm64_mpimpich:
         CONFIG: osx_arm64_mpimpich
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15
+        store_build_artifacts: false
       osx_arm64_mpinompi:
         CONFIG: osx_arm64_mpinompi
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15
+        store_build_artifacts: false
       osx_arm64_mpiopenmpi:
         CONFIG: osx_arm64_mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15
+        store_build_artifacts: false
   timeoutInMinutes: 360
   variables: {}
 
