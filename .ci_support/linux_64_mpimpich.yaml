@@ -7,7 +7,7 @@ aws_c_http:
 aws_c_io:
 - 0.27.5
 aws_c_s3:
-- 0.13.1
+- '1.1'
 aws_c_sdkutils:
 - 0.2.7
 c_compiler:
