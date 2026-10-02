@@ -1,0 +1,116 @@
+Fix deadlock in ROS3 VFD on Windows
+
+Backport of https://github.com/HDFGroup/hdf5/pull/6654
+(commit f1fb81316e74330ba225a5dc9332d7c777284046, still open upstream),
+fixing https://github.com/HDFGroup/hdf5/issues/6560.
+
+Avoid calling aws-c-s3 library cleanup if the process is in the middle of
+DLL shutdown. The release_docs/CHANGELOG.md hunk is dropped so the patch
+applies to the 2.2.0 release tarball.
+
+diff --git a/config/ConfigureChecks.cmake b/config/ConfigureChecks.cmake
+index f8edeac..807123c 100644
+--- a/config/ConfigureChecks.cmake
++++ b/config/ConfigureChecks.cmake
+@@ -642,6 +642,12 @@ if (HDF5_ENABLE_ROS3_VFD)
+       message (FATAL_ERROR "Found aws-c-s3 library but CMake target for library didn't exist")
+     endif ()
+ 
++    if (WINDOWS)
++      # RtlDllShutdownInProgress is used to avoid potential Windows loader lock
++      # deadlocks during library shutdown
++      CHECK_LIBRARY_EXISTS_CONCAT ("ntdll" RtlDllShutdownInProgress ${HDF_PREFIX}_HAVE_RTLDLLSHUTDOWNINPROGRESS)
++    endif ()
++
+     list (APPEND LINK_LIBS AWS::aws-c-s3)
+ 
+     set (${HDF_PREFIX}_HAVE_ROS3_VFD 1)
+diff --git a/src/H5FDros3_s3comms.c b/src/H5FDros3_s3comms.c
+index acb0ec9..35ccc85 100644
+--- a/src/H5FDros3_s3comms.c
++++ b/src/H5FDros3_s3comms.c
+@@ -46,6 +46,14 @@
+ #include <aws/http/request_response.h>
+ #include <aws/sdkutils/aws_profile.h>
+ 
++#if defined(H5_HAVE_WINDOWS) && defined(H5_HAVE_RTLDLLSHUTDOWNINPROGRESS)
++/* Prototype for RtlDllShutdownInProgress has to be declared - see
++ * https://learn.microsoft.com/en-us/windows/win32/devnotes/rtldllshutdowninprogress.
++ */
++#include <windows.h>
++BOOLEAN NTAPI RtlDllShutdownInProgress(VOID);
++#endif
++
+ /****************/
+ /* Local Macros */
+ /****************/
+@@ -339,12 +347,16 @@ H5FD__s3comms_init(void)
+         }
+     }
+ 
+-    /* Work around issue where aws-c-s3 library doesn't shut down
+-     * cleanly when called from HDF5's default atexit() handler.
++    /* On non-Windows platforms, work around issue where aws-c-s3 library
++     * doesn't shut down cleanly when called from HDF5's default atexit()
++     * handler. On Windows platforms, this cleanup is performed during VFD
++     * termination.
+      */
++#ifndef H5_HAVE_WINDOWS
+     if (0 != atexit(H5FD__s3comms_term_func))
+         HGOTO_ERROR(H5E_VFL, H5E_CANTINIT, FAIL,
+                     "couldn't register function for cleaning up aws-c-s3 library");
++#endif
+ 
+     H5FD_ros3_aws_init_g = true;
+ 
+@@ -372,7 +384,21 @@ H5FD__s3comms_term_func(void)
+     if (H5FD_ros3_aws_init_g) {
+         aws_host_resolver_release(H5FD_ros3_aws_host_resolver_g);
+         aws_event_loop_group_release(H5FD_ros3_aws_event_loop_group_g);
++
++#ifndef H5_HAVE_WINDOWS
+         aws_s3_library_clean_up();
++#elif defined(H5_HAVE_RTLDLLSHUTDOWNINPROGRESS)
++        /* On Windows, the loader lock can be held if the library is terminating
++         * as a result of the process terminating. In this case, calling the
++         * aws-c-s3 library cleanup routine might cause a deadlock when trying to
++         * cleanup threads. If DLL shutdown is in progress, just skip cleanup for
++         * now until a better solution is available. Ideally, calling H5close()
++         * would be a requirement so that aws-c-s3 cleanup can be properly handled
++         * at that time rather than during process termination.
++         */
++        if (!RtlDllShutdownInProgress())
++            aws_s3_library_clean_up();
++#endif
+ 
+         /* Clean up logger interface after being sure everything else
+          * has finished cleaning up
+@@ -401,9 +427,12 @@ H5FD__s3comms_term(void)
+ 
+     FUNC_ENTER_PACKAGE_NOERR
+ 
+-    /* Currently handled by atexit() function above to work around cleanup
+-     * ordering issues.
++    /* On non-Windows platforms, cleanup is currently handled by an atexit()
++     * function above to work around cleanup ordering issues.
+      */
++#ifdef H5_HAVE_WINDOWS
++    H5FD__s3comms_term_func();
++#endif
+ 
+     FUNC_LEAVE_NOAPI(ret_value)
+ } /* end H5FD__s3comms_term() */
+diff --git a/src/H5pubconf.h.in b/src/H5pubconf.h.in
+index f99ad79..1c53f07 100644
+--- a/src/H5pubconf.h.in
++++ b/src/H5pubconf.h.in
+@@ -265,6 +265,9 @@
+    compiled */
+ #cmakedefine H5_HAVE_ROS3_VFD @H5_HAVE_ROS3_VFD@
+ 
++/* Define to 1 if the RtlDllShutdownInProgress function is available */
++#cmakedefine H5_HAVE_RTLDLLSHUTDOWNINPROGRESS @H5_HAVE_RTLDLLSHUTDOWNINPROGRESS@
++
+ /* Define if struct stat has the st_blocks field */
+ #cmakedefine H5_HAVE_STAT_ST_BLOCKS @H5_HAVE_STAT_ST_BLOCKS@
+ 

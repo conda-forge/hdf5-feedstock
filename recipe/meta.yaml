@@ -49,6 +49,11 @@ source:
     # the find_dependency() calls now really do run for downstream consumers.
     # https://github.com/HDFGroup/hdf5/issues/6347
     - 6347-static-find-dependency.patch
+    # Fix deadlock at process exit in the ROS3 VFD on Windows; still open
+    # upstream. Lets us re-enable the ros3 h5dump test on Windows.
+    # https://github.com/HDFGroup/hdf5/pull/6654
+    # https://github.com/HDFGroup/hdf5/issues/6560
+    - 6654-ros3-windows-deadlock.patch
 
 build:
   number: {{ build }}
@@ -166,9 +171,10 @@ test:
     {% endfor %}
     # Check ros3 driver
     - AWS_REGION=us-east-2 h5dump --filedriver=ros3 "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | grep '^HDF5'  # [unix]
-    # Jan 2023 -- hmaarrfk. Tests will fail on windows without --s3-cred specified
-    # https://github.com/HDFGroup/hdf5/issues/2406
-    #- h5dump --filedriver=ros3 --s3-cred="(,,)" "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | findstr "^HDF5"  # [win]
+    # Previously disabled on Windows because h5dump deadlocked at exit while
+    # cleaning up aws-c-s3; testing https://github.com/HDFGroup/hdf5/pull/6654
+    - set "AWS_REGION=us-east-2"  # [win]
+    - h5dump --filedriver=ros3 "https://s3.amazonaws.com/hdfgroup/data/hdf5demo/tall.h5" | findstr "^HDF5"  # [win]
 
 about:
   home: https://www.hdfgroup.org/solutions/hdf5/
