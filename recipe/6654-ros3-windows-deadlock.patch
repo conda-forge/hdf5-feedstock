@@ -1,7 +1,7 @@
 Fix deadlock in ROS3 VFD on Windows
 
 Backport of https://github.com/HDFGroup/hdf5/pull/6654
-(commit f1fb81316e74330ba225a5dc9332d7c777284046, still open upstream),
+(merged as 530da2cef6734fade46dde9c7ccaec7c9889cd7d, after 2.2.0),
 fixing https://github.com/HDFGroup/hdf5/issues/6560.
 
 Avoid calling aws-c-s3 library cleanup if the process is in the middle of
