@@ -252,7 +252,6 @@ Feedstock Maintainers
 =====================
 
 * [@SylvainCorlay](https://github.com/SylvainCorlay/)
-* [@astrofrog](https://github.com/astrofrog/)
 * [@davidbrochart](https://github.com/davidbrochart/)
 * [@gillins](https://github.com/gillins/)
 * [@groutr](https://github.com/groutr/)
