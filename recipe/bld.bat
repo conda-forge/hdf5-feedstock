@@ -95,3 +95,12 @@ findstr /V "Libs.private"  %LIBRARY_PREFIX%\\lib\\pkgconfig\\hdf5.pc > hdf5.pc.n
 if errorlevel 1 exit 1
 move /y hdf5.pc.new %LIBRARY_PREFIX%\\lib\\pkgconfig\\hdf5.pc
 if errorlevel 1 exit 1
+
+:: Point HDF5_PLUGIN_PATH at the environment's plugin directory on activation.
+:: Forward slashes keep the JSON valid after conda replaces the prefix.
+set "_PLUGIN_DIR=%LIBRARY_PREFIX:\=/%/lib/hdf5/plugin"
+if not exist %PREFIX%\etc\conda\env_vars.d mkdir %PREFIX%\etc\conda\env_vars.d
+if errorlevel 1 exit 1
+>%PREFIX%\etc\conda\env_vars.d\hdf5.json echo {"HDF5_PLUGIN_PATH": "%_PLUGIN_DIR%"}
+if errorlevel 1 exit 1
+type %PREFIX%\etc\conda\env_vars.d\hdf5.json
