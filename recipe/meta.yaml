@@ -69,7 +69,7 @@ requirements:
     # Keep both versions of openssl in sync
     - openssl
     - diffutils   # [linux]
-    - pkg-config
+    - pkgconf
   host:
     - {{ mpi }}   # [mpi != 'nompi' and mpi != 'impi']
     - impi-devel  # [mpi == 'impi']
